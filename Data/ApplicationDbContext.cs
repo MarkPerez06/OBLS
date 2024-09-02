@@ -20,6 +20,5 @@ namespace OBLS.Data
         public DbSet<OrderProductsView> OrderProductsView { get; set; }
         public DbSet<Discounts> Discounts { get; set; }
         public DbSet<Persons> Persons { get; set; }
-        public DbSet<OBLS.Models.Roles>? Roles { get; set; }
     }
 }
