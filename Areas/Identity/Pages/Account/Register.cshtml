@@ -1,0 +1,69 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="account-pages my-5 pt-sm-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="card overflow-hidden">
+                    <div class="card-body pt-0">
+                        <div class="p-2">
+                            <a href="/Home/" class="auth-logo-light">
+                                <div class="avatar-md profile-user-wid mb-4 mt-4">
+                                    <span class="avatar-title rounded-circle bg-dark">
+                                        <img src="~/assets/images/site/logo.png" alt="" class="rounded-circle" height="90" style="border: solid 1px gray">
+                                    </span>
+                                </div>
+                            </a>
+                            <h5>Register to OBPLS !</h5>
+                            <p>Register your account.</p>
+
+                            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Input.Email">Username</label>
+                                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" type="text" placeholder="Enter username" />
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Input.Password"></label>
+                                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" type="password" placeholder="Enter password" />
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Input.ConfirmPassword"></label>
+                                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" type="password"  placeholder="Enter confirm password" />
+                                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                </div>
+                                <div class="form-check">
+                                    <div class="checkbox">
+                                        <label class="form-label">
+                                            <input id="terms" class="form-check-input" type="checkbox" name="terms"/>
+                                            <label for="terms">I accept the Terms and Conditions</label>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mt-1 d-grid mb-2">
+                                    <button id="registerSubmit" type="submit"  class="btn btn-primary waves-effect waves-light">Register</button>
+                                </div>
+
+                                <div class="mt-4 text-center">
+                                    <div class="mt-2 text-center">
+                                        <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="text-muted"><i class="mdi mdi-account-box me-1"></i> Login an account</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
