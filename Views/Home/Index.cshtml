@@ -1,5 +1,18 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity;
+@{
     ViewBag.Title = "Home";
+    // Get the SignInManager and UserManager instances from the HttpContext.RequestServices
+    var _signInManager = Context.RequestServices.GetRequiredService<SignInManager<IdentityUser>>();
+    var _userManager = Context.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
+
+    if (_signInManager.IsSignedIn(User))
+    {
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 }
 
 <div class="row">
@@ -29,7 +42,7 @@
                     <div class="col-7">
                         <div class="p-4">
                             <h5 class="text-white">Welcome to OBPLS !</h5>
-                            <p>Online Business Permit & Licensing System (OBPLS)</p>
+                            <p></p>
 
                             <ul class="ps-3 mb-0">
                                 <li class="py-1">Business Permit</li>
