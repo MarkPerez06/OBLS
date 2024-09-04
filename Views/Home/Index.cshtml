@@ -4,23 +4,30 @@
     // Get the SignInManager and UserManager instances from the HttpContext.RequestServices
     var _signInManager = Context.RequestServices.GetRequiredService<SignInManager<IdentityUser>>();
     var _userManager = Context.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
+    bool IsSignedIn = _signInManager.IsSignedIn(User);
 
-    if (_signInManager.IsSignedIn(User))
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ReturnUrl = "/Identity/Account/Login";
+
+    if (IsSignedIn)
     {
         Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-    }
-    else
-    {
-        Layout = "~/Views/Shared/_Layout.cshtml";
+        ReturnUrl = "/BusinessPermit/Application";
     }
 }
-
-<div class="row">
+<!-- DataTables -->
+<link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<!-- Responsive datatable examples -->
+<link href="~/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+<div class="row mt-3">
     <div class="col-xl-1">
     </div>
     <div class="col-xl-10">
         <p class="text-center">
             <span style="font-size: 24px;">ONLINE BUSINESS PERMIT & LICENSING SYSTEM</span>
+            <br />
             <br />
             <span style="font-size: 15px;">
                 A digital platform designed to streamline the process of applying for, renewing, and managing business permits and licenses. Through this system, users can submit applications, track progress, make payments, and receive approvals online, ensuring a faster and more transparent licensing process.
@@ -46,7 +53,7 @@
 
                             <ul class="ps-3 mb-0">
                                 <li class="py-1">Business Permit</li>
-                                <li class="py-1">Working Permit</li>
+                                <li class="py-1">Licensing</li>
                             </ul>
                         </div>
                     </div>
@@ -59,16 +66,15 @@
     </div>
     <div class="col-xl-4">
         <div class="card">
-            <div>
+            <a href="@ReturnUrl">
                 <div class="row">
                     <div class="col-7">
                         <div class="p-4">
-                            <h5 class="text-primary">BUSINESS PERMIT</h5>
-                            <p class="text-primary">Submit Application Now!</p>
+                            <h5 class="text-primary">NEW APPLICATION</h5>
+                            <p class="text-primary">Submit New Application!</p>
 
                             <ul class="ps-3 mb-0">
-                                <li class="py-1">New Applicant</li>
-                                <li class="py-1">Renewal Applicant</li>
+                                <li class="py-0">Annual</li>
                             </ul>
                         </div>
                     </div>
@@ -76,29 +82,69 @@
                         <img src="/assets/images/site_img/BP.png" alt="" class="img-fluid">
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
     <div class="col-xl-4">
         <div class="card">
-            <div>
+            <a href="@ReturnUrl">
                 <div class="row">
                     <div class="col-7">
                         <div class="p-4">
-                            <h5 class="text-primary">WORKING PERMIT</h5>
-                            <p class="text-primary">Submit Application Now!</p>
+                            <h5 class="text-primary">RENEW APPLICATION</h5>
+                            <p class="text-primary">Submit Renew Application!</p>
 
                             <ul class="ps-3 mb-0">
-                                <li class="py-1">New Applicant</li>
-                                <li class="py-1">Renewal Applicant</li>
+                                <li class="py-0">Annual</li>
+                                <li class="py-0">Bi-Annual</li>
+                                <li class="py-0">Quarterly</li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-5 align-self-end p-4">
-                        <img src="/assets/images/site_img/WP.png" alt="" class="img-fluid">
+                        <img src="/assets/images/site_img/RBP.png" alt="" class="img-fluid">
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </div>
+<!-- JAVASCRIPT -->
+<script src="~/assets/libs/jquery/jquery.min.js"></script>
+<script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
+<script src="~/assets/libs/simplebar/simplebar.min.js"></script>
+<script src="~/assets/libs/node-waves/waves.min.js"></script>
+
+
+<!-- Required datatable js -->
+<script src="~/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="~/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+<!-- Buttons examples -->
+<script src="~/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="~/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+<script src="~/assets/libs/jszip/jszip.min.js"></script>
+<script src="~/assets/libs/pdfmake/build/pdfmake.min.js"></script>
+<script src="~/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+<script src="~/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="~/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="~/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
+<!-- Responsive examples -->
+<script src="~/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+
+<!-- Datatable init js -->
+<script src="~/assets/js/pages/datatables.init.js"></script>
+
+<!-- App js -->
+<script src="~/assets/js/pages/modal.init.js"></script>
+<script src="~/assets/libs/parsleyjs/parsley.min.js"></script>
+<script src="~/assets/js/pages/form-validation.init.js"></script>
+<!-- Sweet Alerts js -->
+<script src="~/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
+<!-- Sweet alert init js-->
+<script src="~/assets/js/pages/sweet-alerts.init.js"></script>
+
+<script src="~/assets/js/app.js"></script>

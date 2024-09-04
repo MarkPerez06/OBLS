@@ -11,10 +11,9 @@
 <body data-topbar="dark" data-layout="horizontal" data-layout-size="boxed">
 
     <!-- Begin page -->
-    <div id="layout-wrapper">
-        @await Html.PartialAsync("~/Views/Shared/_topbar.cshtml")
+    <div id="layout-wrapper bg-white">
+        @*         @await Html.PartialAsync("~/Views/Shared/_topbar.cshtml") *@
         @await Html.PartialAsync("~/Views/Shared/_horizontal_admin.cshtml")
-
         <!-- ============================================================== -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
@@ -23,7 +22,6 @@
             <div class="page-content">
                 <div class="container-fluid">
                     @await Html.PartialAsync("~/Views/Shared/_page_title.cshtml")
-
                     @RenderBody()
                 </div> <!-- container-fluid -->
             </div>
@@ -34,15 +32,13 @@
 
     </div>
     <!-- END layout-wrapper -->
-    @await Html.PartialAsync("~/Views/Shared/_right_sidebar.cshtml")
+    @*     @await Html.PartialAsync("~/Views/Shared/_right_sidebar.cshtml") *@
     <!-- Right bar overlay-->
     <div class="rightbar-overlay"></div>
 
     @*@await Html.PartialAsync("~/Views/_Shared/_vendor_scripts.cshtml")*@
 
     @RenderSection("scripts", required: false)
-
-
 </body>
 
 </html>

@@ -304,21 +304,19 @@
             type: 'POST',
             data: data,
             dataType: 'json',
-            success: function (date) {
+            success: function (data) {
                 $("#Id").val(Id).trigger("change");
-                $("#UserId").val(date.userId).trigger("change");
-                $("#LastName").val(date.lastName).trigger("change");
-                $("#FirstName").val(date.firstName).trigger("change");
-                $("#MiddleName").val(date.middleName).trigger("change");
-                $("#Birthday").val(convertDateTimeToDate(date.birthday)).trigger("change");
-                $("#CompleteAddress").val(date.completeAddress).trigger("change");
-                $("#ContactNumber").val(date.contactNumber).trigger("change");
-                $("#Gender").val(date.gender).trigger("change");
-                $("#Salary").val(date.salary).trigger("change");
-                $("#SeniorCitizenID").val(date.seniorCitizenID).trigger("change");
-                $("#PWDID").val(date.pwdid).trigger("change");
-
-                console.log(date);
+                $("#UserId").val(data.userId).trigger("change");
+                $("#LastName").val(data.lastName).trigger("change");
+                $("#FirstName").val(data.firstName).trigger("change");
+                $("#MiddleName").val(data.middleName).trigger("change");
+                $("#Birthday").val(convertDateTimeToDate(data.birthday)).trigger("change");
+                $("#CompleteAddress").val(data.completeAddress).trigger("change");
+                $("#ContactNumber").val(data.contactNumber).trigger("change");
+                $("#Gender").val(data.gender).trigger("change");
+                $("#Salary").val(data.salary).trigger("change");
+                $("#SeniorCitizenID").val(data.seniorCitizenID).trigger("change");
+                $("#PWDID").val(data.pwdid).trigger("change");
             },
             error: function (error) {
                 Swal.fire('Oops!', 'Something went wrong!', 'error');
