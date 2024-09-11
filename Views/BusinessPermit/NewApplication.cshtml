@@ -1,51 +1,19 @@
-﻿@page
-@model LogoutModel
+﻿@using Microsoft.AspNetCore.Identity;
 @{
-    ViewBag.Title = "Logout";
+    ViewBag.Title = "Business Permit";
+    ViewBag.pTitle = "Business Permit";
+    ViewBag.pageTitle = "New Application";
+
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+<!-- DataTables -->
 <link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <link href="~/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <!-- Responsive datatable examples -->
 <link href="~/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <link href="~/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
-<div class="pt-sm-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6 col-xl-5">
-                <div class="card overflow-hidden">
-                    <div class="card-body pt-0 mb-2">
-                        <div class="p-2">
-                            <a href="/Home/" class="auth-logo-light">
-                                <div class="avatar-md profile-user-wid mb-4 mt-4">
-                                    <span class="avatar-title rounded-circle bg-dark">
-                                        <img src="~/assets/images/site/logo.png" alt="" class="rounded-circle" height="90" style="border: solid 1px gray">
-                                    </span>
-                                </div>
-                            </a>
-                            <h5>Logout to OBPLS ?</h5>
-                            <p>Sign out your account.</p>
-                            @{
-                                if (User.Identity?.IsAuthenticated ?? false)
-                                {
-                                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                                        <button type="submit" class="btn btn-primary waves-effect waves-light form-control">Sign out now</button>
-                                        <a href="~/Home/" class="btn btn-secondary waves-light mt-3 form-control">Back</a>
-                                    </form>
-                                }
-                                else
-                                {
-                                    <p>You have successfully logged out of the application.</p>
-                                }
-                            }
-                        </div>
+<div class="row mt-3">
 
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
 </div>
 <!-- JAVASCRIPT -->
 <script src="~/assets/libs/jquery/jquery.min.js"></script>

@@ -1,0 +1,355 @@
+﻿@model IEnumerable<OBLS.Models.Application>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Application_Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application_PaymentMode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application_Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application_Method)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application_Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application_DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application_IsGenerateBrgyClearance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Business_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Business_TradeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Business_OrganizationType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Business_Sex)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Business_RegistrationNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Business_TIN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Business_IsFilipino)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Owner_LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Owner_FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Owner_MiddleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Owner_Suffix)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainOffice_Region)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainOffice_Province)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainOffice_CityMunicipality)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainOffice_Brgy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainOffice_ZipCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainOffice_HouseBuildingNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainOffice_BuildingName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainOffice_LotNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainOffice_BlockNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainOffice_Street)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainOffice_Subdivision)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact_MobileNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact_EmailAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact_TelephoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessOperation_BusinessActivity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessOperation_OtherBusinessActivity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessOperation_BusinessAreaSqm)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessOperation_TotalFloorArea)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessOperation_EmployeeMale)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessOperation_EmployeeFemale)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessOperation_TotalEmployeeWithLGU)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessOperation_TotalVanTruck)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessOperation_TotalMotorcycle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessOperation_IsOwned)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessOperation_HasTaxIncentives)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessLocation_Region)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessLocation_Province)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessLocation_CityMunicipality)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessLocation_Brgy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessLocation_ZipCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessLocation_HouseBuildingNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessLocation_BuildingName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessLocation_LotNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessLocation_BlockNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessLocation_Street)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessLocation_Subdivision)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Application_Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Application_PaymentMode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Application_Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Application_Method)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Application_Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Application_DateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Application_IsGenerateBrgyClearance)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Business_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Business_TradeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Business_OrganizationType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Business_Sex)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Business_RegistrationNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Business_TIN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Business_IsFilipino)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Owner_LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Owner_FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Owner_MiddleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Owner_Suffix)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MainOffice_Region)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MainOffice_Province)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MainOffice_CityMunicipality)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MainOffice_Brgy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MainOffice_ZipCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MainOffice_HouseBuildingNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MainOffice_BuildingName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MainOffice_LotNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MainOffice_BlockNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MainOffice_Street)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MainOffice_Subdivision)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Contact_MobileNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Contact_EmailAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Contact_TelephoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessOperation_BusinessActivity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessOperation_OtherBusinessActivity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessOperation_BusinessAreaSqm)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessOperation_TotalFloorArea)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessOperation_EmployeeMale)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessOperation_EmployeeFemale)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessOperation_TotalEmployeeWithLGU)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessOperation_TotalVanTruck)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessOperation_TotalMotorcycle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessOperation_IsOwned)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessOperation_HasTaxIncentives)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessLocation_Region)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessLocation_Province)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessLocation_CityMunicipality)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessLocation_Brgy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessLocation_ZipCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessLocation_HouseBuildingNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessLocation_BuildingName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessLocation_LotNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessLocation_BlockNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessLocation_Street)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessLocation_Subdivision)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

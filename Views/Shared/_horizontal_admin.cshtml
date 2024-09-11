@@ -29,7 +29,7 @@
         </div>
         <div class="d-flex col-2">
             <div class="dropdown d-inline-block">
-                <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                <button type="button" class="btn header-item" id="page-header-user-dropdown"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <i class="bx bx-user"></i>
                     <span class="d-none d-xl-inline-block ms-1" key="t-henry">@User.Identity?.Name</span>
@@ -56,6 +56,11 @@
                             Home
                         </a>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none" href="@Url.Action("NewApplication", "BusinessPermit")">
+                            New Application
+                        </a>
+                    </li>
 
 
                   @*   <li class="nav-item dropdown">
@@ -71,8 +76,7 @@
                         </a>
                     </li> *@
 
-                    @if (ViewBag.Persons.IsAdmin == true || ViewBag.Persons.IsStaff == true)
-                    {
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard" role="button">
                                 <span key="t-dashboards"> Accounts</span>
@@ -81,18 +85,14 @@
                             <div class="dropdown-menu" aria-labelledby="topnav-dashboard">
                                 <a href=@Url.Action("Index", "Users") class="dropdown-item" key="t-default">System User</a>
                                 <hr>
-                                @if (ViewBag.Persons.IsAdmin == true)
-                                {
+
                                     <a href=@Url.Action("Index", "Admin") class="dropdown-item" key="t-default">Admin</a>
                                     <a href=@Url.Action("Index", "Staffs") class="dropdown-item" key="t-default">Staff</a>
-                                }
+                             
                                 <a href=@Url.Action("Index", "Customers") class="dropdown-item" key="t-default">Customer</a>
                             </div>
                         </li>
-                    }
-
-                    @if (ViewBag.Persons.IsAdmin == true || ViewBag.Persons.IsStaff == true)
-                    {
+                    
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard" role="button">
                                 <span key="t-dashboards"> Maintenance</span>
@@ -105,7 +105,7 @@
                                 <a href=@Url.Action("Index", "Discounts") class="dropdown-item" key="t-default">Discounts</a>
                             </div>
                         </li>
-                    }
+
                 </ul>
             </div>
         </nav>

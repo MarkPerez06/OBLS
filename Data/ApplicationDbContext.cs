@@ -10,6 +10,6 @@ namespace OBLS.Data
             : base(options)
         {
         }
-        //public DbSet<Menu> Menu { get; set; }
+        public DbSet<Application> Application { get; set; }
     }
 }

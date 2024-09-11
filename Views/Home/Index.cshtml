@@ -1,18 +1,23 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @{
     ViewBag.Title = "Home";
+    ViewBag.pTitle = "Home";
+    ViewBag.pageTitle = "Main";
+
     // Get the SignInManager and UserManager instances from the HttpContext.RequestServices
     var _signInManager = Context.RequestServices.GetRequiredService<SignInManager<IdentityUser>>();
     var _userManager = Context.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
     bool IsSignedIn = _signInManager.IsSignedIn(User);
 
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var ReturnUrl = "/Identity/Account/Login";
+    var NewApplication = "/Identity/Account/Login";
+    var RenewApplication = "/Identity/Account/Login";
 
     if (IsSignedIn)
     {
         Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-        ReturnUrl = "/BusinessPermit/Application";
+        NewApplication = "/BusinessPermit/NewApplication";
+        RenewApplication = "/BusinessPermit/RenewApplication";
     }
 }
 <!-- DataTables -->
@@ -66,7 +71,7 @@
     </div>
     <div class="col-xl-4">
         <div class="card">
-            <a href="@ReturnUrl">
+            <a href="@NewApplication">
                 <div class="row">
                     <div class="col-7">
                         <div class="p-4">
@@ -87,7 +92,7 @@
     </div>
     <div class="col-xl-4">
         <div class="card">
-            <a href="@ReturnUrl">
+            <a href="@RenewApplication">
                 <div class="row">
                     <div class="col-7">
                         <div class="p-4">
