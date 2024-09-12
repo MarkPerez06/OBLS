@@ -4,300 +4,347 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Application</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Application_Type" class="control-label"></label>
-                <select asp-for="Application_Type" class="form-control">
-                    <option value="">Select Application Type</option>
-                    <option value="New">New</option>
-                    <option value="Renew">Renew</option>
-                </select>
-                <span asp-validation-for="Application_Type" class="text-danger"></span>
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4 text-uppercase">Business Permit Applications</h4>
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="row">
+                        <div class="col-lg-4 form-group mb-3">
+                            <label asp-for="Application_Type" class="control-label"></label>
+                            <select asp-for="Application_Type" class="form-control">
+                                <option value="">Select Application Type</option>
+                                <option value="New">New</option>
+                                <option value="Renew">Renew</option>
+                            </select>
+                            <span asp-validation-for="Application_Type" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-4 form-group mb-3">
+                            <label asp-for="Application_PaymentMode" class="control-label"></label>
+                            <select asp-for="Application_PaymentMode" class="form-control">
+                                <option value="">Select Mode of Payment</option>
+                                <option value="Annual">Annual</option>
+                                <option value="Bi-annual">Bi-annual</option>
+                                <option value="Quarterly">Quarterly</option>
+                            </select>
+                            <span asp-validation-for="Application_PaymentMode" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-4 form-group mb-3">
+                            <label asp-for="Application_Year" class="control-label"></label>
+                            <select asp-for="Application_Year" class="form-control">
+                                <option value="">Select Year</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                            </select>
+                            <span asp-validation-for="Application_Year" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <div class="form-check form-checkbox-outline form-check-primary">
+                                <label asp-for="Application_IsGenerateBrgyClearance" class="form-check-label"></label>
+                                <input asp-for="Application_IsGenerateBrgyClearance" class="form-check-input CheckColor" type="checkbox">
+                                <span asp-validation-for="Application_IsGenerateBrgyClearance" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <h4 class="card-title mb-4 text-uppercase">Business Information</h4>
+                    <div class="row">
+                        <div class="col-lg-4 form-group mb-3">
+                            <label asp-for="Business_Name" class="control-label"></label>
+                            <input asp-for="Business_Name" class="form-control" />
+                            <span asp-validation-for="Business_Name" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-4 form-group mb-3">
+                            <label asp-for="Business_TradeName" class="control-label"></label>
+                            <input asp-for="Business_TradeName" class="form-control" />
+                            <span asp-validation-for="Business_TradeName" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-4 form-group mb-3">
+                            <label asp-for="Business_OrganizationType" class="control-label"></label>
+                            <input asp-for="Business_OrganizationType" class="form-control" />
+                            <span asp-validation-for="Business_OrganizationType" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="Business_Sex" class="control-label"></label>
+                            <input asp-for="Business_Sex" class="form-control" />
+                            <span asp-validation-for="Business_Sex" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="Business_RegistrationNumber" class="control-label"></label>
+                            <input asp-for="Business_RegistrationNumber" class="form-control" />
+                            <span asp-validation-for="Business_RegistrationNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="Business_TIN" class="control-label"></label>
+                            <input asp-for="Business_TIN" class="form-control" />
+                            <span asp-validation-for="Business_TIN" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="Business_IsFilipino" class="control-label"></label>
+                            <input asp-for="Business_IsFilipino" class="form-control"></input>
+                            <span asp-validation-for="Business_IsFilipino" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <h4 class="card-title mb-4 text-uppercase">Name of Applicant</h4>
+                    <div class="row">
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="Owner_LastName" class="control-label"></label>
+                            <input asp-for="Owner_LastName" class="form-control" />
+                            <span asp-validation-for="Owner_LastName" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="Owner_FirstName" class="control-label"></label>
+                            <input asp-for="Owner_FirstName" class="form-control" />
+                            <span asp-validation-for="Owner_FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="Owner_MiddleName" class="control-label"></label>
+                            <input asp-for="Owner_MiddleName" class="form-control" />
+                            <span asp-validation-for="Owner_MiddleName" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="Owner_Suffix" class="control-label"></label>
+                            <input asp-for="Owner_Suffix" class="form-control" />
+                            <span asp-validation-for="Owner_Suffix" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <h4 class="card-title mb-4 text-uppercase">Main Office Address</h4>
+                    <div class="row">
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="MainOffice_Region" class="control-label"></label>
+                            <input asp-for="MainOffice_Region" class="form-control" />
+                            <span asp-validation-for="MainOffice_Region" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="MainOffice_Province" class="control-label"></label>
+                            <input asp-for="MainOffice_Province" class="form-control" />
+                            <span asp-validation-for="MainOffice_Province" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="MainOffice_CityMunicipality" class="control-label"></label>
+                            <input asp-for="MainOffice_CityMunicipality" class="form-control" />
+                            <span asp-validation-for="MainOffice_CityMunicipality" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="MainOffice_Brgy" class="control-label"></label>
+                            <input asp-for="MainOffice_Brgy" class="form-control" />
+                            <span asp-validation-for="MainOffice_Brgy" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-1 form-group mb-3">
+                            <label asp-for="MainOffice_ZipCode" class="control-label"></label>
+                            <input asp-for="MainOffice_ZipCode" class="form-control" />
+                            <span asp-validation-for="MainOffice_ZipCode" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2 form-group mb-3">
+                            <label asp-for="MainOffice_HouseBuildingNumber" class="control-label"></label>
+                            <input asp-for="MainOffice_HouseBuildingNumber" class="form-control" />
+                            <span asp-validation-for="MainOffice_HouseBuildingNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="MainOffice_BuildingName" class="control-label"></label>
+                            <input asp-for="MainOffice_BuildingName" class="form-control" />
+                            <span asp-validation-for="MainOffice_BuildingName" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-1 form-group mb-3">
+                            <label asp-for="MainOffice_LotNumber" class="control-label"></label>
+                            <input asp-for="MainOffice_LotNumber" class="form-control" />
+                            <span asp-validation-for="MainOffice_LotNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-1 form-group mb-3">
+                            <label asp-for="MainOffice_BlockNumber" class="control-label"></label>
+                            <input asp-for="MainOffice_BlockNumber" class="form-control" />
+                            <span asp-validation-for="MainOffice_BlockNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2 form-group mb-3">
+                            <label asp-for="MainOffice_Street" class="control-label"></label>
+                            <input asp-for="MainOffice_Street" class="form-control" />
+                            <span asp-validation-for="MainOffice_Street" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2 form-group mb-3">
+                            <label asp-for="MainOffice_Subdivision" class="control-label"></label>
+                            <input asp-for="MainOffice_Subdivision" class="form-control" />
+                            <span asp-validation-for="MainOffice_Subdivision" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <h4 class="card-title mb-4 text-uppercase">Contact Information</h4>
+                    <div class="row">
+                        <div class="col-lg-4 form-group mb-3">
+                            <label asp-for="Contact_MobileNumber" class="control-label"></label>
+                            <input asp-for="Contact_MobileNumber" class="form-control" />
+                            <span asp-validation-for="Contact_MobileNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-4 form-group mb-3">
+                            <label asp-for="Contact_EmailAddress" class="control-label"></label>
+                            <input asp-for="Contact_EmailAddress" class="form-control" />
+                            <span asp-validation-for="Contact_EmailAddress" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-4 form-group mb-3">
+                            <label asp-for="Contact_TelephoneNumber" class="control-label"></label>
+                            <input asp-for="Contact_TelephoneNumber" class="form-control" />
+                            <span asp-validation-for="Contact_TelephoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <h4 class="card-title mb-4 text-uppercase">Business Operation</h4>
+                    <div class="row">
+                        <div class="col-lg-4 form-group mb-3">
+                            <label asp-for="BusinessOperation_BusinessActivity" class="control-label"></label>
+                            <input asp-for="BusinessOperation_BusinessActivity" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_BusinessActivity" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-4 form-group mb-3">
+                            <label asp-for="BusinessOperation_OtherBusinessActivity" class="control-label"></label>
+                            <input asp-for="BusinessOperation_OtherBusinessActivity" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_OtherBusinessActivity" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2 form-group mb-3">
+                            <label asp-for="BusinessOperation_BusinessAreaSqm" class="control-label"></label>
+                            <input asp-for="BusinessOperation_BusinessAreaSqm" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_BusinessAreaSqm" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2 form-group mb-3">
+                            <label asp-for="BusinessOperation_TotalFloorArea" class="control-label"></label>
+                            <input asp-for="BusinessOperation_TotalFloorArea" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_TotalFloorArea" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2 form-group mb-3">
+                            <label asp-for="BusinessOperation_EmployeeMale" class="control-label"></label>
+                            <input asp-for="BusinessOperation_EmployeeMale" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_EmployeeMale" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2 form-group mb-3">
+                            <label asp-for="BusinessOperation_EmployeeFemale" class="control-label"></label>
+                            <input asp-for="BusinessOperation_EmployeeFemale" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_EmployeeFemale" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-4 form-group mb-3">
+                            <label asp-for="BusinessOperation_TotalEmployeeWithLGU" class="control-label"></label>
+                            <input asp-for="BusinessOperation_TotalEmployeeWithLGU" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_TotalEmployeeWithLGU" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2 form-group mb-3">
+                            <label asp-for="BusinessOperation_TotalVanTruck" class="control-label"></label>
+                            <input asp-for="BusinessOperation_TotalVanTruck" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_TotalVanTruck" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2 form-group mb-3">
+                            <label asp-for="BusinessOperation_TotalMotorcycle" class="control-label"></label>
+                            <input asp-for="BusinessOperation_TotalMotorcycle" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_TotalMotorcycle" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2 form-group mb-2">
+                            <label asp-for="BusinessOperation_IsOwned" class="control-label"></label>
+                            <input asp-for="BusinessOperation_IsOwned" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_IsOwned" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-5 form-group mb-3">
+                            <label asp-for="BusinessOperation_HasTaxIncentives" class="control-label"></label>
+                            <input asp-for="BusinessOperation_HasTaxIncentives" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_HasTaxIncentives" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <h4 class="card-title mb-4 text-uppercase">Business Location Address</h4>
+                    <div class="row">
+                        <div class="col-lg-12 form-group mb-3">
+                            <div class="form-check form-checkbox-outline form-check-primary">
+                                <label for="SameAsMainOffice" class="form-check-label">Same As Main Office</label>
+                                <input id="SameAsMainOffice" class="form-check-input CheckColor" type="checkbox">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="BusinessLocation_Region" class="control-label"></label>
+                            <input asp-for="BusinessLocation_Region" class="form-control" />
+                            <span asp-validation-for="BusinessLocation_Region" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="BusinessLocation_Province" class="control-label"></label>
+                            <input asp-for="BusinessLocation_Province" class="form-control" />
+                            <span asp-validation-for="BusinessLocation_Province" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="BusinessLocation_CityMunicipality" class="control-label"></label>
+                            <input asp-for="BusinessLocation_CityMunicipality" class="form-control" />
+                            <span asp-validation-for="BusinessLocation_CityMunicipality" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="BusinessLocation_Brgy" class="control-label"></label>
+                            <input asp-for="BusinessLocation_Brgy" class="form-control" />
+                            <span asp-validation-for="BusinessLocation_Brgy" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-1 form-group mb-3">
+                            <label asp-for="BusinessLocation_ZipCode" class="control-label"></label>
+                            <input asp-for="BusinessLocation_ZipCode" class="form-control" />
+                            <span asp-validation-for="BusinessLocation_ZipCode" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2 form-group mb-3">
+                            <label asp-for="BusinessLocation_HouseBuildingNumber" class="control-label"></label>
+                            <input asp-for="BusinessLocation_HouseBuildingNumber" class="form-control" />
+                            <span asp-validation-for="BusinessLocation_HouseBuildingNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="BusinessLocation_BuildingName" class="control-label"></label>
+                            <input asp-for="BusinessLocation_BuildingName" class="form-control" />
+                            <span asp-validation-for="BusinessLocation_BuildingName" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-1 form-group mb-3">
+                            <label asp-for="BusinessLocation_LotNumber" class="control-label"></label>
+                            <input asp-for="BusinessLocation_LotNumber" class="form-control" />
+                            <span asp-validation-for="BusinessLocation_LotNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-1 form-group mb-3">
+                            <label asp-for="BusinessLocation_BlockNumber" class="control-label"></label>
+                            <input asp-for="BusinessLocation_BlockNumber" class="form-control" />
+                            <span asp-validation-for="BusinessLocation_BlockNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2 form-group mb-3">
+                            <label asp-for="BusinessLocation_Street" class="control-label"></label>
+                            <input asp-for="BusinessLocation_Street" class="form-control" />
+                            <span asp-validation-for="BusinessLocation_Street" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2 form-group mb-3">
+                            <label asp-for="BusinessLocation_Subdivision" class="control-label"></label>
+                            <input asp-for="BusinessLocation_Subdivision" class="form-control" />
+                            <span asp-validation-for="BusinessLocation_Subdivision" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row mb-3 mt-4">
+                        <div class="col-lg-3 form-group"></div>
+                        <div class="col-lg-6 form-group text-center mt-2">
+                            <input type="button" value="Save as Draft" class="btn btn-secondary " />
+                            <input type="submit" value="Submit Application" class="btn btn-primary " />
+                        </div>
+                        <div class="col-lg-3 form-group"></div>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="Application_PaymentMode" class="control-label"></label>
-                <input asp-for="Application_PaymentMode" class="form-control" />
-                <span asp-validation-for="Application_PaymentMode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Application_Year" class="control-label"></label>
-                <input asp-for="Application_Year" class="form-control" />
-                <span asp-validation-for="Application_Year" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Application_Method" class="control-label"></label>
-                <input asp-for="Application_Method" class="form-control" />
-                <span asp-validation-for="Application_Method" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Application_Status" class="control-label"></label>
-                <input asp-for="Application_Status" class="form-control" />
-                <span asp-validation-for="Application_Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Application_DateTime" class="control-label"></label>
-                <input asp-for="Application_DateTime" class="form-control" />
-                <span asp-validation-for="Application_DateTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Application_IsGenerateBrgyClearance" class="control-label"></label>
-                <input asp-for="Application_IsGenerateBrgyClearance" class="form-control" />
-                <span asp-validation-for="Application_IsGenerateBrgyClearance" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business_Name" class="control-label"></label>
-                <input asp-for="Business_Name" class="form-control" />
-                <span asp-validation-for="Business_Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business_TradeName" class="control-label"></label>
-                <input asp-for="Business_TradeName" class="form-control" />
-                <span asp-validation-for="Business_TradeName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business_OrganizationType" class="control-label"></label>
-                <input asp-for="Business_OrganizationType" class="form-control" />
-                <span asp-validation-for="Business_OrganizationType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business_Sex" class="control-label"></label>
-                <input asp-for="Business_Sex" class="form-control" />
-                <span asp-validation-for="Business_Sex" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business_RegistrationNumber" class="control-label"></label>
-                <input asp-for="Business_RegistrationNumber" class="form-control" />
-                <span asp-validation-for="Business_RegistrationNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business_TIN" class="control-label"></label>
-                <input asp-for="Business_TIN" class="form-control" />
-                <span asp-validation-for="Business_TIN" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business_IsFilipino" class="control-label"></label>
-                <select asp-for="Business_IsFilipino" class="form-control"></select>
-                <span asp-validation-for="Business_IsFilipino" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Owner_LastName" class="control-label"></label>
-                <input asp-for="Owner_LastName" class="form-control" />
-                <span asp-validation-for="Owner_LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Owner_FirstName" class="control-label"></label>
-                <input asp-for="Owner_FirstName" class="form-control" />
-                <span asp-validation-for="Owner_FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Owner_MiddleName" class="control-label"></label>
-                <input asp-for="Owner_MiddleName" class="form-control" />
-                <span asp-validation-for="Owner_MiddleName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Owner_Suffix" class="control-label"></label>
-                <input asp-for="Owner_Suffix" class="form-control" />
-                <span asp-validation-for="Owner_Suffix" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MainOffice_Region" class="control-label"></label>
-                <input asp-for="MainOffice_Region" class="form-control" />
-                <span asp-validation-for="MainOffice_Region" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MainOffice_Province" class="control-label"></label>
-                <input asp-for="MainOffice_Province" class="form-control" />
-                <span asp-validation-for="MainOffice_Province" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MainOffice_CityMunicipality" class="control-label"></label>
-                <input asp-for="MainOffice_CityMunicipality" class="form-control" />
-                <span asp-validation-for="MainOffice_CityMunicipality" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MainOffice_Brgy" class="control-label"></label>
-                <input asp-for="MainOffice_Brgy" class="form-control" />
-                <span asp-validation-for="MainOffice_Brgy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MainOffice_ZipCode" class="control-label"></label>
-                <input asp-for="MainOffice_ZipCode" class="form-control" />
-                <span asp-validation-for="MainOffice_ZipCode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MainOffice_HouseBuildingNumber" class="control-label"></label>
-                <input asp-for="MainOffice_HouseBuildingNumber" class="form-control" />
-                <span asp-validation-for="MainOffice_HouseBuildingNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MainOffice_BuildingName" class="control-label"></label>
-                <input asp-for="MainOffice_BuildingName" class="form-control" />
-                <span asp-validation-for="MainOffice_BuildingName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MainOffice_LotNumber" class="control-label"></label>
-                <input asp-for="MainOffice_LotNumber" class="form-control" />
-                <span asp-validation-for="MainOffice_LotNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MainOffice_BlockNumber" class="control-label"></label>
-                <input asp-for="MainOffice_BlockNumber" class="form-control" />
-                <span asp-validation-for="MainOffice_BlockNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MainOffice_Street" class="control-label"></label>
-                <input asp-for="MainOffice_Street" class="form-control" />
-                <span asp-validation-for="MainOffice_Street" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MainOffice_Subdivision" class="control-label"></label>
-                <input asp-for="MainOffice_Subdivision" class="form-control" />
-                <span asp-validation-for="MainOffice_Subdivision" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Contact_MobileNumber" class="control-label"></label>
-                <input asp-for="Contact_MobileNumber" class="form-control" />
-                <span asp-validation-for="Contact_MobileNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Contact_EmailAddress" class="control-label"></label>
-                <input asp-for="Contact_EmailAddress" class="form-control" />
-                <span asp-validation-for="Contact_EmailAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Contact_TelephoneNumber" class="control-label"></label>
-                <input asp-for="Contact_TelephoneNumber" class="form-control" />
-                <span asp-validation-for="Contact_TelephoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessOperation_BusinessActivity" class="control-label"></label>
-                <input asp-for="BusinessOperation_BusinessActivity" class="form-control" />
-                <span asp-validation-for="BusinessOperation_BusinessActivity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessOperation_OtherBusinessActivity" class="control-label"></label>
-                <input asp-for="BusinessOperation_OtherBusinessActivity" class="form-control" />
-                <span asp-validation-for="BusinessOperation_OtherBusinessActivity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessOperation_BusinessAreaSqm" class="control-label"></label>
-                <input asp-for="BusinessOperation_BusinessAreaSqm" class="form-control" />
-                <span asp-validation-for="BusinessOperation_BusinessAreaSqm" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessOperation_TotalFloorArea" class="control-label"></label>
-                <input asp-for="BusinessOperation_TotalFloorArea" class="form-control" />
-                <span asp-validation-for="BusinessOperation_TotalFloorArea" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessOperation_EmployeeMale" class="control-label"></label>
-                <input asp-for="BusinessOperation_EmployeeMale" class="form-control" />
-                <span asp-validation-for="BusinessOperation_EmployeeMale" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessOperation_EmployeeFemale" class="control-label"></label>
-                <input asp-for="BusinessOperation_EmployeeFemale" class="form-control" />
-                <span asp-validation-for="BusinessOperation_EmployeeFemale" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessOperation_TotalEmployeeWithLGU" class="control-label"></label>
-                <input asp-for="BusinessOperation_TotalEmployeeWithLGU" class="form-control" />
-                <span asp-validation-for="BusinessOperation_TotalEmployeeWithLGU" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessOperation_TotalVanTruck" class="control-label"></label>
-                <input asp-for="BusinessOperation_TotalVanTruck" class="form-control" />
-                <span asp-validation-for="BusinessOperation_TotalVanTruck" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessOperation_TotalMotorcycle" class="control-label"></label>
-                <input asp-for="BusinessOperation_TotalMotorcycle" class="form-control" />
-                <span asp-validation-for="BusinessOperation_TotalMotorcycle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessOperation_IsOwned" class="control-label"></label>
-                <input asp-for="BusinessOperation_IsOwned" class="form-control" />
-                <span asp-validation-for="BusinessOperation_IsOwned" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessOperation_HasTaxIncentives" class="control-label"></label>
-                <input asp-for="BusinessOperation_HasTaxIncentives" class="form-control" />
-                <span asp-validation-for="BusinessOperation_HasTaxIncentives" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessLocation_Region" class="control-label"></label>
-                <input asp-for="BusinessLocation_Region" class="form-control" />
-                <span asp-validation-for="BusinessLocation_Region" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessLocation_Province" class="control-label"></label>
-                <input asp-for="BusinessLocation_Province" class="form-control" />
-                <span asp-validation-for="BusinessLocation_Province" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessLocation_CityMunicipality" class="control-label"></label>
-                <input asp-for="BusinessLocation_CityMunicipality" class="form-control" />
-                <span asp-validation-for="BusinessLocation_CityMunicipality" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessLocation_Brgy" class="control-label"></label>
-                <input asp-for="BusinessLocation_Brgy" class="form-control" />
-                <span asp-validation-for="BusinessLocation_Brgy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessLocation_ZipCode" class="control-label"></label>
-                <input asp-for="BusinessLocation_ZipCode" class="form-control" />
-                <span asp-validation-for="BusinessLocation_ZipCode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessLocation_HouseBuildingNumber" class="control-label"></label>
-                <input asp-for="BusinessLocation_HouseBuildingNumber" class="form-control" />
-                <span asp-validation-for="BusinessLocation_HouseBuildingNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessLocation_BuildingName" class="control-label"></label>
-                <input asp-for="BusinessLocation_BuildingName" class="form-control" />
-                <span asp-validation-for="BusinessLocation_BuildingName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessLocation_LotNumber" class="control-label"></label>
-                <input asp-for="BusinessLocation_LotNumber" class="form-control" />
-                <span asp-validation-for="BusinessLocation_LotNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessLocation_BlockNumber" class="control-label"></label>
-                <input asp-for="BusinessLocation_BlockNumber" class="form-control" />
-                <span asp-validation-for="BusinessLocation_BlockNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessLocation_Street" class="control-label"></label>
-                <input asp-for="BusinessLocation_Street" class="form-control" />
-                <span asp-validation-for="BusinessLocation_Street" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BusinessLocation_Subdivision" class="control-label"></label>
-                <input asp-for="BusinessLocation_Subdivision" class="form-control" />
-                <span asp-validation-for="BusinessLocation_Subdivision" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
+@* <div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div> *@
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

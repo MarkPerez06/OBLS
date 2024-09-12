@@ -3,19 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OBLS.Data;
 
 #nullable disable
 
-namespace OBLS.Data.Migrations
+namespace OBLS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240902064906_Roles")]
-    partial class Roles
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,424 +224,200 @@ namespace OBLS.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("OBLS.Models.CartProducts", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime?>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SessionId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CartProducts");
-                });
-
-            modelBuilder.Entity("OBLS.Models.CartProductsView", b =>
-                {
-                    b.Property<int>("CartId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"), 1L, 1);
-
-                    b.Property<DateTime?>("CartDateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("CartQuantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CartSessionId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MenuDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MenuName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProductDiscounts")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProductImageURL")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("ProductPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("ProductRating")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UnitCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UnitName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CartId");
-
-                    b.ToTable("CartProductsView");
-                });
-
-            modelBuilder.Entity("OBLS.Models.Discounts", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime?>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool?>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Percentage")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Discounts");
-                });
-
-            modelBuilder.Entity("OBLS.Models.Menu", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime?>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Menu");
-                });
-
-            modelBuilder.Entity("OBLS.Models.OrderProducts", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Discounts")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OrderProducts");
-                });
-
-            modelBuilder.Entity("OBLS.Models.OrderProductsView", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"), 1L, 1);
-
-                    b.Property<string>("MenuDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MenuName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("OrderDiscounts")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("OrderPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("OrderQuantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("OrderUserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProductImageURL")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProductRating")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UnitCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UnitName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("OrderId");
-
-                    b.ToTable("OrderProductsView");
-                });
-
-            modelBuilder.Entity("OBLS.Models.Orders", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("CustomerRequest")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Discounts")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("IsPaid")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("PWDID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Payment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReferenceNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SeniorCitizenID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("OBLS.Models.Persons", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("Birthday")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CardNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CompleteAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ContactNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("IsAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsMember")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsPWD")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsSeniorCitizen")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsStaff")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PIN")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PWDID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("Salary")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("SeniorCitizenID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Wallet")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Persons");
-                });
-
-            modelBuilder.Entity("OBLS.Models.Products", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime?>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Discounts")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImageURL")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("MenuId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ProductRating")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UnitId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("OBLS.Models.Roles", b =>
+            modelBuilder.Entity("OBLS.Models.Application", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("OBLS.Models.Units", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DateCreated")
+                    b.Property<DateTime?>("Application_DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsActive")
+                    b.Property<bool?>("Application_IsGenerateBrgyClearance")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Application_Method")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Application_PaymentMode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Application_Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Application_Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Application_Year")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessLocation_BlockNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessLocation_Brgy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessLocation_BuildingName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessLocation_CityMunicipality")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessLocation_HouseBuildingNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessLocation_LotNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessLocation_Province")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessLocation_Region")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessLocation_Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessLocation_Subdivision")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessLocation_ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessOperation_BusinessActivity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessOperation_BusinessAreaSqm")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("BusinessOperation_EmployeeFemale")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BusinessOperation_EmployeeMale")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("BusinessOperation_HasTaxIncentives")
+                        .IsRequired()
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("BusinessOperation_IsOwned")
+                        .IsRequired()
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BusinessOperation_OtherBusinessActivity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("BusinessOperation_TotalEmployeeWithLGU")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BusinessOperation_TotalFloorArea")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("BusinessOperation_TotalMotorcycle")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BusinessOperation_TotalVanTruck")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Business_IsFilipino")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Business_Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Business_OrganizationType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Business_RegistrationNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Business_Sex")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Business_TIN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Business_TradeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Contact_EmailAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Contact_MobileNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Contact_TelephoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MainOffice_BlockNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MainOffice_Brgy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MainOffice_BuildingName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MainOffice_CityMunicipality")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MainOffice_HouseBuildingNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MainOffice_LotNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MainOffice_Province")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MainOffice_Region")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MainOffice_Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MainOffice_Subdivision")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MainOffice_ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Owner_FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Owner_LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Owner_MiddleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Owner_Suffix")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Units");
+                    b.ToTable("Application");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

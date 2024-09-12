@@ -12,11 +12,7 @@ namespace OBLS.Models
         [Required]
         [DisplayName("TYPE OF APPLICATION")]
         public string? Application_Type { get; set; }
-        public enum ApplicationType
-        {
-            New,
-            Renew
-        }
+
         [Required]
         [DisplayName("Mode of Payment")]
         public string? Application_PaymentMode { get; set; }
@@ -25,17 +21,20 @@ namespace OBLS.Models
         [DisplayName("Tax Year")]
         public string? Application_Year { get; set; }
 
+        [HiddenInput]
         [DisplayName("Application Method")]
         public string? Application_Method { get; set; }
 
+        [HiddenInput]
         [DisplayName("Application Status")]
         public string? Application_Status { get; set; }
 
+        [HiddenInput]
         [DisplayName("Application Date")]
         public DateTime? Application_DateTime { get; set; } = DateTime.Now;
 
         [DisplayName("Generate Barangay Clearance")]
-        public bool? Application_IsGenerateBrgyClearance { get; set; }
+        public bool Application_IsGenerateBrgyClearance { get; set; }
 
 
         // BUSINESS INFORMATION
@@ -61,12 +60,6 @@ namespace OBLS.Models
 
         [DisplayName("For Corporation")]
         public string? Business_IsFilipino { get; set; }
-
-        public enum Citizenship
-        {
-            Filipino,
-            Foreign
-        }
 
         // NAME OF OWNER/PRESIDENT/OFFICER IN CHARGE
         [Required]
