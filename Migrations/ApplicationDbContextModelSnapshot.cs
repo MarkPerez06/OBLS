@@ -233,7 +233,7 @@ namespace OBLS.Migrations
                     b.Property<DateTime?>("Application_DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("Application_IsGenerateBrgyClearance")
+                    b.Property<bool>("Application_IsGenerateBrgyClearance")
                         .HasColumnType("bit");
 
                     b.Property<string>("Application_Method")

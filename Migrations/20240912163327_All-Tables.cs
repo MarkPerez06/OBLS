@@ -20,7 +20,7 @@ namespace OBLS.Migrations
                     Application_Method = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Application_Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Application_DateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Application_IsGenerateBrgyClearance = table.Column<bool>(type: "bit", nullable: true),
+                    Application_IsGenerateBrgyClearance = table.Column<bool>(type: "bit", nullable: false),
                     Business_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Business_TradeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Business_OrganizationType = table.Column<string>(type: "nvarchar(max)", nullable: false),

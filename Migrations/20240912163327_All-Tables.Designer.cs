@@ -12,7 +12,7 @@ using OBLS.Data;
 namespace OBLS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240912014953_All-Tables")]
+    [Migration("20240912163327_All-Tables")]
     partial class AllTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -235,7 +235,7 @@ namespace OBLS.Migrations
                     b.Property<DateTime?>("Application_DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("Application_IsGenerateBrgyClearance")
+                    b.Property<bool>("Application_IsGenerateBrgyClearance")
                         .HasColumnType("bit");
 
                     b.Property<string>("Application_Method")
