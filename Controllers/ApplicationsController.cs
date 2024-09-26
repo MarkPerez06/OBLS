@@ -103,6 +103,9 @@ namespace OBLS.Controllers
             {
                 try
                 {
+                    application.Application_DateTime = DateTime.Now;
+                    application.Application_Method = "Online";
+                    application.Application_Status = "Not Complete";
                     _context.Update(application);
                     await _context.SaveChangesAsync();
                 }
