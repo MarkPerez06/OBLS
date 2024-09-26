@@ -1,11 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Identity;
+@using OBLS.Models
+@using OBLS.Static;
 @model IEnumerable<IdentityUser>
 @{
     ViewBag.Title = "Accounts";
     ViewBag.pTitle = "Accounts";
     ViewBag.pageTitle = "Users";
 
-    var Roles = ViewBag.Roles as SelectList;
+    ListRoles List = new ListRoles();
 }
 
 <link href="~/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
@@ -29,6 +31,7 @@
                             <th>Username</th>
                             <th>Email Address</th>
                             <th>Phone Number</th>
+                            <th>Role</th>
                             <th>Status</th>
                             <th class="text-center">Action</th>
                         </tr>
@@ -48,6 +51,18 @@
                                 <td>@item.Email</td>
                                 <td>@item.PhoneNumber</td>
                                 <td>
+                                    @{
+                                        @foreach (var r in List.Roles.Where(m => m.Id == item.SecurityStamp))
+                                        {
+                                                <span>@r.Name</span>
+                                        }
+                                        @if (List.Roles.Where(m => m.Id == item.SecurityStamp).Count() == 0)
+                                        {
+                                            <span>Applicant</span>
+                                        }
+                                    }
+                                </td>
+                                <td>
                                     @if (item.EmailConfirmed)
                                     {
                                         <spam>Activated</spam>
@@ -63,7 +78,7 @@
                                             <i class="mdi mdi-dots-horizontal font-size-18"></i>
                                         </a>
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a href="#" onclick="Edit('@item.Id.ToString()','@item.UserName', '@item.Email','@item.PhoneNumber','@item.EmailConfirmed')" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#CreateUpdateModal"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>
+                                            <li><a href="#" onclick="Edit('@item.Id.ToString()','@item.UserName', '@item.Email','@item.PhoneNumber','@item.EmailConfirmed','@item.SecurityStamp') " class="dropdown-item" data-bs-toggle="modal" data-bs-target="#CreateUpdateModal"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -110,12 +125,12 @@
 
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label for="EmailConfirmed">Account Role</label>
-                                <select id="EmailConfirmed" class="form-control" value="" required>
+                                <label for="RoleId">Account Role</label>
+                                <select id="RoleId" class="form-control" value="" required>
                                     <option value="">- Select -</option>
-                                    @foreach (var item in Roles)
+                                    @foreach (var item in List.Roles)
                                     {
-                                        <option value="@item.Value">@item.Text</option>
+                                        <option value="@item.Id">@item.Name</option>
                                     }
                                 </select>
                             </div>
@@ -177,9 +192,10 @@
             PhoneNumber: $("#PhoneNumber").val(),
             Password: $("#Password").val(),
             ConfirmPassword: $("#ConfirmPassword").val(),
-            EmailConfirmed: $("#EmailConfirmed").val()
+            EmailConfirmed: $("#EmailConfirmed").val(),
+            RoleId: $("#RoleId").val()
         };
-        if (data.Username != "" && data.EmailConfirmed != "") {
+        if (data.Email != "" && data.EmailConfirmed != "") {
             $.ajax({
                 url: '@Url.Action("Save", "Users")',
                 type: 'POST',
@@ -210,12 +226,13 @@
         }
     }
 
-    function Edit(Id, UserName, Email, PhoneNumber, EmailConfirmed) {
+    function Edit(Id, UserName, Email, PhoneNumber, EmailConfirmed, RoleId) {
         $("#ModalTitle").text("Update User").trigger("change");
         $("#Id").val(Id).trigger("change");
         $("#Username").val(UserName).trigger("change");
         $("#Email").val(Email).trigger("change");
         $("#PhoneNumber").val(PhoneNumber).trigger("change");
         $("#EmailConfirmed").val(EmailConfirmed).trigger("change");
+        $("#RoleId").val(RoleId).trigger("change");
     }
 </script>

@@ -26,12 +26,13 @@ namespace OBLS.Controllers
         {
             var model = _context.Users.ToList();
             var Roles = _context.Roles.ToList().OrderBy(m => m.Name);
+            ViewBag.Role = new List<IdentityRole>(Roles);
             ViewBag.Roles = new SelectList(Roles, "Id", "Name");
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Save(string Id, string Email, string PhoneNumber, string Password, string ConfirmPassword, string EmailConfirmed)
+        public async Task<IActionResult> Save(string Id, string Email, string PhoneNumber, string Password, string ConfirmPassword, string EmailConfirmed, string RoleId)
         {
             IdentityUser user = await _signInManager.UserManager.FindByIdAsync(Id);
             if (user != null)
@@ -59,6 +60,7 @@ namespace OBLS.Controllers
                 user.Email = Email;
                 user.NormalizedEmail = Email.ToUpper();
                 user.PhoneNumber = PhoneNumber;
+                user.SecurityStamp = RoleId != null ? RoleId : "bb9825cc-d2d1-4121-ace8-7335225f2c89";
                 await _signInManager.UserManager.UpdateAsync(user);
 
                 return Json(new { success = true, message = "User was successfully updated!" });

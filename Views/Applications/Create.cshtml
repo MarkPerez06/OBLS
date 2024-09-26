@@ -1,9 +1,13 @@
 ﻿@using static OBLS.Models.Application
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
 @model OBLS.Models.Application
 @{
     ViewBag.Title = "Business Permit";
     ViewBag.pTitle = "Business Permit";
     ViewBag.pageTitle = "New Applications";
+
+    var user = await UserManager.GetUserAsync(User);
 }
 <div class="row">
     <div class="col-lg-12">
@@ -184,12 +188,12 @@
                     <div class="row">
                         <div class="col-lg-4 form-group mb-3">
                             <label asp-for="Contact_MobileNumber" class="control-label"></label>
-                            <input asp-for="Contact_MobileNumber" class="form-control" />
+                            <input asp-for="Contact_MobileNumber" class="form-control" value="@user.PhoneNumber" />
                             <span asp-validation-for="Contact_MobileNumber" class="text-danger"></span>
                         </div>
                         <div class="col-lg-4 form-group mb-3">
                             <label asp-for="Contact_EmailAddress" class="control-label"></label>
-                            <input asp-for="Contact_EmailAddress" class="form-control" />
+                            <input asp-for="Contact_EmailAddress" class="form-control" value="@user.Email" />
                             <span asp-validation-for="Contact_EmailAddress" class="text-danger"></span>
                         </div>
                         <div class="col-lg-4 form-group mb-3">

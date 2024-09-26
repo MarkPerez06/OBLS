@@ -6,11 +6,7 @@ namespace OBLS.Models
 {
     public class Roles
     {
-        public Guid Id { get; set; }
-
-        // APPLICATION
-        [Required]
-        [DisplayName("Name")]
+        public string Id { get; set; }
         public string? Name { get; set; }
     }
 }
