@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OBLS.Data;
 
@@ -11,9 +12,10 @@ using OBLS.Data;
 namespace OBLS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240928181011_LineBusiness")]
+    partial class LineBusiness
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -418,70 +420,6 @@ namespace OBLS.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Application");
-                });
-
-            modelBuilder.Entity("OBLS.Models.ApplicationLineBusiness", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CapitalInvestment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GrossIncomeEssential")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GrossIncomeNonEssential")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("LineBusinessId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("NoOfUnits")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SignageBillboard_Capacity")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SignageBillboard_NoOfUnits")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WeightsAndMeasures_Capacity")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WeightsAndMeasures_NoOfUnits")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ApplicationLineBusiness");
-                });
-
-            modelBuilder.Entity("OBLS.Models.ApplicationRequirements", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ApplicationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UrlData")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ApplicationRequirements");
                 });
 
             modelBuilder.Entity("OBLS.Models.LineBusiness", b =>
