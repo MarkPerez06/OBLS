@@ -8,6 +8,13 @@
     ViewBag.pageTitle = "New Applications";
 
     var user = await UserManager.GetUserAsync(User);
+    var phoneNumber = string.Empty;
+    var email = string.Empty;
+    if (user != null)
+    {
+        phoneNumber = user.PhoneNumber != null ? user.PhoneNumber : "";
+        email = user.Email != null ? user.Email : "";
+    }
 }
 <div class="row">
     <div class="col-lg-12">
@@ -188,12 +195,12 @@
                     <div class="row">
                         <div class="col-lg-4 form-group mb-3">
                             <label asp-for="Contact_MobileNumber" class="control-label"></label>
-                            <input asp-for="Contact_MobileNumber" class="form-control" value="@user.PhoneNumber" />
+                            <input asp-for="Contact_MobileNumber" class="form-control" value="@phoneNumber" />
                             <span asp-validation-for="Contact_MobileNumber" class="text-danger"></span>
                         </div>
                         <div class="col-lg-4 form-group mb-3">
                             <label asp-for="Contact_EmailAddress" class="control-label"></label>
-                            <input asp-for="Contact_EmailAddress" class="form-control" value="@user.Email" />
+                            <input asp-for="Contact_EmailAddress" class="form-control" value="@email" />
                             <span asp-validation-for="Contact_EmailAddress" class="text-danger"></span>
                         </div>
                         <div class="col-lg-4 form-group mb-3">
@@ -226,6 +233,14 @@
                             <input asp-for="BusinessOperation_TotalFloorArea" class="form-control" />
                             <span asp-validation-for="BusinessOperation_TotalFloorArea" class="text-danger"></span>
                         </div>
+
+                        <div class="col-lg-8 form-group mt-1">
+                            <small>Total No. of Employees in Establishment</small>
+                        </div>
+                        <div class="col-lg-4 form-group mt-1">
+                            <small>No. of Delivery Vehicles (If applicable)</small>
+                        </div>
+
                         <div class="col-lg-2 form-group mb-3">
                             <label asp-for="BusinessOperation_EmployeeMale" class="control-label"></label>
                             <input asp-for="BusinessOperation_EmployeeMale" class="form-control" />
