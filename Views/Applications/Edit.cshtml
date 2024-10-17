@@ -336,6 +336,7 @@
                     <div class="row mb-3 mt-4">
                         <div class="col-lg-3 form-group"></div>
                         <div class="col-lg-6 form-group text-center mt-2">
+                            <a asp-action="Index" class="btn btn-secondary ">Back</a>
                             <input type="button" value="Save as Draft" class="btn btn-secondary " />
                             <input type="submit" value="Submit Application" class="btn btn-primary " />
                         </div>
@@ -347,9 +348,16 @@
     </div>
 </div>
 
-@* <div>
-    <a asp-action="Index">Back to List</a>
-</div> *@
+<form asp-controller="Applications" asp-action="UploadFile" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="file">Choose a file (PDF or Image):</label>
+        <input type="hidden" class="form-control" name="AppId" value="@Model.Id" />
+        <input type="hidden" class="form-control" name="Name" value="Cedula" />
+        <input type="file" class="form-control" name="file" id="file" required />
+       
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+</form>
 
 @section Scripts {
     @{

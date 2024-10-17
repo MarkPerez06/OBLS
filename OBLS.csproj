@@ -86,6 +86,7 @@
 	<ItemGroup>
 		<Folder Include="Data\Migrations\" />
 		<Folder Include="Migrations\" />
+		<Folder Include="ApplicationFormRequirements\" />
 		<Folder Include="wwwroot\Products\" />
 	</ItemGroup>
 

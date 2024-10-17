@@ -1,4 +1,4 @@
-﻿@model OBLS.Models.Application
+﻿@* @model OBLS.Models.Application
 @{
     ViewBag.Title = "Business Permit";
     ViewBag.pTitle = "Business Permit";
@@ -340,4 +340,180 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
+</div>
+ *@
+ @model OBLS.Models.Application
+@{
+    ViewBag.Title = "Business Permit Application";
+    ViewBag.pTitle = "Business Permit Application";
+    ViewBag.pageTitle = "View Applications";
+}
+
+<h1>Business Permit Application</h1>
+
+<!-- BUSINESS PERMIT APPLICATIONS SECTION -->
+<div class="section">
+    <h4>Business Permit Applications</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.Application_Type)</label>
+            <div>@Html.DisplayFor(model => model.Application_Type)</div>
+        </div>
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.Application_PaymentMode)</label>
+            <div>@Html.DisplayFor(model => model.Application_PaymentMode)</div>
+        </div>
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.Application_Year)</label>
+            <div>@Html.DisplayFor(model => model.Application_Year)</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.Application_IsGenerateBrgyClearance)</label>
+            <div>@Html.DisplayFor(model => model.Application_IsGenerateBrgyClearance)</div>
+        </div>
+    </div>
+</div>
+
+<!-- BUSINESS INFORMATION SECTION -->
+<div class="section">
+    <h4>Business Information</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.Business_Name)</label>
+            <div>@Html.DisplayFor(model => model.Business_Name)</div>
+        </div>
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.Business_TradeName)</label>
+            <div>@Html.DisplayFor(model => model.Business_TradeName)</div>
+        </div>
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.Business_OrganizationType)</label>
+            <div>@Html.DisplayFor(model => model.Business_OrganizationType)</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.Business_Sex)</label>
+            <div>@Html.DisplayFor(model => model.Business_Sex)</div>
+        </div>
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.Business_RegistrationNumber)</label>
+            <div>@Html.DisplayFor(model => model.Business_RegistrationNumber)</div>
+        </div>
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.Business_TIN)</label>
+            <div>@Html.DisplayFor(model => model.Business_TIN)</div>
+        </div>
+    </div>
+</div>
+
+<!-- NAME OF APPLICANT SECTION -->
+<div class="section">
+    <h4>Name of Applicant</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <label>@Html.DisplayNameFor(model => model.Owner_LastName)</label>
+            <div>@Html.DisplayFor(model => model.Owner_LastName)</div>
+        </div>
+        <div class="col-md-3">
+            <label>@Html.DisplayNameFor(model => model.Owner_FirstName)</label>
+            <div>@Html.DisplayFor(model => model.Owner_FirstName)</div>
+        </div>
+        <div class="col-md-3">
+            <label>@Html.DisplayNameFor(model => model.Owner_MiddleName)</label>
+            <div>@Html.DisplayFor(model => model.Owner_MiddleName)</div>
+        </div>
+        <div class="col-md-3">
+            <label>@Html.DisplayNameFor(model => model.Owner_Suffix)</label>
+            <div>@Html.DisplayFor(model => model.Owner_Suffix)</div>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN OFFICE ADDRESS SECTION -->
+<div class="section">
+    <h4>Main Office Address</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.MainOffice_Region)</label>
+            <div>@Html.DisplayFor(model => model.MainOffice_Region)</div>
+        </div>
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.MainOffice_Province)</label>
+            <div>@Html.DisplayFor(model => model.MainOffice_Province)</div>
+        </div>
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.MainOffice_CityMunicipality)</label>
+            <div>@Html.DisplayFor(model => model.MainOffice_CityMunicipality)</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.MainOffice_Brgy)</label>
+            <div>@Html.DisplayFor(model => model.MainOffice_Brgy)</div>
+        </div>
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.MainOffice_ZipCode)</label>
+            <div>@Html.DisplayFor(model => model.MainOffice_ZipCode)</div>
+        </div>
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.MainOffice_Street)</label>
+            <div>@Html.DisplayFor(model => model.MainOffice_Street)</div>
+        </div>
+    </div>
+</div>
+
+<!-- CONTACT INFORMATION SECTION -->
+<div class="section">
+    <h4>Contact Information</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.Contact_MobileNumber)</label>
+            <div>@Html.DisplayFor(model => model.Contact_MobileNumber)</div>
+        </div>
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.Contact_EmailAddress)</label>
+            <div>@Html.DisplayFor(model => model.Contact_EmailAddress)</div>
+        </div>
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.Contact_TelephoneNumber)</label>
+            <div>@Html.DisplayFor(model => model.Contact_TelephoneNumber)</div>
+        </div>
+    </div>
+</div>
+
+<!-- BUSINESS LOCATION ADDRESS SECTION -->
+<div class="section">
+    <h4>Business Location Address</h4>
+    <hr />
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="sameAsMainOffice" />
+        <label class="form-check-label" for="sameAsMainOffice">Same As Main Office</label>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.BusinessLocation_Region)</label>
+            <div>@Html.DisplayFor(model => model.BusinessLocation_Region)</div>
+        </div>
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.BusinessLocation_Province)</label>
+            <div>@Html.DisplayFor(model => model.BusinessLocation_Province)</div>
+        </div>
+        <div class="col-md-4">
+            <label>@Html.DisplayNameFor(model => model.BusinessLocation_CityMunicipality)</label>
+            <div>@Html.DisplayFor(model => model.BusinessLocation_CityMunicipality)</div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group mt-4">
+    <button type="submit" class="btn btn-primary">Save as Draft</button>
+    <button type="submit" class="btn btn-success">Submit Application</button>
 </div>

@@ -166,5 +166,48 @@ namespace OBLS.Controllers
         {
           return (_context.Application?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        [HttpPost]
+        [Route("upload")]
+        public async Task<IActionResult> UploadFile(IFormFile file, string Name, Guid AppId)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("No file uploaded.");
+
+            // Check if the file is a PDF or an image
+            var allowedExtensions = new[] { ".pdf", ".jpg", ".jpeg", ".png", ".gif" };
+            var fileExtension = Path.GetExtension(file.FileName).ToLower();
+            if (!allowedExtensions.Contains(fileExtension))
+                return BadRequest("Unsupported file type.");
+
+            // Create the ApplicationForm directory if it doesn't exist
+            var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "ApplicationFormRequirements");
+            if (!Directory.Exists(uploadsPath))
+                Directory.CreateDirectory(uploadsPath);
+
+            // Create a new file name with GUID appended
+            var uniqueFileName = $"{Path.GetFileNameWithoutExtension(file.FileName)}_{Guid.NewGuid()}{fileExtension}";
+            var filePath = Path.Combine(uploadsPath, uniqueFileName);
+
+            // Save the file to the server
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            // Insert the file name into the database
+            var uploadedFile = new ApplicationRequirements
+            {
+                ApplicationId = AppId,
+                Name = Name,
+                UrlData = "/ApplicationFormRequirements/" + uniqueFileName,
+                CreatedDate = DateTime.Now
+            };
+
+            _context.ApplicationRequirements.Add(uploadedFile);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Edit), new { id = AppId });
+        }
+
     }
 }
