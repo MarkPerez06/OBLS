@@ -33,6 +33,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Include="wwwroot\ApplicationFormRequirements\Barangay Business Clearance_b314cbe6-f48c-48eb-a273-0abdcb575400.pdf" />
+		<None Include="wwwroot\ApplicationFormRequirements\CTC_b314cbe6-f48c-48eb-a273-0abdcb575400.jpg" />
 		<None Include="wwwroot\assets\libs\datatables.net-autofill\node_modules\datatables.net\js\jquery.dataTables.min.js" />
 		<None Include="wwwroot\assets\libs\datatables.net-bs4\node_modules\datatables.net\js\jquery.dataTables.min.js" />
 		<None Include="wwwroot\assets\libs\datatables.net-buttons\node_modules\datatables.net\js\jquery.dataTables.min.js" />
@@ -86,7 +88,7 @@
 	<ItemGroup>
 		<Folder Include="Data\Migrations\" />
 		<Folder Include="Migrations\" />
-		<Folder Include="ApplicationFormRequirements\" />
+		<Folder Include="wwwroot\ApplicationFormRequirements\" />
 		<Folder Include="wwwroot\Products\" />
 	</ItemGroup>
 

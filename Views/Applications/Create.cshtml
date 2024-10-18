@@ -347,8 +347,8 @@
                     <div class="row mb-3 mt-4">
                         <div class="col-lg-3 form-group"></div>
                         <div class="col-lg-6 form-group text-center mt-2">
-                            <input type="button" value="Save as Draft" class="btn btn-secondary " />
-                            <input type="submit" value="Submit Application" class="btn btn-primary " />
+                            <a asp-action="Index" class="btn btn-secondary ">Back</a>
+                            <input type="submit" value="Save Changes" class="btn btn-primary" />
                         </div>
                         <div class="col-lg-3 form-group"></div>
                     </div>
@@ -360,11 +360,6 @@
         <!-- end card -->
     </div>
     <!-- end col -->
-</div>
-
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

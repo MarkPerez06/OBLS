@@ -17,5 +17,6 @@ namespace OBLS.Models
         public string? SignageBillboard_NoOfUnits { get; set; }
         public string? WeightsAndMeasures_Capacity { get; set; }
         public string? WeightsAndMeasures_NoOfUnits { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
 }

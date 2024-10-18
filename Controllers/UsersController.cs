@@ -25,9 +25,6 @@ namespace OBLS.Controllers
         public IActionResult Index()
         {
             var model = _context.Users.ToList();
-            var Roles = _context.Roles.ToList().OrderBy(m => m.Name);
-            ViewBag.Role = new List<IdentityRole>(Roles);
-            ViewBag.Roles = new SelectList(Roles, "Id", "Name");
             return View(model);
         }
 
