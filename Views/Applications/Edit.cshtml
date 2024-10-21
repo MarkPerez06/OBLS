@@ -20,38 +20,30 @@
                     @foreach (var item in ARModel)
                     {
                         count++;
-                        @if (item.UrlData != "")
+                        if (item.IsUpload)
                         {
-                            <form asp-controller="Applications" asp-action="UploadFile" method="post" enctype="multipart/form-data">
-                                <div class="row">
-                                    <label for="file" class="text-uppercase">@count. @item.Name : <small>(Image or PDF)</small></label>
-                                    <div class="col-lg-10 form-group mb-3">
-                                        <input type="text" class="form-control" name="Id" value="✔ @item.UrlData.Replace("/ApplicationFormRequirements/","")" disabled />
-                                    </div>
-                                    <div class="col-lg-2 form-group mb-3">
-                                        <a href="@item.UrlData" target="_blank" class="btn btn-primary"><i class="mdi mdi-eye"></i></a>
-                                        <button type="button" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
-                                    </div>
-                                </div>
-                            </form>
-                        }
-                        else
-                        {
-                            <form asp-controller="Applications" asp-action="UploadFile" method="post" enctype="multipart/form-data">
-                                <div class="row">
-                                    <label for="file" class="text-uppercase">@count. @item.Name : <small>(Image or PDF)</small></label>
-                                    @if (item.UrlData != "")
-                                    {
+                            @if (item.UrlData != "")
+                            {
+                                <form asp-controller="Applications" asp-action="DeleteApplicationRequirements" method="post" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <label for="file" class="text-uppercase">@count. @item.Name : <small>(Image or PDF)</small></label>
                                         <div class="col-lg-10 form-group mb-3">
                                             <input type="text" class="form-control" name="Id" value="✔ @item.UrlData.Replace("/ApplicationFormRequirements/","")" disabled />
                                         </div>
                                         <div class="col-lg-2 form-group mb-3">
                                             <a href="@item.UrlData" target="_blank" class="btn btn-primary"><i class="mdi mdi-eye"></i></a>
-                                            <button type="button" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                                            <input type="hidden" class="form-control" name="Id" value="@item.Id" />
+                                            <input type="hidden" class="form-control" name="AppId" value="@item.ApplicationId" />
+                                            <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
                                         </div>
-                                    }
-                                    else
-                                    {
+                                    </div>
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-controller="Applications" asp-action="UploadFile" method="post" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <label for="file" class="text-uppercase">@count. @item.Name : <small>(Image or PDF)</small></label>
                                         <div class="col-lg-11 form-group mb-3">
                                             <div class="form-group">
                                                 <input type="hidden" class="form-control" name="Id" value="@item.Id" />
@@ -62,10 +54,15 @@
                                         <div class="col-lg-1 form-group mb-3">
                                             <button type="submit" class="btn btn-primary">Upload</button>
                                         </div>
-                                    }
-
-                                </div>
-                            </form>
+                                    </div>
+                                </form>
+                            }
+                        }
+                        else
+                        {
+                            <div class="row">
+                                <label for="file" class="text-uppercase text-danger">@count. @item.Name <small>(Bring the Hard Copy)</small></label>
+                            </div>
                         }
                     }
                 </div>
@@ -79,7 +76,7 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title mb-4 text-uppercase">Line of Business</h4>
-                <form asp-controller="Applications" asp-action="AddLineBusiness" method="post" enctype="multipart/form-data">
+                <form asp-controller="Applications" asp-action="AddApplicationLineBusiness" method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-10 form-group mb-3">
                             <div class="form-group">
@@ -104,52 +101,65 @@
                     var LB = LBModel.Where(m => m.Id == item.LineBusinessId).FirstOrDefault();
                     <hr />
                     <div class="row">
-                        <h5 class="card-title mb-2 text-uppercase">@LB.Code - @LB.Description</h5>
-
-                        <div class="col-lg-3 form-group mb-2">
-                            <label>No of Units</label>
-                            <input type="number" class="form-control" name="NoOfUnits" value="@item.NoOfUnits" />
+                        <div class="col-lg-10">
+                            <h5 class="card-title mb-2 text-uppercase">@LB.Code - @LB.Description</h5>
                         </div>
-                        <div class="col-lg-3 form-group mb-2">
-                            <label>Capital Investment</label>
-                            <input type="number" class="form-control" name="CapitalInvestment" value="@item.CapitalInvestment" />
-                        </div>
-                        <div class="col-lg-3 form-group mb-2">
-                            <label>Gross Income Essential</label>
-                            <input type="number" class="form-control" name="GrossIncomeEssential" value="@item.GrossIncomeEssential" />
-                        </div>
-                        <div class="col-lg-3 form-group mb-2">
-                            <label>Gross Income Non Essential</label>
-                            <input type="number" class="form-control" name="GrossIncomeNonEssential" value="@item.GrossIncomeNonEssential" />
-                        </div>
-
-                        <label class="text-uppercase mt-2">Measure And Pax</label>
-                        <div class="col-lg-3 form-group mb-2">
-                            <label>Signage/Billboard - Capacity</label>
-                            <input type="number" class="form-control" name="SignageBillboard_Capacity" value="@item.SignageBillboard_Capacity" />
-                        </div>
-                        <div class="col-lg-3 form-group mb-2">
-                            <label>Signage/Billboard - No of Units</label>
-                            <input type="number" class="form-control" name="SignageBillboard_NoOfUnits" value="@item.SignageBillboard_NoOfUnits" />
-                        </div>
-                        <div class="col-lg-3 form-group mb-2">
-                            <label>Weights and Measures - Capacity</label>
-                            <input type="number" class="form-control" name="WeightsAndMeasures_Capacity" value="@item.WeightsAndMeasures_Capacity" />
-                        </div>
-                        <div class="col-lg-3 form-group mb-2">
-                            <label>Weights and Measures - No of Units</label>
-                            <input type="number" class="form-control" name="WeightsAndMeasures_NoOfUnits" value="@item.WeightsAndMeasures_NoOfUnits" />
-                        </div>
-
-                        <div class="col-lg-1 form-group mb-1 mt-2">
-                            <button type="button" class="btn btn-danger btn-sm float-start">Delete</button>
-                        </div>
-                        <div class="col-lg-9 form-group mb-1 mt-2">
-                        </div>
-                        <div class="col-lg-2 form-group mb-1 mt-2">
-                            <button type="submit" class="btn btn-primary btn-sm float-end">Save Changes</button>
+                        <div class="col-lg-2">
+                            <form asp-controller="Applications" asp-action="DeleteApplicationLineBusiness" method="post" enctype="multipart/form-data">
+                                <input type="hidden" class="form-control" name="Id" value="@item.Id" />
+                                <input type="hidden" class="form-control" name="AppId" value="@item.ApplicationId" />
+                                <button type="submit" class="btn btn-danger btn-sm float-end">X</button>
+                            </form>
                         </div>
                     </div>
+                    <form asp-controller="Applications" asp-action="UpdateApplicationLineBusiness" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <input type="hidden" class="form-control" name="Id" value="@item.Id" />
+                            <input type="hidden" class="form-control" name="AppId" value="@item.ApplicationId" />
+                            <div class="col-lg-3 form-group mb-2">
+                                <label>No of Units</label>
+                                <input type="number" class="form-control" name="NoOfUnits" value="@item.NoOfUnits" />
+                            </div>
+                            <div class="col-lg-3 form-group mb-2">
+                                <label>Capital Investment</label>
+                                <input type="number" class="form-control" name="CapitalInvestment" value="@item.CapitalInvestment" />
+                            </div>
+                            <div class="col-lg-3 form-group mb-2">
+                                <label>Gross Income Essential</label>
+                                <input type="number" class="form-control" name="GrossIncomeEssential" value="@item.GrossIncomeEssential" />
+                            </div>
+                            <div class="col-lg-3 form-group mb-2">
+                                <label>Gross Income Non Essential</label>
+                                <input type="number" class="form-control" name="GrossIncomeNonEssential" value="@item.GrossIncomeNonEssential" />
+                            </div>
+
+                            <label class="text-uppercase mt-2">Measure And Pax</label>
+                            <div class="col-lg-3 form-group mb-2">
+                                <label>Signage/Billboard - Capacity</label>
+                                <input type="number" class="form-control" name="SignageBillboard_Capacity" value="@item.SignageBillboard_Capacity" />
+                            </div>
+                            <div class="col-lg-3 form-group mb-2">
+                                <label>Signage/Billboard - No of Units</label>
+                                <input type="number" class="form-control" name="SignageBillboard_NoOfUnits" value="@item.SignageBillboard_NoOfUnits" />
+                            </div>
+                            <div class="col-lg-3 form-group mb-2">
+                                <label>Weights and Measures - Capacity</label>
+                                <input type="number" class="form-control" name="WeightsAndMeasures_Capacity" value="@item.WeightsAndMeasures_Capacity" />
+                            </div>
+                            <div class="col-lg-3 form-group mb-2">
+                                <label>Weights and Measures - No of Units</label>
+                                <input type="number" class="form-control" name="WeightsAndMeasures_NoOfUnits" value="@item.WeightsAndMeasures_NoOfUnits" />
+                            </div>
+
+                            <div class="col-lg-1 form-group mb-1 mt-2">
+                            </div>
+                            <div class="col-lg-9 form-group mb-1 mt-2">
+                            </div>
+                            <div class="col-lg-2 form-group mb-1 mt-2">
+                                <input type="submit" class="btn btn-primary btn-sm float-end" value="Save Changes" />
+                            </div>
+                        </div>
+                    </form>
                 }
             </div>
         </div>

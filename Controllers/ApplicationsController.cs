@@ -71,31 +71,25 @@ namespace OBLS.Controllers
                 _context.Add(application);
                 await _context.SaveChangesAsync();
 
-                var requirement1 = new ApplicationRequirements
+
+                var requirements = _context.Requirements.ToList();
+
+                foreach (var item in requirements)
                 {
-                    ApplicationId = application.Id,
-                    Name = "Barangay Business Clearance",
-                    UrlData = "",
-                    CreatedDate = DateTime.Now
-                };
-                var requirement2 = new ApplicationRequirements
-                {
-                    ApplicationId = application.Id,
-                    Name = "Sanitary/Health Clearance",
-                    UrlData = "",
-                    CreatedDate = DateTime.Now
-                };
-                var requirement3 = new ApplicationRequirements
-                {
-                    ApplicationId = application.Id,
-                    Name = "CTC",
-                    UrlData = "",
-                    CreatedDate = DateTime.Now
-                };
-                _context.ApplicationRequirements.Add(requirement1);
-                _context.ApplicationRequirements.Add(requirement2);
-                _context.ApplicationRequirements.Add(requirement3);
-                await _context.SaveChangesAsync();
+
+                    var requirement = new ApplicationRequirements
+                    {
+                        ApplicationId = application.Id,
+                        UserRolesId = item.UserRolesId,
+                        Name = item.Name,
+                        UrlData = "",
+                        IsUpload = item.IsUpload,
+                        CreatedDate = DateTime.Now
+                    };
+
+                    _context.ApplicationRequirements.Add(requirement);
+                    await _context.SaveChangesAsync();
+                }
 
                 return RedirectToAction(nameof(Edit), new { id = application.Id });
             }
@@ -217,8 +211,8 @@ namespace OBLS.Controllers
             if (file == null || file.Length == 0)
                 return BadRequest("No file uploaded.");
 
-            var requirement = await _context.ApplicationRequirements.FindAsync(Id);
-            if (requirement != null)
+            var model = await _context.ApplicationRequirements.FindAsync(Id);
+            if (model != null)
             {
                 // Check if the file is a PDF or an image
                 var allowedExtensions = new[] { ".pdf", ".jpg", ".jpeg", ".png" };
@@ -232,7 +226,7 @@ namespace OBLS.Controllers
                     Directory.CreateDirectory(uploadsPath);
 
                 // Create a new file name with GUID appended
-                var uniqueFileName = $"{Path.GetFileNameWithoutExtension(requirement.Name)}_{requirement.ApplicationId}{fileExtension}";
+                var uniqueFileName = $"{Path.GetFileNameWithoutExtension(model.Name)}_{model.ApplicationId}{fileExtension}";
                 var filePath = Path.Combine(uploadsPath, uniqueFileName);
 
                 // Save the file to the server
@@ -242,16 +236,38 @@ namespace OBLS.Controllers
                 }
 
 
-                requirement.UrlData = "/ApplicationFormRequirements/" + uniqueFileName;
-                requirement.CreatedDate = DateTime.Now;
-                _context.ApplicationRequirements.Update(requirement);
+                model.UrlData = "/ApplicationFormRequirements/" + uniqueFileName;
+                model.CreatedDate = DateTime.Now;
+                _context.ApplicationRequirements.Update(model);
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Edit), new { id = AppId });
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddLineBusiness(Guid LBId, Guid AppId)
+        public async Task<IActionResult> DeleteApplicationRequirements(Guid Id, Guid AppId)
+        {
+            var model = await _context.ApplicationRequirements.FindAsync(Id);
+            if (model != null)
+            {
+
+                // Construct the file path based on the saved UrlData
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", model.UrlData.TrimStart('/'));
+
+                // Check if the file exists and delete it
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+                model.UrlData = "";
+                _context.ApplicationRequirements.Update(model);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Edit), new { id = AppId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddApplicationLineBusiness(Guid LBId, Guid AppId)
         {
             var model = await _context.LineBusiness.FindAsync(LBId);
             if (model != null)
@@ -275,6 +291,43 @@ namespace OBLS.Controllers
             }
             return RedirectToAction(nameof(Edit), new { id = AppId });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateApplicationLineBusiness(Guid Id, Guid AppId,
+            string NoOfUnits, string CapitalInvestment, string GrossIncomeEssential, string GrossIncomeNonEssential,
+            string SignageBillboard_Capacity, string SignageBillboard_NoOfUnits, string WeightsAndMeasures_Capacity, string WeightsAndMeasures_NoOfUnits)
+        {
+            var model = await _context.ApplicationLineBusiness.FindAsync(Id);
+            if (model != null)
+            {
+                model.NoOfUnits = NoOfUnits;
+                model.CapitalInvestment = CapitalInvestment;
+                model.GrossIncomeEssential = GrossIncomeEssential;
+                model.GrossIncomeNonEssential = GrossIncomeNonEssential;
+                model.SignageBillboard_Capacity = SignageBillboard_Capacity;
+                model.SignageBillboard_NoOfUnits = SignageBillboard_NoOfUnits;
+                model.WeightsAndMeasures_Capacity = WeightsAndMeasures_Capacity;
+                model.WeightsAndMeasures_NoOfUnits = WeightsAndMeasures_NoOfUnits;
+                _context.ApplicationLineBusiness.Update(model);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Edit), new { id = AppId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteApplicationLineBusiness(Guid Id, Guid AppId)
+        {
+            var model = await _context.ApplicationLineBusiness.FindAsync(Id);
+            if (model != null)
+            {
+                _context.ApplicationLineBusiness.Remove(model);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Edit), new { id = AppId });
+        }
+
 
     }
 }

@@ -14,5 +14,6 @@ namespace OBLS.Data
         public DbSet<ApplicationLineBusiness> ApplicationLineBusiness { get; set; }
         public DbSet<ApplicationRequirements> ApplicationRequirements { get; set; }
         public DbSet<LineBusiness> LineBusiness { get; set; }
+        public DbSet<Requirements> Requirements { get; set; }
     }
 }

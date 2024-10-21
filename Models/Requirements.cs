@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OBLS.Models
 {
-    public class ApplicationRequirements
+    public class Requirements
     {
         public Guid Id { get; set; }
-        public Guid ApplicationId { get; set; }
+        [DisplayName("Type")]
         public Guid UserRolesId { get; set; }
+        [DisplayName("Name")]
         public string? Name { get; set; }
-        public string? UrlData { get; set; }
+        [DisplayName("Is Upload")]
         public bool IsUpload { get; set; }
-        public DateTime CreatedDate { get; set; }
     }
 }
