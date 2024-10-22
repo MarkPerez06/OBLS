@@ -111,7 +111,12 @@
                         </div>
                         <div class="col-lg-3 form-group mb-3">
                             <label asp-for="Business_IsFilipino" class="control-label"></label>
-                            <input asp-for="Business_IsFilipino" class="form-control"></input>
+                            <select asp-for="Business_IsFilipino" class="form-control">
+                                <option value="">Select For Corporation</option>
+                                <option value="Not Applicable">Not Applicable</option>
+                                <option value="Filipino">Filipino</option>
+                                <option value="Foreign">Foreign</option>
+                            </select>
                             <span asp-validation-for="Business_IsFilipino" class="text-danger"></span>
                         </div>
                     </div>
@@ -307,7 +312,8 @@
                             <input asp-for="BusinessOperation_TotalMotorcycle" class="form-control" />
                             <span asp-validation-for="BusinessOperation_TotalMotorcycle" class="text-danger"></span>
                         </div>
-                        <div class="col-lg-2 form-group mb-2">
+
+                        <div class="col-lg-6 form-group mb-3">
                             <label asp-for="BusinessOperation_IsOwned" class="control-label"></label>
                             <select asp-for="BusinessOperation_IsOwned" class="form-control">
                                 <option value="">OWNED?</option>
@@ -316,7 +322,8 @@
                             </select>
                             <span asp-validation-for="BusinessOperation_IsOwned" class="text-danger"></span>
                         </div>
-                        <div class="col-lg-5 form-group mb-3">
+
+                        <div class="col-lg-6 form-group mb-3">
                             <label asp-for="BusinessOperation_HasTaxIncentives" class="control-label"></label>
                             <select asp-for="BusinessOperation_HasTaxIncentives" class="form-control">
                                 <option value="">DO YOU HAVE TAX INCENTIVES FROM ANY GOVERNMENT ENTITY?</option>
@@ -325,17 +332,43 @@
                             </select>
                             <span asp-validation-for="BusinessOperation_HasTaxIncentives" class="text-danger"></span>
                         </div>
+
+                        <div class="col-lg-6 form-group mt-1">
+                            <small>If OWNED is <b>YES</b>, please specify the <b>Tax Declaration No.</b> and <b>Property Identification No.</b></small>
+                        </div>
+                        <div class="col-lg-6 form-group mt-1">
+                            <small>If DO YOU HAVE TAX INCENTIVES FROM ANY GOVERNMENT ENTITY is <b>YES</b>, please specify the <b>Entity.</b></small>
+                        </div>
+
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="BusinessOperation_TaxDeclarationNo" class="control-label"></label>
+                            <input asp-for="BusinessOperation_TaxDeclarationNo" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_TaxDeclarationNo" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="BusinessOperation_PropertyIdentificationNo" class="control-label"></label>
+                            <input asp-for="BusinessOperation_PropertyIdentificationNo" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_PropertyIdentificationNo" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-lg-6 form-group mb-3">
+                            <label asp-for="BusinessOperation_PleaseSpecifyTheEntity" class="control-label"></label>
+                            <input asp-for="BusinessOperation_PleaseSpecifyTheEntity" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_PleaseSpecifyTheEntity" class="text-danger"></span>
+                        </div>
+
                     </div>
 
                     <hr />
                     <h4 class="card-title mb-4 text-uppercase">Business Location Address</h4>
                     <div class="row">
-                        <div class="col-lg-12 form-group mb-3">
+                        @* <div class="col-lg-12 form-group mb-3">
                             <div class="form-check form-checkbox-outline form-check-primary">
                                 <label for="SameAsMainOffice" class="form-check-label">Same As Main Office</label>
                                 <input id="SameAsMainOffice" class="form-check-input CheckColor" type="checkbox">
                             </div>
-                        </div>
+                        </div> *@
                         <div class="col-lg-3 form-group mb-3">
                             <label asp-for="BusinessLocation_Region" class="control-label"></label>
                             <select asp-for="BusinessLocation_Region" class="form-control">
@@ -427,11 +460,8 @@
                 </form>
 
             </div>
-            <!-- end card body -->
         </div>
-        <!-- end card -->
     </div>
-    <!-- end col -->
 </div>
 
 @section Scripts {

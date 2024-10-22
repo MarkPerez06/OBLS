@@ -20,50 +20,63 @@
                     @foreach (var item in ARModel)
                     {
                         count++;
-                        if (item.IsUpload)
+                        var Type = "(Image or PDF)";
+                        var IsHidden = "";
+                        if (item.Name == "DO YOU HAVE TAX INCENTIVES FROM ANY GOVERNMENT ENTITY?")
                         {
-                            @if (item.UrlData != "")
+                            Type = "(Upload Incentive Certificate)";
+                            if (Model.BusinessOperation_HasTaxIncentives == false)
                             {
-                                <form asp-controller="Applications" asp-action="DeleteApplicationRequirements" method="post" enctype="multipart/form-data">
-                                    <div class="row">
-                                        <label for="file" class="text-uppercase">@count. @item.Name : <small>(Image or PDF)</small></label>
-                                        <div class="col-lg-10 form-group mb-3">
-                                            <input type="text" class="form-control" name="Id" value="✔ @item.UrlData.Replace("/ApplicationFormRequirements/","")" disabled />
+                                IsHidden = "hidden";
+                            }
+                        }
+
+                        <div @IsHidden>
+                            @if (item.IsUpload)
+                            {
+                                if (item.UrlData != "")
+                                {
+                                    <form asp-controller="Applications" asp-action="DeleteApplicationRequirements" method="post" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <label for="file" class="text-uppercase">@count. @item.Name : <small>@Type</small></label>
+                                            <div class="col-lg-10 form-group mb-3">
+                                                <input type="text" class="form-control" name="Id" value="✔ @item.UrlData.Replace("/ApplicationFormRequirements/","")" disabled />
+                                            </div>
+                                            <div class="col-lg-2 form-group mb-3">
+                                                <a href="@item.UrlData" target="_blank" class="btn btn-primary"><i class="mdi mdi-eye"></i></a>
+                                                <input type="hidden" class="form-control" name="Id" value="@item.Id" />
+                                                <input type="hidden" class="form-control" name="AppId" value="@item.ApplicationId" />
+                                                <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                                            </div>
                                         </div>
-                                        <div class="col-lg-2 form-group mb-3">
-                                            <a href="@item.UrlData" target="_blank" class="btn btn-primary"><i class="mdi mdi-eye"></i></a>
-                                            <input type="hidden" class="form-control" name="Id" value="@item.Id" />
-                                            <input type="hidden" class="form-control" name="AppId" value="@item.ApplicationId" />
-                                            <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form asp-controller="Applications" asp-action="UploadFile" method="post" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <label for="file" class="text-uppercase">@count. @item.Name :  <small>@Type</small></label>
+                                            <div class="col-lg-11 form-group mb-3">
+                                                <div class="form-group">
+                                                    <input type="hidden" class="form-control" name="Id" value="@item.Id" />
+                                                    <input type="hidden" class="form-control" name="AppId" value="@item.ApplicationId" />
+                                                    <input type="file" class="form-control" name="file" id="file" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1 form-group mb-3">
+                                                <button type="submit" class="btn btn-primary">Upload</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                }
                             }
                             else
                             {
-                                <form asp-controller="Applications" asp-action="UploadFile" method="post" enctype="multipart/form-data">
-                                    <div class="row">
-                                        <label for="file" class="text-uppercase">@count. @item.Name : <small>(Image or PDF)</small></label>
-                                        <div class="col-lg-11 form-group mb-3">
-                                            <div class="form-group">
-                                                <input type="hidden" class="form-control" name="Id" value="@item.Id" />
-                                                <input type="hidden" class="form-control" name="AppId" value="@item.ApplicationId" />
-                                                <input type="file" class="form-control" name="file" id="file" required />
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1 form-group mb-3">
-                                            <button type="submit" class="btn btn-primary">Upload</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                <div class="row">
+                                    <label for="file" class="text-uppercase text-danger">@count. @item.Name <small>(Bring the Hard Copy)</small></label>
+                                </div>
                             }
-                        }
-                        else
-                        {
-                            <div class="row">
-                                <label for="file" class="text-uppercase text-danger">@count. @item.Name <small>(Bring the Hard Copy)</small></label>
-                            </div>
-                        }
+                        </div>
                     }
                 </div>
             </div>
@@ -174,6 +187,11 @@
                 <form asp-action="Edit">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Tracking_Number" />
+                    <input type="hidden" asp-for="Business_IDNumber" />
+                    <input type="hidden" asp-for="Application_Method" />
+                    <input type="hidden" asp-for="Application_Status" />
+                    <input type="hidden" asp-for="Application_DateTime" />
                     <div class="row">
                         <div class="col-lg-4 form-group mb-3">
                             <label asp-for="Application_Type" class="control-label"></label>
@@ -231,12 +249,23 @@
                         </div>
                         <div class="col-lg-4 form-group mb-3">
                             <label asp-for="Business_OrganizationType" class="control-label"></label>
-                            <input asp-for="Business_OrganizationType" class="form-control" />
+                            <select asp-for="Business_OrganizationType" class="form-control">
+                                <option value="">Select Organization Type</option>
+                                <option value="Single Proprietorship">Single Proprietorship</option>
+                                <option value="One Person Corporation">One Person Corporation</option>
+                                <option value="Partnership">Partnership</option>
+                                <option value="Corporation">Corporation</option>
+                                <option value="Cooperative">Cooperative</option>
+                            </select>
                             <span asp-validation-for="Business_OrganizationType" class="text-danger"></span>
                         </div>
                         <div class="col-lg-3 form-group mb-3">
                             <label asp-for="Business_Sex" class="control-label"></label>
-                            <input asp-for="Business_Sex" class="form-control" />
+                            <select asp-for="Business_Sex" class="form-control">
+                                <option value="">Select Sex</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
                             <span asp-validation-for="Business_Sex" class="text-danger"></span>
                         </div>
                         <div class="col-lg-3 form-group mb-3">
@@ -251,7 +280,12 @@
                         </div>
                         <div class="col-lg-3 form-group mb-3">
                             <label asp-for="Business_IsFilipino" class="control-label"></label>
-                            <input asp-for="Business_IsFilipino" class="form-control"></input>
+                            <select asp-for="Business_IsFilipino" class="form-control">
+                                <option value="">Select For Corporation</option>
+                                <option value="Not Applicable">Not Applicable</option>
+                                <option value="Filipino">Filipino</option>
+                                <option value="Foreign">Foreign</option>
+                            </select>
                             <span asp-validation-for="Business_IsFilipino" class="text-danger"></span>
                         </div>
                     </div>
@@ -286,27 +320,50 @@
                     <div class="row">
                         <div class="col-lg-3 form-group mb-3">
                             <label asp-for="MainOffice_Region" class="control-label"></label>
-                            <input asp-for="MainOffice_Region" class="form-control" />
+                            <select asp-for="MainOffice_Region" class="form-control">
+                                <option value="">Select Region</option>
+                                <option value="Central Luzon">Central Luzon</option>
+                            </select>
                             <span asp-validation-for="MainOffice_Region" class="text-danger"></span>
                         </div>
                         <div class="col-lg-3 form-group mb-3">
                             <label asp-for="MainOffice_Province" class="control-label"></label>
-                            <input asp-for="MainOffice_Province" class="form-control" />
+                            <select asp-for="MainOffice_Province" class="form-control">
+                                <option value="">Select Province</option>
+                                <option value="Tarlac">Tarlac</option>
+                            </select>
                             <span asp-validation-for="MainOffice_Province" class="text-danger"></span>
                         </div>
                         <div class="col-lg-3 form-group mb-3">
                             <label asp-for="MainOffice_CityMunicipality" class="control-label"></label>
-                            <input asp-for="MainOffice_CityMunicipality" class="form-control" />
+                            <select asp-for="MainOffice_CityMunicipality" class="form-control">
+                                <option value="">Select City/Municipality</option>
+                                <option value="Ramos">Ramos</option>
+                            </select>
                             <span asp-validation-for="MainOffice_CityMunicipality" class="text-danger"></span>
                         </div>
                         <div class="col-lg-3 form-group mb-3">
                             <label asp-for="MainOffice_Brgy" class="control-label"></label>
-                            <input asp-for="MainOffice_Brgy" class="form-control" />
+                            <select asp-for="MainOffice_Brgy" class="form-control">
+                                <option value="">Select Barangay </option>
+                                <option value="Coral-Iloco">Coral-Iloco</option>
+                                <option value="Guiteb">Guiteb</option>
+                                <option value="Pance">Pance</option>
+                                <option value="Poblacion Center">Poblacion Center</option>
+                                <option value="Poblacion North">Poblacion North</option>
+                                <option value="Poblacion South">Poblacion South</option>
+                                <option value="San Juan">San Juan</option>
+                                <option value="San Raymundo">San Raymundo</option>
+                                <option value="Toledo">Toledo</option>
+                            </select>
                             <span asp-validation-for="MainOffice_Brgy" class="text-danger"></span>
                         </div>
-                        <div class="col-lg-1 form-group mb-3">
+                        <div class="col-lg-2 form-group mb-3">
                             <label asp-for="MainOffice_ZipCode" class="control-label"></label>
-                            <input asp-for="MainOffice_ZipCode" class="form-control" />
+                            <select asp-for="MainOffice_ZipCode" class="form-control">
+                                <option value="">Select Zip Code</option>
+                                <option value="2311">2311</option>
+                            </select>
                             <span asp-validation-for="MainOffice_ZipCode" class="text-danger"></span>
                         </div>
                         <div class="col-lg-2 form-group mb-3">
@@ -314,7 +371,7 @@
                             <input asp-for="MainOffice_HouseBuildingNumber" class="form-control" />
                             <span asp-validation-for="MainOffice_HouseBuildingNumber" class="text-danger"></span>
                         </div>
-                        <div class="col-lg-3 form-group mb-3">
+                        <div class="col-lg-2 form-group mb-3">
                             <label asp-for="MainOffice_BuildingName" class="control-label"></label>
                             <input asp-for="MainOffice_BuildingName" class="form-control" />
                             <span asp-validation-for="MainOffice_BuildingName" class="text-danger"></span>
@@ -366,7 +423,14 @@
                     <div class="row">
                         <div class="col-lg-4 form-group mb-3">
                             <label asp-for="BusinessOperation_BusinessActivity" class="control-label"></label>
-                            <input asp-for="BusinessOperation_BusinessActivity" class="form-control" />
+                            <select asp-for="BusinessOperation_BusinessActivity" class="form-control">
+                                <option value="">Select Business Activity</option>
+                                <option value="Main Office">Main Office</option>
+                                <option value="Branch Office">Branch Office</option>
+                                <option value="Admin Office Only">Admin Office Only</option>
+                                <option value="Warehouse">Warehouse</option>
+                                <option value="Others">Others</option>
+                            </select>
                             <span asp-validation-for="BusinessOperation_BusinessActivity" class="text-danger"></span>
                         </div>
                         <div class="col-lg-4 form-group mb-3">
@@ -417,50 +481,109 @@
                             <input asp-for="BusinessOperation_TotalMotorcycle" class="form-control" />
                             <span asp-validation-for="BusinessOperation_TotalMotorcycle" class="text-danger"></span>
                         </div>
-                        <div class="col-lg-2 form-group mb-2">
+
+                        <div class="col-lg-6 form-group mb-3">
                             <label asp-for="BusinessOperation_IsOwned" class="control-label"></label>
-                            <input asp-for="BusinessOperation_IsOwned" class="form-control" />
+                            <select asp-for="BusinessOperation_IsOwned" class="form-control">
+                                <option value="">OWNED?</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
                             <span asp-validation-for="BusinessOperation_IsOwned" class="text-danger"></span>
                         </div>
-                        <div class="col-lg-5 form-group mb-3">
+
+                        <div class="col-lg-6 form-group mb-3">
                             <label asp-for="BusinessOperation_HasTaxIncentives" class="control-label"></label>
-                            <input asp-for="BusinessOperation_HasTaxIncentives" class="form-control" />
+                            <select asp-for="BusinessOperation_HasTaxIncentives" class="form-control">
+                                <option value="">DO YOU HAVE TAX INCENTIVES FROM ANY GOVERNMENT ENTITY?</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
                             <span asp-validation-for="BusinessOperation_HasTaxIncentives" class="text-danger"></span>
                         </div>
+
+                        <div class="col-lg-6 form-group mt-1">
+                            <small>If OWNED is <b>YES</b>, please specify the <b>Tax Declaration No.</b> and <b>Property Identification No.</b></small>
+                        </div>
+                        <div class="col-lg-6 form-group mt-1">
+                            <small>If DO YOU HAVE TAX INCENTIVES FROM ANY GOVERNMENT ENTITY is <b>YES</b>, please specify the <b>Entity.</b></small>
+                        </div>
+
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="BusinessOperation_TaxDeclarationNo" class="control-label"></label>
+                            <input asp-for="BusinessOperation_TaxDeclarationNo" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_TaxDeclarationNo" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-lg-3 form-group mb-3">
+                            <label asp-for="BusinessOperation_PropertyIdentificationNo" class="control-label"></label>
+                            <input asp-for="BusinessOperation_PropertyIdentificationNo" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_PropertyIdentificationNo" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-lg-6 form-group mb-3">
+                            <label asp-for="BusinessOperation_PleaseSpecifyTheEntity" class="control-label"></label>
+                            <input asp-for="BusinessOperation_PleaseSpecifyTheEntity" class="form-control" />
+                            <span asp-validation-for="BusinessOperation_PleaseSpecifyTheEntity" class="text-danger"></span>
+                        </div>
+
                     </div>
 
                     <hr />
                     <h4 class="card-title mb-4 text-uppercase">Business Location Address</h4>
                     <div class="row">
-                        <div class="col-lg-12 form-group mb-3">
-                            <div class="form-check form-checkbox-outline form-check-primary">
-                                <label for="SameAsMainOffice" class="form-check-label">Same As Main Office</label>
-                                <input id="SameAsMainOffice" class="form-check-input CheckColor" type="checkbox">
-                            </div>
+                        @* <div class="col-lg-12 form-group mb-3">
+                        <div class="form-check form-checkbox-outline form-check-primary">
+                        <label for="SameAsMainOffice" class="form-check-label">Same As Main Office</label>
+                        <input id="SameAsMainOffice" class="form-check-input CheckColor" type="checkbox">
                         </div>
+                        </div> *@
                         <div class="col-lg-3 form-group mb-3">
                             <label asp-for="BusinessLocation_Region" class="control-label"></label>
-                            <input asp-for="BusinessLocation_Region" class="form-control" />
+                            <select asp-for="BusinessLocation_Region" class="form-control">
+                                <option value="">Select Region</option>
+                                <option value="Central Luzon">Central Luzon</option>
+                            </select>
                             <span asp-validation-for="BusinessLocation_Region" class="text-danger"></span>
                         </div>
                         <div class="col-lg-3 form-group mb-3">
                             <label asp-for="BusinessLocation_Province" class="control-label"></label>
-                            <input asp-for="BusinessLocation_Province" class="form-control" />
+                            <select asp-for="BusinessLocation_Province" class="form-control">
+                                <option value="">Select Province</option>
+                                <option value="Tarlac">Tarlac</option>
+                            </select>
                             <span asp-validation-for="BusinessLocation_Province" class="text-danger"></span>
                         </div>
                         <div class="col-lg-3 form-group mb-3">
                             <label asp-for="BusinessLocation_CityMunicipality" class="control-label"></label>
-                            <input asp-for="BusinessLocation_CityMunicipality" class="form-control" />
+                            <select asp-for="BusinessLocation_CityMunicipality" class="form-control">
+                                <option value="">Select City/Municipality</option>
+                                <option value="Ramos">Ramos</option>
+                            </select>
                             <span asp-validation-for="BusinessLocation_CityMunicipality" class="text-danger"></span>
                         </div>
                         <div class="col-lg-3 form-group mb-3">
                             <label asp-for="BusinessLocation_Brgy" class="control-label"></label>
-                            <input asp-for="BusinessLocation_Brgy" class="form-control" />
+                            <select asp-for="BusinessLocation_Brgy" class="form-control">
+                                <option value="">Select Barangay </option>
+                                <option value="Coral-Iloco">Coral-Iloco</option>
+                                <option value="Guiteb">Guiteb</option>
+                                <option value="Pance">Pance</option>
+                                <option value="Poblacion Center">Poblacion Center</option>
+                                <option value="Poblacion North">Poblacion North</option>
+                                <option value="Poblacion South">Poblacion South</option>
+                                <option value="San Juan">San Juan</option>
+                                <option value="San Raymundo">San Raymundo</option>
+                                <option value="Toledo">Toledo</option>
+                            </select>
                             <span asp-validation-for="BusinessLocation_Brgy" class="text-danger"></span>
                         </div>
-                        <div class="col-lg-1 form-group mb-3">
+                        <div class="col-lg-2 form-group mb-3">
                             <label asp-for="BusinessLocation_ZipCode" class="control-label"></label>
-                            <input asp-for="BusinessLocation_ZipCode" class="form-control" />
+                            <select asp-for="BusinessLocation_ZipCode" class="form-control">
+                                <option value="">Select Zip Code</option>
+                                <option value="2311">2311</option>
+                            </select>
                             <span asp-validation-for="BusinessLocation_ZipCode" class="text-danger"></span>
                         </div>
                         <div class="col-lg-2 form-group mb-3">
@@ -468,7 +591,7 @@
                             <input asp-for="BusinessLocation_HouseBuildingNumber" class="form-control" />
                             <span asp-validation-for="BusinessLocation_HouseBuildingNumber" class="text-danger"></span>
                         </div>
-                        <div class="col-lg-3 form-group mb-3">
+                        <div class="col-lg-2 form-group mb-3">
                             <label asp-for="BusinessLocation_BuildingName" class="control-label"></label>
                             <input asp-for="BusinessLocation_BuildingName" class="form-control" />
                             <span asp-validation-for="BusinessLocation_BuildingName" class="text-danger"></span>
@@ -494,16 +617,19 @@
                             <span asp-validation-for="BusinessLocation_Subdivision" class="text-danger"></span>
                         </div>
                     </div>
-
+                    <hr />
                     <div class="row mb-3 mt-4">
-                        <div class="col-lg-3 form-group"></div>
-                        <div class="col-lg-6 form-group text-center mt-2">
+                        <div class="col-lg-3 form-group mt-2">
                             <a asp-action="Index" class="btn btn-secondary ">Back</a>
-                            <input type="submit" value="Save Changes" class="btn btn-primary" />
+                        </div>
+                        <div class="col-lg-6 form-group text-center mt-2">
+                            <input type="submit" value="Save as Draft" class="btn btn-secondary" />
+                            <input type="button" value="Submit Application" class="btn btn-primary" />
                         </div>
                         <div class="col-lg-3 form-group"></div>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>

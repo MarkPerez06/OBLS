@@ -38,6 +38,14 @@ namespace OBLS.Models
 
 
         // BUSINESS INFORMATION
+        [HiddenInput]
+        [DisplayName("Tracking Number")]
+        public string? Tracking_Number { get; set; }
+
+        [HiddenInput]
+        [DisplayName("Business ID Number")]
+        public string? Business_IDNumber { get; set; }
+
         [Required]
         [DisplayName("Business Name")]
         public string? Business_Name { get; set; }
@@ -166,10 +174,21 @@ namespace OBLS.Models
         [DisplayName("OWNED?")]
         public bool? BusinessOperation_IsOwned { get; set; }
 
+        [DisplayName("Tax Declaration No.")]
+        public string? BusinessOperation_TaxDeclarationNo { get; set; }
+
+        [DisplayName("Property Identification No.")]
+        public string? BusinessOperation_PropertyIdentificationNo { get; set; }
+
         [Required]
         [DisplayName("DO YOU HAVE TAX INCENTIVES FROM ANY GOVERNMENT ENTITY?")]
         public bool? BusinessOperation_HasTaxIncentives { get; set; }
 
+        [DisplayName("Please Specify the Entity")]
+        public string? BusinessOperation_PleaseSpecifyTheEntity { get; set; }
+
+        [DisplayName("Incentive Certificate")]
+        public string? BusinessOperation_IncentiveCertificate { get; set; }
 
         // BUSINESS LOCATION ADDRESS
         [Required]
