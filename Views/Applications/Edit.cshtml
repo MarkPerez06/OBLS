@@ -1,14 +1,44 @@
 ﻿@model OBLS.Models.Application
+@using Microsoft.AspNetCore.Identity
 @using OBLS.Models
+@using OBLS.Static
 @{
     ViewBag.Title = "Business Permit";
     ViewBag.pTitle = "Business Permit";
-    ViewBag.pageTitle = "Update Applications";
+    ViewBag.pageTitle = "Continue Applications";
+
+    var _userManager = Context.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
+    var user = await _userManager.FindByNameAsync(User.Identity?.Name);
+    var UserRoleId = user.SecurityStamp;
 
     var ARModel = ViewBag.ARModel as List<ApplicationRequirements>;
     var LBModel = ViewBag.LBModel as List<LineBusiness>;
     var ALBModel = ViewBag.ALBModel as List<ApplicationLineBusiness>;
     var count = 0;
+
+    var IsApplicant = true;
+    var IsDisabled = "";
+    if (UserRoleId != UserRoles.Applicant.Id)
+    {
+        IsApplicant = false;
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var form = document.querySelector(".disable-form");
+                var inputs = form.querySelectorAll("input, textarea, select");
+                inputs.forEach(function (input) {
+                    input.setAttribute("disabled", true);
+                });
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                var form1 = document.querySelector(".disable-form1");
+                var inputs1 = form1.querySelectorAll("input, textarea, select");
+                inputs1.forEach(function (input1) {
+                    input1.setAttribute("disabled", true);
+                });
+            });
+        </script>
+    }
 }
 @if (ARModel.Count > 0)
 {
@@ -16,29 +46,42 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-4 text-uppercase">Application Requirements</h4>
+                    @if (IsApplicant)
+                    {
+                        <h4 class="card-title mb-4 text-uppercase">Application Requirements</h4>
+                    }
+                    else
+                    {
+                        <h4 class="card-title mb-4 text-uppercase">Upload Documents</h4>
+                    }
+
                     @foreach (var item in ARModel)
                     {
                         count++;
                         var Type = "(Image or PDF)";
-                        var IsHidden = "";
-                        if (item.Name == "DO YOU HAVE TAX INCENTIVES FROM ANY GOVERNMENT ENTITY?")
+                        var IsShow = true;
+                        if (item.Name == "TAX INCENTIVES FROM ANY GOVERNMENT ENTITY")
                         {
                             Type = "(Upload Incentive Certificate)";
                             if (Model.BusinessOperation_HasTaxIncentives == false)
                             {
-                                IsHidden = "hidden";
+                                IsShow = false;
                             }
                         }
+                        if (item.UserRolesId.ToString() != UserRoleId && item.UrlData == "")
+                        {
+                            IsShow = false;
+                        }
 
-                        <div @IsHidden>
-                            @if (item.IsUpload)
+                        @if (IsShow)
+                        {
+                            if (item.IsUpload)
                             {
                                 if (item.UrlData != "")
                                 {
                                     <form asp-controller="Applications" asp-action="DeleteApplicationRequirements" method="post" enctype="multipart/form-data">
                                         <div class="row">
-                                            <label for="file" class="text-uppercase">@count. @item.Name : <small>@Type</small></label>
+                                            <label class="text-uppercase">@count. @item.Name : <small>@Type</small></label>
                                             <div class="col-lg-10 form-group mb-3">
                                                 <input type="text" class="form-control" name="Id" value="✔ @item.UrlData.Replace("/ApplicationFormRequirements/","")" disabled />
                                             </div>
@@ -46,7 +89,10 @@
                                                 <a href="@item.UrlData" target="_blank" class="btn btn-primary"><i class="mdi mdi-eye"></i></a>
                                                 <input type="hidden" class="form-control" name="Id" value="@item.Id" />
                                                 <input type="hidden" class="form-control" name="AppId" value="@item.ApplicationId" />
-                                                <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                                                @if (item.UserRolesId.ToString() == UserRoleId)
+                                                {
+                                                    <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                                                }
                                             </div>
                                         </div>
                                     </form>
@@ -55,7 +101,7 @@
                                 {
                                     <form asp-controller="Applications" asp-action="UploadFile" method="post" enctype="multipart/form-data">
                                         <div class="row">
-                                            <label for="file" class="text-uppercase">@count. @item.Name :  <small>@Type</small></label>
+                                            <label class="text-uppercase">@count. @item.Name :  <small>@Type</small></label>
                                             <div class="col-lg-11 form-group mb-3">
                                                 <div class="form-group">
                                                     <input type="hidden" class="form-control" name="Id" value="@item.Id" />
@@ -73,10 +119,121 @@
                             else
                             {
                                 <div class="row">
-                                    <label for="file" class="text-uppercase text-danger">@count. @item.Name <small>(Bring the Hard Copy)</small></label>
+                                    <label class="text-uppercase text-danger">@count. @item.Name <small>(Bring the Hard Copy)</small></label>
                                 </div>
                             }
+
+                        }
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (ALBModel.Count > 0)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4 text-uppercase">Line of Business</h4>
+
+                    @if (IsApplicant)
+                    {
+                        <form asp-controller="Applications" asp-action="AddApplicationLineBusiness" method="post" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-lg-10 form-group mb-3">
+                                    <div class="form-group">
+                                        <input type="hidden" class="form-control" name="AppId" value="@Model.Id" />
+                                        <select class="form-control" name="LBId">
+                                            <option value="0">Select Line of Business</option>
+                                            @foreach (var item in LBModel)
+                                            {
+                                                <option value="@item.Id">@item.Code - @item.Description</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 form-group mb-3">
+                                    <button type="submit" class="btn btn-primary">+ Add Line of Business</button>
+                                </div>
+                            </div>
+                        </form>
+                    }
+
+                    @foreach (var item in ALBModel)
+                    {
+                        var LB = LBModel.Where(m => m.Id == item.LineBusinessId).FirstOrDefault();
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <h5 class="card-title mb-2 text-uppercase">@LB.Code - @LB.Description</h5>
+                            </div>
+                            <div class="col-lg-2">
+                                @if (IsApplicant)
+                                {
+                                    <form asp-controller="Applications" asp-action="DeleteApplicationLineBusiness" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" class="form-control" name="Id" value="@item.Id" />
+                                        <input type="hidden" class="form-control" name="AppId" value="@item.ApplicationId" />
+                                        <button type="submit" class="btn btn-danger btn-sm float-end">X</button>
+                                    </form>
+                                }
+                            </div>
                         </div>
+                        <form asp-controller="Applications" asp-action="UpdateApplicationLineBusiness" method="post" enctype="multipart/form-data" class="disable-form">
+                            <div class="row">
+                                <input type="hidden" class="form-control" name="Id" value="@item.Id" />
+                                <input type="hidden" class="form-control" name="AppId" value="@item.ApplicationId" />
+                                <div class="col-lg-3 form-group mb-2">
+                                    <label>No of Units</label>
+                                    <input type="number" class="form-control" name="NoOfUnits" value="@item.NoOfUnits" />
+                                </div>
+                                <div class="col-lg-3 form-group mb-2">
+                                    <label>Capital Investment</label>
+                                    <input type="number" class="form-control" name="CapitalInvestment" value="@item.CapitalInvestment" />
+                                </div>
+                                <div class="col-lg-3 form-group mb-2">
+                                    <label>Gross Income Essential</label>
+                                    <input type="number" class="form-control" name="GrossIncomeEssential" value="@item.GrossIncomeEssential" />
+                                </div>
+                                <div class="col-lg-3 form-group mb-2">
+                                    <label>Gross Income Non Essential</label>
+                                    <input type="number" class="form-control" name="GrossIncomeNonEssential" value="@item.GrossIncomeNonEssential" />
+                                </div>
+
+                                <label class="text-uppercase mt-2">Measure And Pax</label>
+                                <div class="col-lg-3 form-group mb-2">
+                                    <label>Signage/Billboard - Capacity</label>
+                                    <input type="number" class="form-control" name="SignageBillboard_Capacity" value="@item.SignageBillboard_Capacity" />
+                                </div>
+                                <div class="col-lg-3 form-group mb-2">
+                                    <label>Signage/Billboard - No of Units</label>
+                                    <input type="number" class="form-control" name="SignageBillboard_NoOfUnits" value="@item.SignageBillboard_NoOfUnits" />
+                                </div>
+                                <div class="col-lg-3 form-group mb-2">
+                                    <label>Weights and Measures - Capacity</label>
+                                    <input type="number" class="form-control" name="WeightsAndMeasures_Capacity" value="@item.WeightsAndMeasures_Capacity" />
+                                </div>
+                                <div class="col-lg-3 form-group mb-2">
+                                    <label>Weights and Measures - No of Units</label>
+                                    <input type="number" class="form-control" name="WeightsAndMeasures_NoOfUnits" value="@item.WeightsAndMeasures_NoOfUnits" />
+                                </div>
+
+                                @if (IsApplicant)
+                                {
+                                    <div class="col-lg-1 form-group mb-1 mt-2">
+                                    </div>
+                                    <div class="col-lg-9 form-group mb-1 mt-2">
+                                    </div>
+                                    <div class="col-lg-2 form-group mb-1 mt-2">
+                                        <input type="submit" class="btn btn-primary btn-sm float-end" value="Save Changes" />
+                                    </div>
+                                }
+                            </div>
+                        </form>
                     }
                 </div>
             </div>
@@ -88,103 +245,8 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title mb-4 text-uppercase">Line of Business</h4>
-                <form asp-controller="Applications" asp-action="AddApplicationLineBusiness" method="post" enctype="multipart/form-data">
-                    <div class="row">
-                        <div class="col-lg-10 form-group mb-3">
-                            <div class="form-group">
-                                <input type="hidden" class="form-control" name="AppId" value="@Model.Id" />
-                                <select class="form-control" name="LBId">
-                                    <option value="0">Select Line of Business</option>
-                                    @foreach (var item in LBModel)
-                                    {
-                                        <option value="@item.Id">@item.Code - @item.Description</option>
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 form-group mb-3">
-                            <button type="submit" class="btn btn-primary">+ Add Line of Business</button>
-                        </div>
-                    </div>
-                </form>
-
-                @foreach (var item in ALBModel)
-                {
-                    var LB = LBModel.Where(m => m.Id == item.LineBusinessId).FirstOrDefault();
-                    <hr />
-                    <div class="row">
-                        <div class="col-lg-10">
-                            <h5 class="card-title mb-2 text-uppercase">@LB.Code - @LB.Description</h5>
-                        </div>
-                        <div class="col-lg-2">
-                            <form asp-controller="Applications" asp-action="DeleteApplicationLineBusiness" method="post" enctype="multipart/form-data">
-                                <input type="hidden" class="form-control" name="Id" value="@item.Id" />
-                                <input type="hidden" class="form-control" name="AppId" value="@item.ApplicationId" />
-                                <button type="submit" class="btn btn-danger btn-sm float-end">X</button>
-                            </form>
-                        </div>
-                    </div>
-                    <form asp-controller="Applications" asp-action="UpdateApplicationLineBusiness" method="post" enctype="multipart/form-data">
-                        <div class="row">
-                            <input type="hidden" class="form-control" name="Id" value="@item.Id" />
-                            <input type="hidden" class="form-control" name="AppId" value="@item.ApplicationId" />
-                            <div class="col-lg-3 form-group mb-2">
-                                <label>No of Units</label>
-                                <input type="number" class="form-control" name="NoOfUnits" value="@item.NoOfUnits" />
-                            </div>
-                            <div class="col-lg-3 form-group mb-2">
-                                <label>Capital Investment</label>
-                                <input type="number" class="form-control" name="CapitalInvestment" value="@item.CapitalInvestment" />
-                            </div>
-                            <div class="col-lg-3 form-group mb-2">
-                                <label>Gross Income Essential</label>
-                                <input type="number" class="form-control" name="GrossIncomeEssential" value="@item.GrossIncomeEssential" />
-                            </div>
-                            <div class="col-lg-3 form-group mb-2">
-                                <label>Gross Income Non Essential</label>
-                                <input type="number" class="form-control" name="GrossIncomeNonEssential" value="@item.GrossIncomeNonEssential" />
-                            </div>
-
-                            <label class="text-uppercase mt-2">Measure And Pax</label>
-                            <div class="col-lg-3 form-group mb-2">
-                                <label>Signage/Billboard - Capacity</label>
-                                <input type="number" class="form-control" name="SignageBillboard_Capacity" value="@item.SignageBillboard_Capacity" />
-                            </div>
-                            <div class="col-lg-3 form-group mb-2">
-                                <label>Signage/Billboard - No of Units</label>
-                                <input type="number" class="form-control" name="SignageBillboard_NoOfUnits" value="@item.SignageBillboard_NoOfUnits" />
-                            </div>
-                            <div class="col-lg-3 form-group mb-2">
-                                <label>Weights and Measures - Capacity</label>
-                                <input type="number" class="form-control" name="WeightsAndMeasures_Capacity" value="@item.WeightsAndMeasures_Capacity" />
-                            </div>
-                            <div class="col-lg-3 form-group mb-2">
-                                <label>Weights and Measures - No of Units</label>
-                                <input type="number" class="form-control" name="WeightsAndMeasures_NoOfUnits" value="@item.WeightsAndMeasures_NoOfUnits" />
-                            </div>
-
-                            <div class="col-lg-1 form-group mb-1 mt-2">
-                            </div>
-                            <div class="col-lg-9 form-group mb-1 mt-2">
-                            </div>
-                            <div class="col-lg-2 form-group mb-1 mt-2">
-                                <input type="submit" class="btn btn-primary btn-sm float-end" value="Save Changes" />
-                            </div>
-                        </div>
-                    </form>
-                }
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body">
                 <h4 class="card-title mb-4 text-uppercase">Business Permit Applications</h4>
-                <form asp-action="Edit">
+                <form asp-action="Edit" class="disable-form1">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Id" />
                     <input type="hidden" asp-for="Tracking_Number" />
@@ -618,24 +680,69 @@
                         </div>
                     </div>
                     <hr />
-                    <div class="row mb-3 mt-4">
-                        <div class="col-lg-3 form-group mt-2">
-                            <a asp-action="Index" class="btn btn-secondary ">Back</a>
+                    <h4 class="card-title mb-4 text-uppercase">Coordinates</h4>
+                    <div class="row">
+                        <div class="col-lg-12 form-group mb-3">
+                            <label>Go to <a href="https://www.google.com/maps/" target="_blank">Google Maps</a>, locate you <b>Business Address</b> then right click the location to get the coordinates of Latitude and Longitude.</label>
                         </div>
-                        <div class="col-lg-6 form-group text-center mt-2">
-                            <input type="submit" value="Save as Draft" class="btn btn-secondary" />
-                            <input type="button" value="Submit Application" class="btn btn-primary" />
+                        <div class="col-lg-1 form-group mb-3">
+                            <label asp-for="Latitude" class="control-label mt-2"></label>
                         </div>
-                        <div class="col-lg-3 form-group"></div>
+                        <div class="col-lg-5 form-group mb-3">
+                            <input asp-for="Latitude" class="form-control" />
+                            <span asp-validation-for="Latitude" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-1 form-group mb-3">
+                            <label asp-for="Longitude" class="control-label mt-2"></label>
+                        </div>
+                        <div class="col-lg-5 form-group mb-3">
+                            <input asp-for="Longitude" class="form-control" />
+                            <span asp-validation-for="Longitude" class="text-danger"></span>
+                        </div>
                     </div>
-                </form>
+                    @if (IsApplicant)
+                    {
+                        <hr />
+                        <div class="row mb-3 mt-4">
+                            <div class="col-lg-3 form-group mt-2">
+                            </div>
+                            <div class="col-lg-6 form-group text-center mt-2">
 
+                                <input type="submit" value="Save Changes" class="btn btn-success" />
+
+                            </div>
+                            <div class="col-lg-3 form-group"></div>
+                        </div>
+                    }
+                </form>
             </div>
         </div>
     </div>
 </div>
 
-
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body text-center mb-2 mt-2">
+                <form asp-controller="Applications" asp-action="SubmitApplication" method="post" enctype="multipart/form-data">
+                    <a asp-action="Index" class="btn btn-secondary btn-lg">Back</a>
+                    @if (IsApplicant)
+                    {
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" name="FullName" value="Applicant" />
+                        <input type="submit" value="Submit Application" class="btn btn-primary btn-lg" />
+                    }
+                    else
+                    {
+                        <input type="hidden" asp-for="Id" />
+                        <input type="text" name="FullName"/>
+                        <input type="submit" value="Submit Application" class="btn btn-primary btn-lg" />
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     @{

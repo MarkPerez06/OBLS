@@ -13,6 +13,7 @@ namespace OBLS.Data
         public DbSet<Application> Application { get; set; }
         public DbSet<ApplicationLineBusiness> ApplicationLineBusiness { get; set; }
         public DbSet<ApplicationRequirements> ApplicationRequirements { get; set; }
+        public DbSet<ApplicationSignatories> ApplicationSignatories { get; set; }
         public DbSet<LineBusiness> LineBusiness { get; set; }
         public DbSet<Requirements> Requirements { get; set; }
     }

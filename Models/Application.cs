@@ -228,5 +228,13 @@ namespace OBLS.Models
 
         [DisplayName("Subdivision")]
         public string? BusinessLocation_Subdivision { get; set; }
+
+        [Required]
+        [DisplayName("Latitude")]
+        public string? Latitude { get; set; }
+
+        [Required]
+        [DisplayName("Longitude")]
+        public string? Longitude { get; set; }
     }
 }

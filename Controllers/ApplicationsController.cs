@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -10,6 +11,7 @@ using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.EntityFrameworkCore;
 using OBLS.Data;
 using OBLS.Models;
+using OBLS.Static;
 
 
 namespace OBLS.Controllers
@@ -17,10 +19,11 @@ namespace OBLS.Controllers
     public class ApplicationsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public ApplicationsController(ApplicationDbContext context)
+        private readonly SignInManager<IdentityUser> _signInManager;
+        public ApplicationsController(ApplicationDbContext context, SignInManager<IdentityUser> signInManager)
         {
             _context = context;
+            _signInManager = signInManager;
         }
         static string GenerateTrackingNumber()
         {
@@ -87,7 +90,7 @@ namespace OBLS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Application_Type,Application_PaymentMode,Application_Year,Application_IsGenerateBrgyClearance,Business_Name,Business_TradeName,Business_OrganizationType,Business_Sex,Business_RegistrationNumber,Business_TIN,Business_IsFilipino,Owner_LastName,Owner_FirstName,Owner_MiddleName,Owner_Suffix,MainOffice_Region,MainOffice_Province,MainOffice_CityMunicipality,MainOffice_Brgy,MainOffice_ZipCode,MainOffice_HouseBuildingNumber,MainOffice_BuildingName,MainOffice_LotNumber,MainOffice_BlockNumber,MainOffice_Street,MainOffice_Subdivision,Contact_MobileNumber,Contact_EmailAddress,Contact_TelephoneNumber,BusinessOperation_BusinessActivity,BusinessOperation_OtherBusinessActivity,BusinessOperation_BusinessAreaSqm,BusinessOperation_TotalFloorArea,BusinessOperation_EmployeeMale,BusinessOperation_EmployeeFemale,BusinessOperation_TotalEmployeeWithLGU,BusinessOperation_TotalVanTruck,BusinessOperation_TotalMotorcycle,BusinessOperation_IsOwned,BusinessOperation_TaxDeclarationNo,BusinessOperation_PropertyIdentificationNo,BusinessOperation_HasTaxIncentives,BusinessOperation_PleaseSpecifyTheEntity,BusinessLocation_Region,BusinessLocation_Province,BusinessLocation_CityMunicipality,BusinessLocation_Brgy,BusinessLocation_ZipCode,BusinessLocation_HouseBuildingNumber,BusinessLocation_BuildingName,BusinessLocation_LotNumber,BusinessLocation_BlockNumber,BusinessLocation_Street,BusinessLocation_Subdivision")] Application application)
+        public async Task<IActionResult> Create([Bind("Id,Application_Type,Application_PaymentMode,Application_Year,Application_IsGenerateBrgyClearance,Business_Name,Business_TradeName,Business_OrganizationType,Business_Sex,Business_RegistrationNumber,Business_TIN,Business_IsFilipino,Owner_LastName,Owner_FirstName,Owner_MiddleName,Owner_Suffix,MainOffice_Region,MainOffice_Province,MainOffice_CityMunicipality,MainOffice_Brgy,MainOffice_ZipCode,MainOffice_HouseBuildingNumber,MainOffice_BuildingName,MainOffice_LotNumber,MainOffice_BlockNumber,MainOffice_Street,MainOffice_Subdivision,Contact_MobileNumber,Contact_EmailAddress,Contact_TelephoneNumber,BusinessOperation_BusinessActivity,BusinessOperation_OtherBusinessActivity,BusinessOperation_BusinessAreaSqm,BusinessOperation_TotalFloorArea,BusinessOperation_EmployeeMale,BusinessOperation_EmployeeFemale,BusinessOperation_TotalEmployeeWithLGU,BusinessOperation_TotalVanTruck,BusinessOperation_TotalMotorcycle,BusinessOperation_IsOwned,BusinessOperation_TaxDeclarationNo,BusinessOperation_PropertyIdentificationNo,BusinessOperation_HasTaxIncentives,BusinessOperation_PleaseSpecifyTheEntity,BusinessLocation_Region,BusinessLocation_Province,BusinessLocation_CityMunicipality,BusinessLocation_Brgy,BusinessLocation_ZipCode,BusinessLocation_HouseBuildingNumber,BusinessLocation_BuildingName,BusinessLocation_LotNumber,BusinessLocation_BlockNumber,BusinessLocation_Street,BusinessLocation_Subdivision,Latitude,Longitude")] Application application)
         {
             if (ModelState.IsValid)
             {
@@ -128,7 +131,7 @@ namespace OBLS.Controllers
         // GET: Applications/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            List<ApplicationRequirements> ARModel = _context.ApplicationRequirements.Where(m => m.ApplicationId == id).OrderBy(m => m.Name).ToList();
+            List<ApplicationRequirements> ARModel = _context.ApplicationRequirements.Where(m => m.ApplicationId == id).OrderBy(m => m.UserRolesId).ThenBy(m => m.Name).ToList();
             ViewBag.ARModel = ARModel;
             List<LineBusiness> LBModel = _context.LineBusiness.OrderBy(m => m.Code).ToList();
             ViewBag.LBModel = LBModel;
@@ -152,9 +155,9 @@ namespace OBLS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Application_Type,Application_PaymentMode,Application_Year,Application_Method,Application_Status,Application_DateTime,Application_IsGenerateBrgyClearance,Tracking_Number,Business_IDNumber,Business_Name,Business_TradeName,Business_OrganizationType,Business_Sex,Business_RegistrationNumber,Business_TIN,Business_IsFilipino,Owner_LastName,Owner_FirstName,Owner_MiddleName,Owner_Suffix,MainOffice_Region,MainOffice_Province,MainOffice_CityMunicipality,MainOffice_Brgy,MainOffice_ZipCode,MainOffice_HouseBuildingNumber,MainOffice_BuildingName,MainOffice_LotNumber,MainOffice_BlockNumber,MainOffice_Street,MainOffice_Subdivision,Contact_MobileNumber,Contact_EmailAddress,Contact_TelephoneNumber,BusinessOperation_BusinessActivity,BusinessOperation_OtherBusinessActivity,BusinessOperation_BusinessAreaSqm,BusinessOperation_TotalFloorArea,BusinessOperation_EmployeeMale,BusinessOperation_EmployeeFemale,BusinessOperation_TotalEmployeeWithLGU,BusinessOperation_TotalVanTruck,BusinessOperation_TotalMotorcycle,BusinessOperation_IsOwned,BusinessOperation_TaxDeclarationNo,BusinessOperation_PropertyIdentificationNo,BusinessOperation_HasTaxIncentives,BusinessOperation_PleaseSpecifyTheEntity,BusinessLocation_Region,BusinessLocation_Province,BusinessLocation_CityMunicipality,BusinessLocation_Brgy,BusinessLocation_ZipCode,BusinessLocation_HouseBuildingNumber,BusinessLocation_BuildingName,BusinessLocation_LotNumber,BusinessLocation_BlockNumber,BusinessLocation_Street,BusinessLocation_Subdivision")] Application application)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Application_Type,Application_PaymentMode,Application_Year,Application_Method,Application_Status,Application_DateTime,Application_IsGenerateBrgyClearance,Tracking_Number,Business_IDNumber,Business_Name,Business_TradeName,Business_OrganizationType,Business_Sex,Business_RegistrationNumber,Business_TIN,Business_IsFilipino,Owner_LastName,Owner_FirstName,Owner_MiddleName,Owner_Suffix,MainOffice_Region,MainOffice_Province,MainOffice_CityMunicipality,MainOffice_Brgy,MainOffice_ZipCode,MainOffice_HouseBuildingNumber,MainOffice_BuildingName,MainOffice_LotNumber,MainOffice_BlockNumber,MainOffice_Street,MainOffice_Subdivision,Contact_MobileNumber,Contact_EmailAddress,Contact_TelephoneNumber,BusinessOperation_BusinessActivity,BusinessOperation_OtherBusinessActivity,BusinessOperation_BusinessAreaSqm,BusinessOperation_TotalFloorArea,BusinessOperation_EmployeeMale,BusinessOperation_EmployeeFemale,BusinessOperation_TotalEmployeeWithLGU,BusinessOperation_TotalVanTruck,BusinessOperation_TotalMotorcycle,BusinessOperation_IsOwned,BusinessOperation_TaxDeclarationNo,BusinessOperation_PropertyIdentificationNo,BusinessOperation_HasTaxIncentives,BusinessOperation_PleaseSpecifyTheEntity,BusinessLocation_Region,BusinessLocation_Province,BusinessLocation_CityMunicipality,BusinessLocation_Brgy,BusinessLocation_ZipCode,BusinessLocation_HouseBuildingNumber,BusinessLocation_BuildingName,BusinessLocation_LotNumber,BusinessLocation_BlockNumber,BusinessLocation_Street,BusinessLocation_Subdivision,Latitude,Longitude")] Application application)
         {
-            List<ApplicationRequirements> ARModel = _context.ApplicationRequirements.Where(m => m.ApplicationId == id).OrderBy(m => m.Name).ToList();
+            List<ApplicationRequirements> ARModel = _context.ApplicationRequirements.Where(m => m.ApplicationId == id).OrderBy(m => m.UserRolesId).ThenBy(m => m.Name).ToList();
             ViewBag.ARModel = ARModel;
             List<LineBusiness> LBModel = _context.LineBusiness.OrderBy(m => m.Code).ToList();
             ViewBag.LBModel = LBModel;
@@ -169,6 +172,27 @@ namespace OBLS.Controllers
             {
                 try
                 {
+                    var requirements = _context.Requirements.ToList();
+
+                    foreach (var item in requirements)
+                    {
+                        var AR = _context.ApplicationRequirements.Where(m => m.ApplicationId == id && m.UserRolesId == item.UserRolesId && m.Name == item.Name).ToList();
+                        if (AR.Count == 0)
+                        {
+                            var requirement = new ApplicationRequirements
+                            {
+                                ApplicationId = id,
+                                UserRolesId = item.UserRolesId,
+                                Name = item.Name,
+                                UrlData = "",
+                                IsUpload = item.IsUpload,
+                                CreatedDate = DateTime.Now
+                            };
+                            _context.ApplicationRequirements.Add(requirement);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+
                     _context.Update(application);
                     await _context.SaveChangesAsync();
                 }
@@ -354,6 +378,41 @@ namespace OBLS.Controllers
             return RedirectToAction(nameof(Edit), new { id = AppId });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SubmitApplication(Guid Id, string FullName)
+        {
+            var user = await _signInManager.UserManager.FindByNameAsync(User.Identity?.Name);
+            var UserRoleId = user.SecurityStamp;
+
+            var model = await _context.Application.FindAsync(Id);
+            if (model != null)
+            {
+                if (UserRoleId == UserRoles.Applicant.Id)
+                {
+                    model.Application_Status = "For Verification";
+                }
+
+                if (UserRoleId == UserRoles.BarangayCaptain.Id)
+                {
+                    model.Application_Status = "For Verification";
+
+                    var AS = new ApplicationSignatories
+                    {
+                        ApplicationId = Id,
+                        UserRolesId = new Guid(UserRoleId),
+                        FullName = FullName,
+                        Role = UserRoles.BarangayCaptain.Name,
+                        Department = UserRoles.BarangayCaptain.Name,
+                        CreatedDate = DateTime.Now
+                    };
+                    _context.ApplicationSignatories.Add(AS);
+                    await _context.SaveChangesAsync();
+                };
+                _context.Application.Update(model);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 }

@@ -1,8 +1,15 @@
 ﻿@model IEnumerable<OBLS.Models.Application>
+@using Microsoft.AspNetCore.Identity
+@using OBLS.Models
+@using OBLS.Static
 @{
     ViewBag.Title = "Business Permit";
     ViewBag.pTitle = "Business Permit";
     ViewBag.pageTitle = "Applications";
+
+    var _userManager = Context.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
+    var user = await _userManager.FindByNameAsync(User.Identity?.Name);
+    var UserRoleId = user.SecurityStamp;
 }
 
 <div class="row">
@@ -14,7 +21,10 @@
                         <h4 class="card-title">List of @ViewBag.pageTitle</h4>
                     </div>
                     <div class="col-6">
-                        <a asp-action="Create" class="float-end btn btn-primary btn-sm">New Application</a>
+                        @if (UserRoleId == UserRoles.Applicant.Id)
+                        {
+                            <a asp-action="Create" class="float-end btn btn-primary btn-sm">New Application</a>
+                        }
                     </div>
                 </div>
                 <table id="datatable-buttons" class="table table-responsive table-bordered table-striped table-hover dt-responsive nowrap w-100">
@@ -63,10 +73,19 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Application_DateTime)
                                 </td>
-                                <td>
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary btn-sm">View</a> |
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Edit</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                                <td class="text-center">
+                                    @if (UserRoleId == UserRoles.Applicant.Id)
+                                    {
+                                        <div>
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Continue</a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
+                                    }
+                                    
                                 </td>
                             </tr>
                         }
