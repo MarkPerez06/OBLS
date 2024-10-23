@@ -392,7 +392,7 @@ namespace OBLS.Controllers
                     model.Application_Status = "For Verification";
                 }
 
-                if (UserRoleId == UserRoles.BarangayCaptain.Id)
+                if (UserRoleId != UserRoles.Applicant.Id && UserRoleId != UserRoles.Administrator.Id && UserRoleId != UserRoles.MunicipalTreasurer.Id && UserRoleId != UserRoles.MunicipalMayor.Id)
                 {
                     model.Application_Status = "For Verification";
 
@@ -407,7 +407,25 @@ namespace OBLS.Controllers
                     };
                     _context.ApplicationSignatories.Add(AS);
                     await _context.SaveChangesAsync();
-                };
+                }
+
+                if (UserRoleId != UserRoles.Applicant.Id && UserRoleId != UserRoles.Administrator.Id && UserRoleId != UserRoles.MunicipalTreasurer.Id && UserRoleId != UserRoles.MunicipalMayor.Id)
+                {
+                    model.Application_Status = "For Verification";
+
+                    var AS = new ApplicationSignatories
+                    {
+                        ApplicationId = Id,
+                        UserRolesId = new Guid(UserRoleId),
+                        FullName = FullName,
+                        Role = UserRoles.BarangayCaptain.Name,
+                        Department = UserRoles.BarangayCaptain.Name,
+                        CreatedDate = DateTime.Now
+                    };
+                    _context.ApplicationSignatories.Add(AS);
+                    await _context.SaveChangesAsync();
+                }
+
                 _context.Application.Update(model);
                 await _context.SaveChangesAsync();
             }
