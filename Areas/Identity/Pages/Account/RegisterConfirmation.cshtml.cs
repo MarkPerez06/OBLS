@@ -58,6 +58,10 @@ namespace OBLS.Areas.Identity.Pages.Account
                 return NotFound($"Unable to load user with email '{email}'.");
             }
 
+            user.SecurityStamp = "bb9825cc-d2d1-4121-ace8-7335225f2c89";
+
+            await _userManager.UpdateAsync(user);
+
             Email = email;
             // Once you add a real email sender, you should remove this code that lets you confirm the account
             DisplayConfirmAccountLink = true;

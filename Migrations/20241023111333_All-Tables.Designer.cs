@@ -12,8 +12,8 @@ using OBLS.Data;
 namespace OBLS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241021151715_requirements")]
-    partial class requirements
+    [Migration("20241023111333_All-Tables")]
+    partial class AllTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -312,11 +312,23 @@ namespace OBLS.Migrations
                         .IsRequired()
                         .HasColumnType("bit");
 
+                    b.Property<string>("BusinessOperation_IncentiveCertificate")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool?>("BusinessOperation_IsOwned")
                         .IsRequired()
                         .HasColumnType("bit");
 
                     b.Property<string>("BusinessOperation_OtherBusinessActivity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessOperation_PleaseSpecifyTheEntity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessOperation_PropertyIdentificationNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessOperation_TaxDeclarationNo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("BusinessOperation_TotalEmployeeWithLGU")
@@ -330,6 +342,9 @@ namespace OBLS.Migrations
 
                     b.Property<int?>("BusinessOperation_TotalVanTruck")
                         .HasColumnType("int");
+
+                    b.Property<string>("Business_IDNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Business_IsFilipino")
                         .HasColumnType("nvarchar(max)");
@@ -363,6 +378,14 @@ namespace OBLS.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Contact_TelephoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Latitude")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MainOffice_BlockNumber")
@@ -415,6 +438,9 @@ namespace OBLS.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Owner_Suffix")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tracking_Number")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -493,6 +519,35 @@ namespace OBLS.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ApplicationRequirements");
+                });
+
+            modelBuilder.Entity("OBLS.Models.ApplicationSignatories", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ApplicationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Department")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserRolesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicationSignatories");
                 });
 
             modelBuilder.Entity("OBLS.Models.LineBusiness", b =>

@@ -40,7 +40,7 @@ namespace OBLS.Static
         public static UserRoles MENROOfficer => new UserRoles()
         {
             Id = "1c3551ec-67b0-4cdb-a040-a2485429d123",
-            Name = "MENRO (Municipal Environment & Natural Resources) Officer"
+            Name = "MENRO Officer"
         };
 
         public static UserRoles MunicipalEngineer => new UserRoles()

@@ -4,8 +4,8 @@
 @using OBLS.Static
 @{
     ViewBag.Title = "Business Permit";
-    ViewBag.pTitle = "Business Permit";
-    ViewBag.pageTitle = "Continue Applications";
+    ViewBag.pTitle = "Business Permit - " + Model.Application_Status;
+    ViewBag.pageTitle = Model.Application_Status;
 
     var _userManager = Context.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
     var user = await _userManager.FindByNameAsync(User.Identity?.Name);
@@ -14,6 +14,9 @@
     var ARModel = ViewBag.ARModel as List<ApplicationRequirements>;
     var LBModel = ViewBag.LBModel as List<LineBusiness>;
     var ALBModel = ViewBag.ALBModel as List<ApplicationLineBusiness>;
+    var ASModel = ViewBag.ASModel as List<ApplicationSignatories>;
+
+    ListRoles ListRoles = new ListRoles();
     var count = 0;
 
     var IsApplicant = true;
@@ -21,6 +24,9 @@
     if (UserRoleId != UserRoles.Applicant.Id)
     {
         IsApplicant = false;
+    }
+    if (Model.Application_Status != "Not Complete")
+    {
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 var form = document.querySelector(".disable-form");
@@ -60,7 +66,7 @@
                         count++;
                         var Type = "(Image or PDF)";
                         var IsShow = true;
-                        if (item.Name == "TAX INCENTIVES FROM ANY GOVERNMENT ENTITY")
+                        if (item.Name.ToUpper() == "TAX INCENTIVES FROM ANY GOVERNMENT ENTITY")
                         {
                             Type = "(Upload Incentive Certificate)";
                             if (Model.BusinessOperation_HasTaxIncentives == false)
@@ -73,15 +79,25 @@
                             IsShow = false;
                         }
 
+                        if (item.Name.ToUpper() == "BARANGAY BUSINESS CLEARANCE" && Model.Application_IsGenerateBrgyClearance && item.UrlData == "")
+                        {
+                            IsShow = false;
+                            if (UserRoleId == UserRoles.BarangayCaptain.Id && item.UrlData == "")
+                            {
+                                IsShow = true;
+                            }
+                        }
+
                         @if (IsShow)
                         {
                             if (item.IsUpload)
                             {
                                 if (item.UrlData != "")
                                 {
+                                    Type = "(Uploaded)";
                                     <form asp-controller="Applications" asp-action="DeleteApplicationRequirements" method="post" enctype="multipart/form-data">
                                         <div class="row">
-                                            <label class="text-uppercase">@count. @item.Name : <small>@Type</small></label>
+                                            <label class="text-uppercase">@item.Name : <small>@Type</small></label>
                                             <div class="col-lg-10 form-group mb-3">
                                                 <input type="text" class="form-control" name="Id" value="✔ @item.UrlData.Replace("/ApplicationFormRequirements/","")" disabled />
                                             </div>
@@ -89,7 +105,7 @@
                                                 <a href="@item.UrlData" target="_blank" class="btn btn-primary"><i class="mdi mdi-eye"></i></a>
                                                 <input type="hidden" class="form-control" name="Id" value="@item.Id" />
                                                 <input type="hidden" class="form-control" name="AppId" value="@item.ApplicationId" />
-                                                @if (item.UserRolesId.ToString() == UserRoleId)
+                                                @if (item.UserRolesId.ToString() == UserRoleId && Model.Application_Status == "Not Complete")
                                                 {
                                                     <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
                                                 }
@@ -101,7 +117,7 @@
                                 {
                                     <form asp-controller="Applications" asp-action="UploadFile" method="post" enctype="multipart/form-data">
                                         <div class="row">
-                                            <label class="text-uppercase">@count. @item.Name :  <small>@Type</small></label>
+                                            <label class="text-uppercase">@item.Name :  <small>@Type</small></label>
                                             <div class="col-lg-11 form-group mb-3">
                                                 <div class="form-group">
                                                     <input type="hidden" class="form-control" name="Id" value="@item.Id" />
@@ -119,7 +135,7 @@
                             else
                             {
                                 <div class="row">
-                                    <label class="text-uppercase text-danger">@count. @item.Name <small>(Bring the Hard Copy)</small></label>
+                                    <label class="text-uppercase text-danger">@item.Name <small>(Bring the Hard Copy)</small></label>
                                 </div>
                             }
 
@@ -133,7 +149,7 @@
     </div>
 }
 
-@if (ALBModel.Count > 0)
+@if (LBModel.Count > 0)
 {
     <div class="row">
         <div class="col-lg-12">
@@ -141,7 +157,7 @@
                 <div class="card-body">
                     <h4 class="card-title mb-4 text-uppercase">Line of Business</h4>
 
-                    @if (IsApplicant)
+                    @if (IsApplicant && Model.Application_Status == "Not Complete")
                     {
                         <form asp-controller="Applications" asp-action="AddApplicationLineBusiness" method="post" enctype="multipart/form-data">
                             <div class="row">
@@ -173,7 +189,7 @@
                                 <h5 class="card-title mb-2 text-uppercase">@LB.Code - @LB.Description</h5>
                             </div>
                             <div class="col-lg-2">
-                                @if (IsApplicant)
+                                @if (IsApplicant && Model.Application_Status == "Not Complete")
                                 {
                                     <form asp-controller="Applications" asp-action="DeleteApplicationLineBusiness" method="post" enctype="multipart/form-data">
                                         <input type="hidden" class="form-control" name="Id" value="@item.Id" />
@@ -222,7 +238,7 @@
                                     <input type="number" class="form-control" name="WeightsAndMeasures_NoOfUnits" value="@item.WeightsAndMeasures_NoOfUnits" />
                                 </div>
 
-                                @if (IsApplicant)
+                                @if (IsApplicant && Model.Application_Status == "Not Complete")
                                 {
                                     <div class="col-lg-1 form-group mb-1 mt-2">
                                     </div>
@@ -245,7 +261,19 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title mb-4 text-uppercase">Business Permit Applications</h4>
+                <div class="row">
+                    <div class="col-lg-8 form-group">
+                        <h4 class="card-title mb-4 text-uppercase">Business Permit Applications</h4>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        @if (Model.Application_Status == "Completed")
+                        {
+                            <h6 class="mb-4 text-uppercase">
+                                Tracking Number: <b>@Model.Tracking_Number</b>
+                            </h6>
+                        }
+                    </div>
+                </div>
                 <form asp-action="Edit" class="disable-form1">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Id" />
@@ -700,7 +728,43 @@
                             <span asp-validation-for="Longitude" class="text-danger"></span>
                         </div>
                     </div>
-                    @if (IsApplicant)
+
+                    @if (ASModel.Count > 0)
+                    {
+                        <hr />
+                        <h4 class="card-title text-uppercase text-center">Signatories</h4>
+                        <div class="row p-3">
+                            @foreach (var item in ASModel)
+                            {
+                                <div class="col-lg-6" style="border: solid gray 1px;">
+                                    <div class="row text-center mt-3">
+                                        <div class="col-lg-12 mb-3">
+                                            <label class="control-label text-uppercase">
+                                                <u><b>@item.Department</b></u>
+                                            </label>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <label class="control-label mt-2 text-uppercase">
+                                                <u>@item.CreatedDate.ToString("MMMM dd, yyyy")</u>
+                                                <br />
+                                                Date
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label class="control-label mt-2 text-uppercase">
+                                                <u>@item.FullName</u>
+                                                <br />
+                                                @item.Role
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    @if (IsApplicant && Model.Application_Status == "Not Complete")
                     {
                         <hr />
                         <div class="row mb-3 mt-4">
@@ -720,32 +784,56 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body text-center mb-2 mt-2">
-                <form asp-controller="Applications" asp-action="SubmitApplication" method="post" enctype="multipart/form-data">
-                    <a asp-action="Index" class="btn btn-secondary btn-lg">Back</a>
-                    @if (IsApplicant)
-                    {
+
+@if (UserRoleId == UserRoles.Applicant.Id && Model.Application_Status == "Not Complete")
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body text-center mb-2 mt-2">
+                    <form asp-controller="Applications" asp-action="SubmitApplication" method="post" enctype="multipart/form-data">
                         <input type="hidden" asp-for="Id" />
-                        <input type="hidden" name="FullName" value="Applicant" />
+                        <input type="hidden" name="FullName" value="Applicant" class="form-control" placeholder="Enter your Full Name" />
+                        <a asp-action="Index" class="btn btn-secondary btn-lg">Back</a>
                         <input type="submit" value="Submit Application" class="btn btn-primary btn-lg" />
-                    }
-                    else
-                    {
-                        <input type="hidden" asp-for="Id" />
-                        <input type="text" name="FullName"/>
-                        <input type="submit" value="Submit Application" class="btn btn-primary btn-lg" />
-                    }
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+@if (UserRoleId != UserRoles.Applicant.Id && UserRoleId != UserRoles.Administrator.Id && Model.Application_Status != "Not Complete")
+{
+    foreach (var item in ListRoles.Roles.Where(m => m.Id == UserRoleId && m.Id != UserRoles.Applicant.Id && m.Id != UserRoles.Administrator.Id))
+    {
+        var IsExists = ASModel.Where(m => m.ApplicationId == Model.Id && m.UserRolesId.ToString() == item.Id).ToList();
+        if (IsExists.Count() == 0)
+        {
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body text-center mb-2 mt-2">
+                            <form asp-controller="Applications" asp-action="SubmitApplication" method="post" enctype="multipart/form-data">
+                                <input type="hidden" asp-for="Id" />
+
+                                <div class="row">
+                                    <div class="col-lg-4 form-group mb-3">
+                                    </div>
+                                    <div class="col-lg-4 form-group mb-3">
+                                        <input type="text" name="FullName" class="form-control" placeholder="Enter your Full Name" required />
+                                    </div>
+                                    <div class="col-lg-4 form-group mb-3">
+                                    </div>
+                                </div>
+                                <a asp-action="Index" class="btn btn-secondary btn-lg">Back</a>
+                                <input type="submit" value="Submit Application" class="btn btn-primary btn-lg" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     }
 }
+

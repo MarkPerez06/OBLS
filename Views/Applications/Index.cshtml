@@ -74,7 +74,7 @@
                                     @Html.DisplayFor(modelItem => item.Application_DateTime)
                                 </td>
                                 <td class="text-center">
-                                    @if (UserRoleId == UserRoles.Applicant.Id)
+                                    @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
                                     {
                                         <div>
                                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Continue</a> |

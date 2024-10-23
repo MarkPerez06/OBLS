@@ -137,6 +137,8 @@ namespace OBLS.Controllers
             ViewBag.LBModel = LBModel;
             List<ApplicationLineBusiness> ALBModel = _context.ApplicationLineBusiness.Where(m => m.ApplicationId == id).OrderBy(m => m.CreatedDate).ToList();
             ViewBag.ALBModel = ALBModel;
+            List<ApplicationSignatories> ASModel = _context.ApplicationSignatories.Where(m => m.ApplicationId == id).OrderBy(m => m.CreatedDate).ToList();
+            ViewBag.ASModel = ASModel;
             if (id == null || _context.Application == null)
             {
                 return NotFound();
@@ -163,6 +165,8 @@ namespace OBLS.Controllers
             ViewBag.LBModel = LBModel;
             List<ApplicationLineBusiness> ALBModel = _context.ApplicationLineBusiness.Where(m => m.ApplicationId == id).OrderBy(m => m.CreatedDate).ToList();
             ViewBag.ALBModel = ALBModel;
+            List<ApplicationSignatories> ASModel = _context.ApplicationSignatories.Where(m => m.ApplicationId == id).OrderBy(m => m.CreatedDate).ToList();
+            ViewBag.ASModel = ASModel;
             if (id != application.Id)
             {
                 return NotFound();
@@ -379,7 +383,7 @@ namespace OBLS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SubmitApplication(Guid Id, string FullName)
+        public async Task<IActionResult> SubmitApplication(Guid Id, string? FullName)
         {
             var user = await _signInManager.UserManager.FindByNameAsync(User.Identity?.Name);
             var UserRoleId = user.SecurityStamp;
@@ -389,10 +393,12 @@ namespace OBLS.Controllers
             {
                 if (UserRoleId == UserRoles.Applicant.Id)
                 {
-                    model.Application_Status = "For Verification";
+                    model.Application_Status = "Completed";
                 }
 
-                if (UserRoleId != UserRoles.Applicant.Id && UserRoleId != UserRoles.Administrator.Id && UserRoleId != UserRoles.MunicipalTreasurer.Id && UserRoleId != UserRoles.MunicipalMayor.Id)
+                
+
+                if (UserRoleId == UserRoles.BarangayCaptain.Id)
                 {
                     model.Application_Status = "For Verification";
 
@@ -402,14 +408,14 @@ namespace OBLS.Controllers
                         UserRolesId = new Guid(UserRoleId),
                         FullName = FullName,
                         Role = UserRoles.BarangayCaptain.Name,
-                        Department = UserRoles.BarangayCaptain.Name,
+                        Department = "Barangay " + model.BusinessLocation_Brgy,
                         CreatedDate = DateTime.Now
                     };
                     _context.ApplicationSignatories.Add(AS);
                     await _context.SaveChangesAsync();
                 }
 
-                if (UserRoleId != UserRoles.Applicant.Id && UserRoleId != UserRoles.Administrator.Id && UserRoleId != UserRoles.MunicipalTreasurer.Id && UserRoleId != UserRoles.MunicipalMayor.Id)
+                if (UserRoleId == UserRoles.BIRCollectionOfficer.Id)
                 {
                     model.Application_Status = "For Verification";
 
@@ -418,12 +424,160 @@ namespace OBLS.Controllers
                         ApplicationId = Id,
                         UserRolesId = new Guid(UserRoleId),
                         FullName = FullName,
-                        Role = UserRoles.BarangayCaptain.Name,
-                        Department = UserRoles.BarangayCaptain.Name,
+                        Role = UserRoles.BIRCollectionOfficer.Name,
+                        Department = "OFFICER OF THE BIR COLLECTION OFFICE",
                         CreatedDate = DateTime.Now
                     };
                     _context.ApplicationSignatories.Add(AS);
                     await _context.SaveChangesAsync();
+                }
+
+                if (UserRoleId == UserRoles.ChiefOfPolice.Id)
+                {
+                    model.Application_Status = "For Verification";
+
+                    var AS = new ApplicationSignatories
+                    {
+                        ApplicationId = Id,
+                        UserRolesId = new Guid(UserRoleId),
+                        FullName = FullName,
+                        Role = UserRoles.ChiefOfPolice.Name,
+                        Department = "OFFICE OF THE STATION COMMANDER",
+                        CreatedDate = DateTime.Now
+                    };
+                    _context.ApplicationSignatories.Add(AS);
+                    await _context.SaveChangesAsync();
+                }
+
+                if (UserRoleId == UserRoles.MENROOfficer.Id)
+                {
+                    model.Application_Status = "For Verification";
+
+                    var AS = new ApplicationSignatories
+                    {
+                        ApplicationId = Id,
+                        UserRolesId = new Guid(UserRoleId),
+                        FullName = FullName,
+                        Role = UserRoles.MENROOfficer.Name,
+                        Department = "OFFICE OF THE MUNICIPAL ENVIRONMENT & NATURAL RESOURCES",
+                        CreatedDate = DateTime.Now
+                    };
+                    _context.ApplicationSignatories.Add(AS);
+                    await _context.SaveChangesAsync();
+                }
+
+                if (UserRoleId == UserRoles.MunicipalEngineer.Id)
+                {
+                    model.Application_Status = "For Verification";
+
+                    var AS = new ApplicationSignatories
+                    {
+                        ApplicationId = Id,
+                        UserRolesId = new Guid(UserRoleId),
+                        FullName = FullName,
+                        Role = UserRoles.MunicipalEngineer.Name,
+                        Department = "OFFICE OF THE BUILDING OFFICIAL",
+                        CreatedDate = DateTime.Now
+                    };
+                    _context.ApplicationSignatories.Add(AS);
+                    await _context.SaveChangesAsync();
+                }
+
+                if (UserRoleId == UserRoles.MunicipalFireMarshall.Id)
+                {
+                    model.Application_Status = "For Verification";
+
+                    var AS = new ApplicationSignatories
+                    {
+                        ApplicationId = Id,
+                        UserRolesId = new Guid(UserRoleId),
+                        FullName = FullName,
+                        Role = UserRoles.MunicipalFireMarshall.Name,
+                        Department = "OFFICE OF THE FIRE MARSHALL",
+                        CreatedDate = DateTime.Now
+                    };
+                    _context.ApplicationSignatories.Add(AS);
+                    await _context.SaveChangesAsync();
+                }
+
+                if (UserRoleId == UserRoles.MunicipalHealthOfficer.Id)
+                {
+                    model.Application_Status = "For Verification";
+
+                    var AS = new ApplicationSignatories
+                    {
+                        ApplicationId = Id,
+                        UserRolesId = new Guid(UserRoleId),
+                        FullName = FullName,
+                        Role = UserRoles.MunicipalHealthOfficer.Name,
+                        Department = "OFFICE OF THE RURAL HEALTH OFFICER",
+                        CreatedDate = DateTime.Now
+                    };
+                    _context.ApplicationSignatories.Add(AS);
+                    await _context.SaveChangesAsync();
+                }
+
+                if (UserRoleId == UserRoles.SanitaryHealthOfficer.Id)
+                {
+                    model.Application_Status = "For Verification";
+
+                    var AS = new ApplicationSignatories
+                    {
+                        ApplicationId = Id,
+                        UserRolesId = new Guid(UserRoleId),
+                        FullName = FullName,
+                        Role = UserRoles.SanitaryHealthOfficer.Name,
+                        Department = "OFFICE OF THE SANITARY HEALTH OFFICER",
+                        CreatedDate = DateTime.Now
+                    };
+                    _context.ApplicationSignatories.Add(AS);
+                    await _context.SaveChangesAsync();
+                }
+
+                if (UserRoleId == UserRoles.MunicipalTreasurer.Id)
+                {
+                    if (model.Application_Status == "For Payment")
+                    {
+                        model.Application_Status = "For Issuance";
+                    }
+                   
+                    var AS = new ApplicationSignatories
+                    {
+                        ApplicationId = Id,
+                        UserRolesId = new Guid(UserRoleId),
+                        FullName = FullName,
+                        Role = UserRoles.MunicipalTreasurer.Name,
+                        Department = "OFFICE OF THE MUNICIPAL TREASURER OFFICER",
+                        CreatedDate = DateTime.Now
+                    };
+                    _context.ApplicationSignatories.Add(AS);
+                    await _context.SaveChangesAsync();
+                }
+
+                if (UserRoleId == UserRoles.MunicipalMayor.Id)
+                {
+                    if (model.Application_Status == "For Issuance")
+                    {
+                        model.Application_Status = "License Issued";
+                    }
+
+                    var AS = new ApplicationSignatories
+                    {
+                        ApplicationId = Id,
+                        UserRolesId = new Guid(UserRoleId),
+                        FullName = FullName,
+                        Role = UserRoles.MunicipalMayor.Name,
+                        Department = "OFFICE OF THE MUNICIPAL MAYOR",
+                        CreatedDate = DateTime.Now
+                    };
+                    _context.ApplicationSignatories.Add(AS);
+                    await _context.SaveChangesAsync();
+                }
+
+                var ASModel = _context.ApplicationSignatories.Where(m => m.ApplicationId == Id).ToList();
+                if (ASModel.Count == 8)
+                {
+                    model.Application_Status = "For Payment";
                 }
 
                 _context.Application.Update(model);

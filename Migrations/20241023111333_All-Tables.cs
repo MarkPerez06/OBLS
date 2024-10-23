@@ -21,6 +21,8 @@ namespace OBLS.Migrations
                     Application_Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Application_DateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Application_IsGenerateBrgyClearance = table.Column<bool>(type: "bit", nullable: false),
+                    Tracking_Number = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Business_IDNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Business_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Business_TradeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Business_OrganizationType = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -56,7 +58,11 @@ namespace OBLS.Migrations
                     BusinessOperation_TotalVanTruck = table.Column<int>(type: "int", nullable: true),
                     BusinessOperation_TotalMotorcycle = table.Column<int>(type: "int", nullable: true),
                     BusinessOperation_IsOwned = table.Column<bool>(type: "bit", nullable: false),
+                    BusinessOperation_TaxDeclarationNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BusinessOperation_PropertyIdentificationNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BusinessOperation_HasTaxIncentives = table.Column<bool>(type: "bit", nullable: false),
+                    BusinessOperation_PleaseSpecifyTheEntity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BusinessOperation_IncentiveCertificate = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BusinessLocation_Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BusinessLocation_Province = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BusinessLocation_CityMunicipality = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -67,11 +73,69 @@ namespace OBLS.Migrations
                     BusinessLocation_LotNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BusinessLocation_BlockNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BusinessLocation_Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BusinessLocation_Subdivision = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    BusinessLocation_Subdivision = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Application", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationLineBusiness",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LineBusinessId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NoOfUnits = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CapitalInvestment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GrossIncomeEssential = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GrossIncomeNonEssential = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SignageBillboard_Capacity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SignageBillboard_NoOfUnits = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WeightsAndMeasures_Capacity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WeightsAndMeasures_NoOfUnits = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationLineBusiness", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationRequirements",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserRolesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UrlData = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsUpload = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationRequirements", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationSignatories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserRolesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Department = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationSignatories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -111,6 +175,37 @@ namespace OBLS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LineBusiness",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SignageBillboard_Capacity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SignageBillboard_NoOfUnits = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WeightsAndMeasures_Capacity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WeightsAndMeasures_NoOfUnits = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LineBusiness", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Requirements",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserRolesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsUpload = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Requirements", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -265,6 +360,15 @@ namespace OBLS.Migrations
                 name: "Application");
 
             migrationBuilder.DropTable(
+                name: "ApplicationLineBusiness");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationRequirements");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationSignatories");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -278,6 +382,12 @@ namespace OBLS.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "LineBusiness");
+
+            migrationBuilder.DropTable(
+                name: "Requirements");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
