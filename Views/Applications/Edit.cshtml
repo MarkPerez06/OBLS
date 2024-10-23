@@ -74,6 +74,7 @@
                                 IsShow = false;
                             }
                         }
+
                         if (item.UserRolesId.ToString() != UserRoleId && item.UrlData == "")
                         {
                             IsShow = false;
@@ -86,6 +87,11 @@
                             {
                                 IsShow = true;
                             }
+                        }
+
+                        if (item.Name.ToUpper() == "BUSINESS PERMIT" && UserRoleId != UserRoles.Applicant.Id && UserRoleId != UserRoles.MunicipalMayor.Id)
+                        {
+                            IsShow = false;
                         }
 
                         @if (IsShow)
@@ -266,12 +272,9 @@
                         <h4 class="card-title mb-4 text-uppercase">Business Permit Applications</h4>
                     </div>
                     <div class="col-lg-4 form-group">
-                        @if (Model.Application_Status == "Completed")
-                        {
-                            <h6 class="mb-4 text-uppercase">
-                                Tracking Number: <b>@Model.Tracking_Number</b>
-                            </h6>
-                        }
+                        <h6 class="mb-4 text-uppercase">
+                            Tracking Number: <b>@Model.Tracking_Number</b>
+                        </h6>
                     </div>
                 </div>
                 <form asp-action="Edit" class="disable-form1">
