@@ -9,16 +9,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Content Include="wwwroot\assets\libs\datatables.net-autofill\node_modules\datatables.net\License.txt" />
-		<Content Include="wwwroot\assets\libs\datatables.net-bs4\node_modules\datatables.net\License.txt" />
-		<Content Include="wwwroot\assets\libs\datatables.net-buttons\node_modules\datatables.net\License.txt" />
-		<Content Include="wwwroot\assets\libs\datatables.net-keytable\node_modules\datatables.net\License.txt" />
-		<Content Include="wwwroot\assets\libs\datatables.net-responsive\node_modules\datatables.net\License.txt" />
-		<Content Include="wwwroot\assets\libs\datatables.net-select\node_modules\datatables.net\License.txt" />
-		<Content Include="wwwroot\assets\libs\jquery.easing\bower_components\jquery\MIT-LICENSE.txt" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.20" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.21" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.21" />
