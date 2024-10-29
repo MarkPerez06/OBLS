@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using OBLS.Models
+@using OBLS.Static
+@{
+    ViewBag.Title = "Business Location";
+    ViewBag.pTitle = "Business Location";
+    ViewBag.pageTitle = "Map";
+
+    var _userManager = Context.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
+    var user = await _userManager.FindByNameAsync(User.Identity?.Name);
+    var UserRoleId = user.SecurityStamp;
+}
+
+<style>
+    #map {
+        height: 70vh;
+        width: 100%;
+    }
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div id="map" style="z-index: 0"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+@{
+    var isShowMapDetailsApplicant = "";
+    var isShowMapDetailsNoneApplicant = "hidden";
+    if (UserRoleId != UserRoles.Applicant.Id)
+    {
+        isShowMapDetailsApplicant = "hidden";
+        isShowMapDetailsNoneApplicant = "";
+    }
+}
+<script>
+    // Initialize the map centered on Ramos, Tarlac 
+    const map = L.map('map').setView([15.66634194698582, 120.63785971134706], 13);
+    // const map = L.map('map').setView([15.6657, 120.5975], 13);
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 20,
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Fetch the business data from the server
+    fetch('/Applications/GetBusinesses') // Update with your actual controller name
+        .then(response => response.json())
+        .then(businesses => {
+            // Add markers to the map
+            businesses.forEach(business => {
+                const marker = L.marker([business.latitude, business.longitude]).addTo(map);
+                marker.bindPopup(`<div @isShowMapDetailsApplicant>
+                    <b>Address:</b> ${business.address}<br>
+                </div>
+                <div @isShowMapDetailsNoneApplicant>
+                    <b>Business Name:</b> ${business.business_Name}<br>
+                    <b>Business Address:</b> ${business.address}<br>
+                    <b>Owner's Name:</b> ${business.ownerName}
+                </div>
+                `);
+            });
+        })
+        .catch(error => console.error('Error fetching business data:', error));
+</script>

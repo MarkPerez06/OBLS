@@ -586,5 +586,37 @@ namespace OBLS.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Map
+        [Route("Map")]
+        public IActionResult Map()
+        {
+            return View();
+        }
+
+        public async Task<JsonResult> GetBusinesses()
+        {
+            var businesses = await _context.Application
+                .Select(b => new
+                {
+                    b.Business_Name,
+                    Address =
+                        (b.BusinessLocation_BlockNumber != null ? "Block No.: " + b.BusinessLocation_BlockNumber + ", " : "") +
+                        (b.BusinessLocation_LotNumber != null ? "Lot No.: " + b.BusinessLocation_LotNumber + ", " : "") +
+                        (b.BusinessLocation_BuildingName != null ? "Building Name: " + b.BusinessLocation_BuildingName + ", " : "") +
+                        (b.BusinessLocation_HouseBuildingNumber != null ? "Building No.: " + b.BusinessLocation_HouseBuildingNumber + ", " : "") +
+                        b.BusinessLocation_Brgy + ", " +
+                        b.BusinessLocation_CityMunicipality + ", " +
+                        b.BusinessLocation_Province + ", " +
+                        b.BusinessLocation_Region + ", Philippines",
+                    OwnerName = b.Owner_FirstName + " " + b.Owner_MiddleName + " " + b.Owner_LastName + " " + b.Owner_Suffix,
+                    b.Latitude,
+                    b.Longitude
+                })
+                .ToListAsync();
+
+            return Json(businesses);
+        }
+
+
     }
 }
