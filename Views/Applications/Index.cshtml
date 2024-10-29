@@ -12,87 +12,440 @@
     var UserRoleId = user.SecurityStamp;
 }
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="row mb-2">
-                    <div class="col-6">
-                        <h4 class="card-title">List of @ViewBag.pageTitle</h4>
+@if (UserRoleId == UserRoles.Applicant.Id)
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <h4 class="card-title">List of @ViewBag.pageTitle</h4>
+                        </div>
+                        <div class="col-6">
+                            @if (UserRoleId == UserRoles.Applicant.Id)
+                            {
+                                <a asp-action="Create" class="float-end btn btn-primary btn-sm">New Application</a>
+                            }
+                        </div>
                     </div>
-                    <div class="col-6">
-                        @if (UserRoleId == UserRoles.Applicant.Id)
-                        {
-                            <a asp-action="Create" class="float-end btn btn-primary btn-sm">New Application</a>
-                        }
-                    </div>
-                </div>
-                <table id="datatable-buttons" class="table table-responsive table-bordered table-striped table-hover dt-responsive nowrap w-100">
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Application Type</th>
-                            <th>BIN</th> 
-                            <th>Business Name</th>
-                            <th>Applicant</th>
-                            <th>Status</th>
-                            <th>Method</th>
-                            <th>Application Date</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            int count = 0;
-                        }
-                        @foreach (var item in Model)
-                        {
-                            count++;
+                    <table id="datatable-buttons" class="table table-responsive table-bordered table-striped table-hover dt-responsive nowrap w-100">
+                        <thead>
                             <tr>
-                                <td>
-                                    @count.
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Application_Type)
-                                </td>
-                                <td>
-                  
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Business_Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Owner_LastName) @Html.DisplayFor(modelItem => item.Owner_FirstName) @Html.DisplayFor(modelItem => item.Owner_MiddleName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Application_Status)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Application_Method)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Application_DateTime)
-                                </td>
-                                <td class="text-center">
-                                    @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
-                                    {
-                                        <div>
-                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Continue</a> |
-                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
-                                    }
-                                    
-                                </td>
+                                <th>No.</th>
+                                <th>Application Type</th>
+                                <th>BIN</th>
+                                <th>Business Name</th>
+                                <th>Applicant</th>
+                                <th>Status</th>
+                                <th>Method</th>
+                                <th>Application Date</th>
+                                <th class="text-center">Actions</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @{
+                                int count = 0;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                count++;
+                                <tr>
+                                    <td>
+                                        @count.
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_Type)
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Business_Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Owner_LastName) @Html.DisplayFor(modelItem => item.Owner_FirstName) @Html.DisplayFor(modelItem => item.Owner_MiddleName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_Status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_Method)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_DateTime)
+                                    </td>
+                                    <td class="text-center">
+                                        @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
+                                        {
+                                            <div>
+                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Continue</a> |
+                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
+                                        }
 
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
+
+@if (UserRoleId == UserRoles.BarangayCaptain.Id || UserRoleId == UserRoles.BIRCollectionOfficer.Id || UserRoleId == UserRoles.ChiefOfPolice.Id || UserRoleId == UserRoles.MENROOfficer.Id || UserRoleId == UserRoles.MunicipalEngineer.Id || UserRoleId == UserRoles.MunicipalFireMarshall.Id || UserRoleId == UserRoles.MunicipalHealthOfficer.Id || UserRoleId == UserRoles.SanitaryHealthOfficer.Id)
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <h4 class="card-title">For Verification</h4>
+                        </div>
+                        <div class="col-6">
+                            @if (UserRoleId == UserRoles.Applicant.Id)
+                            {
+                                <a asp-action="Create" class="float-end btn btn-primary btn-sm">New Application</a>
+                            }
+                        </div>
+                    </div>
+                    <table id="datatable-buttons" class="table table-responsive table-bordered table-striped table-hover dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Application Type</th>
+                                <th>BIN</th>
+                                <th>Business Name</th>
+                                <th>Applicant</th>
+                                <th>Status</th>
+                                <th>Method</th>
+                                <th>Application Date</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int count1 = 0;
+                            }
+                            @foreach (var item in Model.Where(m => m.Application_Status == "For Verification"))
+                            {
+                                count1++;
+                                <tr>
+                                    <td>
+                                        @count1.
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_Type)
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Business_Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Owner_LastName) @Html.DisplayFor(modelItem => item.Owner_FirstName) @Html.DisplayFor(modelItem => item.Owner_MiddleName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_Status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_Method)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_DateTime)
+                                    </td>
+                                    <td class="text-center">
+                                        @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
+                                        {
+                                            <div>
+                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Continue</a> |
+                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
+                                        }
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (UserRoleId == UserRoles.MunicipalTreasurer.Id)
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <h4 class="card-title">For Payment</h4>
+                        </div>
+                        <div class="col-6">
+                            @if (UserRoleId == UserRoles.Applicant.Id)
+                            {
+                                <a asp-action="Create" class="float-end btn btn-primary btn-sm">New Application</a>
+                            }
+                        </div>
+                    </div>
+                    <table id="datatable-buttons" class="table table-responsive table-bordered table-striped table-hover dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Application Type</th>
+                                <th>BIN</th>
+                                <th>Business Name</th>
+                                <th>Applicant</th>
+                                <th>Status</th>
+                                <th>Method</th>
+                                <th>Application Date</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int count2 = 0;
+                            }
+                            @foreach (var item in Model.Where(m => m.Application_Status == "For Payment"))
+                            {
+                                count2++;
+                                <tr>
+                                    <td>
+                                        @count2.
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_Type)
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Business_Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Owner_LastName) @Html.DisplayFor(modelItem => item.Owner_FirstName) @Html.DisplayFor(modelItem => item.Owner_MiddleName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_Status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_Method)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_DateTime)
+                                    </td>
+                                    <td class="text-center">
+                                        @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
+                                        {
+                                            <div>
+                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Continue</a> |
+                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
+                                        }
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@if (UserRoleId == UserRoles.MunicipalMayor.Id)
+{
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <h4 class="card-title">For Issuance</h4>
+                        </div>
+                        <div class="col-6">
+                            @if (UserRoleId == UserRoles.Applicant.Id)
+                            {
+                                <a asp-action="Create" class="float-end btn btn-primary btn-sm">New Application</a>
+                            }
+                        </div>
+                    </div>
+                    <table id="datatable-buttons" class="table table-responsive table-bordered table-striped table-hover dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Application Type</th>
+                                <th>BIN</th>
+                                <th>Business Name</th>
+                                <th>Applicant</th>
+                                <th>Status</th>
+                                <th>Method</th>
+                                <th>Application Date</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int count3 = 0;
+                            }
+                            @foreach (var item in Model.Where(m => m.Application_Status == "For Issuance" || m.Application_Status == "License Issued"))
+                            {
+                                count3++;
+                                <tr>
+                                    <td>
+                                        @count3.
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_Type)
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Business_Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Owner_LastName) @Html.DisplayFor(modelItem => item.Owner_FirstName) @Html.DisplayFor(modelItem => item.Owner_MiddleName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_Status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_Method)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_DateTime)
+                                    </td>
+                                    <td class="text-center">
+                                        @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
+                                        {
+                                            <div>
+                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Continue</a> |
+                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
+                                        }
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@if (UserRoleId == UserRoles.Administrator.Id)
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <h4 class="card-title">License Issued</h4>
+                        </div>
+                        <div class="col-6">
+                            @if (UserRoleId == UserRoles.Applicant.Id)
+                            {
+                                <a asp-action="Create" class="float-end btn btn-primary btn-sm">New Application</a>
+                            }
+                        </div>
+                    </div>
+                    <table id="datatable-buttons" class="table table-responsive table-bordered table-striped table-hover dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Application Type</th>
+                                <th>BIN</th>
+                                <th>Business Name</th>
+                                <th>Applicant</th>
+                                <th>Status</th>
+                                <th>Method</th>
+                                <th>Application Date</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int count4 = 0;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                count4++;
+                                <tr>
+                                    <td>
+                                        @count4.
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_Type)
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Business_Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Owner_LastName) @Html.DisplayFor(modelItem => item.Owner_FirstName) @Html.DisplayFor(modelItem => item.Owner_MiddleName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_Status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_Method)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Application_DateTime)
+                                    </td>
+                                    <td class="text-center">
+                                        @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
+                                        {
+                                            <div>
+                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Continue</a> |
+                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
+                                        }
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
