@@ -715,31 +715,25 @@
                     <div class="row">
                         <div class="col-lg-12 form-group mb-3">
                             <label>
-                                Go to <a href="https://www.google.com/maps/place/Ramos,+Tarlac/15.6710097,120.6424794,15z/data=!4m6!3m5!1s0x33913337fb0fdc53:0x1f8bbea8bfba2889!8m2!3d15.6732128!4d120.6458749!16zL20vMDZxMHJ2?entry=ttu&g_ep=EgoyMDI0MTAyMy4wIKXMDSoASAFQAw%3D%3D"
-                                         target="_blank">Google Maps</a>, locate you <b>Business Address</b> then right click the location to get the coordinates of Latitude and Longitude.
+                                Pin your business location to get the coordinates of Latitude and Longitude.
                             </label>
-                            <br />
-                            <span class="mb-2" id="coordinates" hidden></span>
                         </div>
                         <div class="col-lg-1 form-group mb-3">
                             <label asp-for="Latitude" class="control-label mt-2"></label>
                         </div>
-                        <div class="col-lg-4 form-group mb-3">
+                        <div class="col-lg-5 form-group mb-3">
                             <input asp-for="Latitude" class="form-control" />
                             <span asp-validation-for="Latitude" class="text-danger"></span>
                         </div>
                         <div class="col-lg-1 form-group mb-3">
                             <label asp-for="Longitude" class="control-label mt-2"></label>
                         </div>
-                        <div class="col-lg-4 form-group mb-3">
+                        <div class="col-lg-5 form-group mb-3">
                             <input asp-for="Longitude" class="form-control" />
                             <span asp-validation-for="Longitude" class="text-danger"></span>
                         </div>
-                        <div class="col-lg-2 form-group mb-3">
-                            @if (IsApplicant && Model.Application_Status == "Not Complete")
-                            {
-                                <button type="button" onclick="getCoordinates()" class="btn btn-primary">Get Coordinates</button>
-                            }
+                        <div class="col-lg-12 form-group">
+                            <div id="map"></div>
                         </div>
                     </div>
 
@@ -851,55 +845,58 @@
     }
 }
 
-<script>
-    function getCoordinates() {
-        var region = $('#BusinessLocation_Region').val();
-        var province = $('#BusinessLocation_Province').val();
-        var city = $('#BusinessLocation_CityMunicipality').val();
-        var barangay = $('#BusinessLocation_Brgy').val();
-        var zipCode = $('#BusinessLocation_ZipCode').val();
-        var subdivision = $('#BusinessLocation_Subdivision').val();
-        var street = $('#BusinessLocation_Street').val();
-        var blockNo = $('#BusinessLocation_BlockNumber').val();
-        var lotNo = $('#BusinessLocation_LotNumber').val();
-        var buildingName = $('#BusinessLocation_BuildingName').val();
-        var houseNo = $('#BusinessLocation_HouseBuildingNumber').val();
 
-        var apiKey = '9aa55156d5a1421bab3c42f073ff470c'; // Replace with OpenCage API key
-
-        // Build address dynamically based on available data for better accuracy
-        var addressParts = [
-            houseNo ? `House No ${houseNo}` : '',
-            buildingName ? buildingName : '',
-            blockNo ? `Block ${blockNo}` : '',
-            lotNo ? `Lot ${lotNo}` : '',
-            street,
-            subdivision ? subdivision : '', ,
-            barangay,
-            city,
-            province,
-            region,
-            'Philippines'
-        ];
-
-        // Filter out empty values and join the parts
-        var address = addressParts.filter(part => part).join(', ');
-
-        var url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address)}&key=${apiKey}`;
-
-        $.getJSON(url)
-            .done(function (data) {
-                if (data.results && data.results.length > 0) {
-                    var location = data.results[0].geometry;
-                    $('#coordinates').text(addressParts + ` - Latitude: ${location.lat}, Longitude: ${location.lng}`);
-                    $('#Latitude').val(location.lat);
-                    $('#Longitude').val(location.lng);
-                } else {
-                    $('#coordinates').text('No results found for the provided address. Please check the coordinates on Google Maps');
-                }
-            })
-            .fail(function (error) {
-                $('#coordinates').text('Error fetching data: ' + error.message);
-            });
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+<style>
+    #map {
+        height: 500px;
+        width: 100%;
+        z-index: 0;
     }
+</style>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    const map = L.map('map').setView([15.66634194698582, 120.63785971134706], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 20,
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    let marker;
+    async function getAddress(lat, lng) {
+        const apiKey = "9aa55156d5a1421bab3c42f073ff470c";
+        const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=${apiKey}`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.results.length > 0) {
+                return data.results[0].formatted;
+            } else {
+                return "Address not found";
+            }
+        } catch (error) {
+            return "Error fetching address";
+        }
+    }
+
+    map.on("click", async (e) => {
+        const { lat, lng } = e.latlng;
+        document.getElementById("Latitude").value = lat.toFixed(14);
+        document.getElementById("Longitude").value = lng.toFixed(14);
+        if (marker) {
+            map.removeLayer(marker);
+        }
+        marker = L.marker([lat, lng]).addTo(map);
+    });
+
+    fetch('/Applications/GetAppBusinesses?AppId=@Model.Id')
+        .then(response => response.json())
+        .then(businesses => {
+            businesses.forEach(business => {
+                marker = L.marker([business.latitude, business.longitude]).addTo(map);
+            });
+        })
+        .catch(error => console.error('Error fetching business data:', error));
 </script>

@@ -593,6 +593,19 @@ namespace OBLS.Controllers
             return View();
         }
 
+        public async Task<JsonResult> GetAppBusinesses(Guid AppId)
+        {
+            var businesses = await _context.Application.Where(m => m.Id == AppId)
+                .Select(b => new
+                {
+                    b.Latitude,
+                    b.Longitude
+                })
+                .ToListAsync();
+
+            return Json(businesses);
+        }
+
         public async Task<JsonResult> GetBusinesses()
         {
             var businesses = await _context.Application
