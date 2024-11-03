@@ -710,33 +710,35 @@
                             <span asp-validation-for="BusinessLocation_Subdivision" class="text-danger"></span>
                         </div>
                     </div>
-                    <hr />
-                    <h4 class="card-title mb-4 text-uppercase">Coordinates</h4>
-                    <div class="row">
-                        <div class="col-lg-12 form-group mb-3">
-                            <label>
-                                Pin your business location to get the coordinates of Latitude and Longitude.
-                            </label>
+                    @if (IsApplicant && Model.Application_Status == "Not Complete")
+                    {
+                        <hr />
+                        <h4 class="card-title mb-4 text-uppercase">Coordinates</h4>
+                        <div class="row">
+                            <div class="col-lg-12 form-group mb-3">
+                                <label>
+                                    Pin your business location to get the coordinates of Latitude and Longitude.
+                                </label>
+                            </div>
+                            <div class="col-lg-1 form-group mb-3">
+                                <label asp-for="Latitude" class="control-label mt-2"></label>
+                            </div>
+                            <div class="col-lg-5 form-group mb-3">
+                                <input asp-for="Latitude" class="form-control" />
+                                <span asp-validation-for="Latitude" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-1 form-group mb-3">
+                                <label asp-for="Longitude" class="control-label mt-2"></label>
+                            </div>
+                            <div class="col-lg-5 form-group mb-3">
+                                <input asp-for="Longitude" class="form-control" />
+                                <span asp-validation-for="Longitude" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <div id="map"></div>
+                            </div>
                         </div>
-                        <div class="col-lg-1 form-group mb-3">
-                            <label asp-for="Latitude" class="control-label mt-2"></label>
-                        </div>
-                        <div class="col-lg-5 form-group mb-3">
-                            <input asp-for="Latitude" class="form-control" />
-                            <span asp-validation-for="Latitude" class="text-danger"></span>
-                        </div>
-                        <div class="col-lg-1 form-group mb-3">
-                            <label asp-for="Longitude" class="control-label mt-2"></label>
-                        </div>
-                        <div class="col-lg-5 form-group mb-3">
-                            <input asp-for="Longitude" class="form-control" />
-                            <span asp-validation-for="Longitude" class="text-danger"></span>
-                        </div>
-                        <div class="col-lg-12 form-group">
-                            <div id="map"></div>
-                        </div>
-                    </div>
-
+                    }
                     @if (ASModel.Count > 0)
                     {
                         <hr />

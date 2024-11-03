@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Diagnostics;
+using OBLS.Static;
 
 namespace OBLS.Controllers
 {
@@ -14,6 +15,7 @@ namespace OBLS.Controllers
         private readonly ApplicationDbContext _context;
         private readonly SignInManager<IdentityUser> _signInManager;
         private IPasswordHasher<IdentityUser> _passwordHasher;
+
         public UsersController(ApplicationDbContext context, ILogger<UsersController> logger, SignInManager<IdentityUser> signInManager, IPasswordHasher<IdentityUser> passwordHasher)
         {
             _context = context;
@@ -24,8 +26,16 @@ namespace OBLS.Controllers
 
         public IActionResult Index()
         {
-            var model = _context.Users.ToList();
-            return View(model);
+            var user = _context.Users.Where(m => m.UserName == User.Identity.Name).FirstOrDefault();
+            if (User.Identity.IsAuthenticated && user.SecurityStamp == UserRoles.Administrator.Id)
+            {
+                var model = _context.Users.ToList();
+                return View(model);
+            }
+            else
+            {
+                return Redirect("~/Identity/Account/Login");
+            }
         }
 
         [HttpPost]

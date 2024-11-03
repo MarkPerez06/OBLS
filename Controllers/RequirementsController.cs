@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OBLS.Data;
 using OBLS.Models;
+using OBLS.Static;
 
 namespace OBLS.Controllers
 {
@@ -22,9 +23,17 @@ namespace OBLS.Controllers
         // GET: Requirements
         public async Task<IActionResult> Index()
         {
-              return _context.Requirements != null ? 
-                          View(await _context.Requirements.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Requirements'  is null.");
+            var user = _context.Users.Where(m => m.UserName == User.Identity.Name).FirstOrDefault();
+            if (User.Identity.IsAuthenticated && user.SecurityStamp == UserRoles.Administrator.Id)
+            {
+                return _context.Requirements != null ?
+                           View(await _context.Requirements.ToListAsync()) :
+                           Problem("Entity set 'ApplicationDbContext.Requirements'  is null.");
+            }
+            else
+            {
+                return Redirect("~/Identity/Account/Login");
+            }
         }
 
         // GET: Requirements/Details/5
@@ -151,14 +160,14 @@ namespace OBLS.Controllers
             {
                 _context.Requirements.Remove(requirements);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool RequirementsExists(Guid id)
         {
-          return (_context.Requirements?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Requirements?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

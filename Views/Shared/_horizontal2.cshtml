@@ -1,7 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Identity;
+@using OBLS.Static
 @{
     var _signInManager = Context.RequestServices.GetRequiredService<SignInManager<IdentityUser>>();
     bool IsSignedIn = _signInManager.IsSignedIn(User);
+
+    var _userManager = Context.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
+    var user = await _userManager.FindByNameAsync(User.Identity?.Name);
+    var UserRoleId = user.SecurityStamp;
 }
 <header id="page-topbar">
     <div class="navbar-header p-5">
@@ -88,17 +93,31 @@
                             </a>
                         </li>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard" role="button">
-                                <span key="t-dashboards"> Maintenance</span>
-                                <div class="arrow-down"></div>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="topnav-dashboard">
-                                <a href=@Url.Action("Index", "LineBusinesses") class="dropdown-item" key="t-default">Line of Business</a>
+                        @if(UserRoleId == UserRoles.Administrator.Id){
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard" role="button">
+                                    <span key="t-dashboards"> Maintenance</span>
+                                    <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-dashboard">
+                                    <a href=@Url.Action("Index", "LineBusinesses") class="dropdown-item" key="t-default">Line of Business</a>
 
-                                <a href=@Url.Action("Index", "Requirements") class="dropdown-item" key="t-default">Requirements</a>
-                            </div>
-                        </li>
+                                    <a href=@Url.Action("Index", "Requirements") class="dropdown-item" key="t-default">Requirements</a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard" role="button">
+                                    <span key="t-dashboards"> Accounts</span>
+                                    <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-dashboard">
+                                    <a href=@Url.Action("Index", "Users") class="dropdown-item" key="t-default">Users</a>
+                                </div>
+                            </li>
+                        }
+                        
+
 
                         @*   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle arrow-none" href="@Url.Action("Index", "Dashboard")">
@@ -112,18 +131,6 @@
                     }
                     </a>
                     </li> *@
-
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard" role="button">
-                                <span key="t-dashboards"> Accounts</span>
-                                <div class="arrow-down"></div>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="topnav-dashboard">
-                                <a href=@Url.Action("Index", "Users") class="dropdown-item" key="t-default">Users</a>
-                            </div>
-                        </li>
-
 
                     </ul>
                 </div>

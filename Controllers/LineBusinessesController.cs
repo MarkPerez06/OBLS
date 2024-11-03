@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OBLS.Data;
 using OBLS.Models;
+using OBLS.Static;
 
 namespace OBLS.Controllers
 {
@@ -22,9 +23,17 @@ namespace OBLS.Controllers
         // GET: LineBusinesses
         public async Task<IActionResult> Index()
         {
-              return _context.LineBusiness != null ? 
+            var user = _context.Users.Where(m => m.UserName == User.Identity.Name).FirstOrDefault();
+            if (User.Identity.IsAuthenticated && user.SecurityStamp == UserRoles.Administrator.Id)
+            {
+                return _context.LineBusiness != null ?
                           View(await _context.LineBusiness.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.LineBusiness'  is null.");
+            }
+            else
+            {
+                return Redirect("~/Identity/Account/Login");
+            }
         }
 
         // GET: LineBusinesses/Details/5
