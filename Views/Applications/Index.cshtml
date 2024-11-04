@@ -10,6 +10,7 @@
     var _userManager = Context.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
     var user = await _userManager.FindByNameAsync(User.Identity?.Name);
     var UserRoleId = user.SecurityStamp;
+    var Brgy = user.PhoneNumber;
 }
 
 @if (UserRoleId == UserRoles.Applicant.Id)
@@ -58,6 +59,10 @@
                                         @Html.DisplayFor(modelItem => item.Application_Type)
                                     </td>
                                     <td>
+                                        @if (item.Application_Status == "License Issued")
+                                        {
+                                            @item.Tracking_Number.Substring(0, 15);
+                                        }
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Business_Name)
@@ -133,50 +138,109 @@
                         <tbody>
                             @{
                                 int count1 = 0;
-                            }
-                            @foreach (var item in Model.Where(m => m.Application_Status == "For Verification"))
-                            {
-                                count1++;
-                                <tr>
-                                    <td>
-                                        @count1.
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Application_Type)
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Business_Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Owner_LastName) @Html.DisplayFor(modelItem => item.Owner_FirstName) @Html.DisplayFor(modelItem => item.Owner_MiddleName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Application_Status)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Application_Method)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Application_DateTime)
-                                    </td>
-                                    <td class="text-center">
-                                        @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
-                                        {
-                                            <div>
-                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Continue</a> |
-                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
-                                        }
 
-                                    </td>
-                                </tr>
+                                if (UserRoleId == UserRoles.BarangayCaptain.Id)
+                                {
+                                    foreach (var item in Model.Where(m => m.Application_Status == "For Verification" && m.BusinessLocation_Brgy == Brgy))
+                                    {
+                                        count1++;
+                                        <tr>
+                                            <td>
+                                                @count1.
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Application_Type)
+                                            </td>
+                                            <td>
+                                                @if (item.Application_Status == "License Issued")
+                                                {
+                                                    @item.Tracking_Number.Substring(0, 15);
+                                                }
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Business_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Owner_LastName) @Html.DisplayFor(modelItem => item.Owner_FirstName) @Html.DisplayFor(modelItem => item.Owner_MiddleName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Application_Status)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Application_Method)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Application_DateTime)
+                                            </td>
+                                            <td class="text-center">
+                                                @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
+                                                {
+                                                    <div>
+                                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Continue</a> |
+                                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
+                                                }
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    foreach (var item in Model.Where(m => m.Application_Status == "For Verification"))
+                                    {
+                                        count1++;
+                                        <tr>
+                                            <td>
+                                                @count1.
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Application_Type)
+                                            </td>
+                                            <td>
+                                                @if (item.Application_Status == "License Issued")
+                                                {
+                                                    @item.Tracking_Number.Substring(0, 15);
+                                                }
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Business_Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Owner_LastName) @Html.DisplayFor(modelItem => item.Owner_FirstName) @Html.DisplayFor(modelItem => item.Owner_MiddleName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Application_Status)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Application_Method)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Application_DateTime)
+                                            </td>
+                                            <td class="text-center">
+                                                @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
+                                                {
+                                                    <div>
+                                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Continue</a> |
+                                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
+                                                }
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
                             }
+
                         </tbody>
                     </table>
 
@@ -232,6 +296,10 @@
                                         @Html.DisplayFor(modelItem => item.Application_Type)
                                     </td>
                                     <td>
+                                        @if (item.Application_Status == "License Issued")
+                                        {
+                                            @item.Tracking_Number.Substring(0, 15);
+                                        }
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Business_Name)
@@ -321,6 +389,10 @@
                                         @Html.DisplayFor(modelItem => item.Application_Type)
                                     </td>
                                     <td>
+                                        @if (item.Application_Status == "License Issued")
+                                        {
+                                            @item.Tracking_Number.Substring(0, 15);
+                                        }
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Business_Name)
@@ -409,6 +481,10 @@
                                         @Html.DisplayFor(modelItem => item.Application_Type)
                                     </td>
                                     <td>
+                                        @if (item.Application_Status == "License Issued")
+                                        {
+                                            @item.Tracking_Number.Substring(0, 15);
+                                        }
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Business_Name)

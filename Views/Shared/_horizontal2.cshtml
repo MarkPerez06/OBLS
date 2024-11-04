@@ -3,10 +3,15 @@
 @{
     var _signInManager = Context.RequestServices.GetRequiredService<SignInManager<IdentityUser>>();
     bool IsSignedIn = _signInManager.IsSignedIn(User);
+    var UserRoleId = "";
 
-    var _userManager = Context.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
-    var user = await _userManager.FindByNameAsync(User.Identity?.Name);
-    var UserRoleId = user.SecurityStamp;
+    if (IsSignedIn)
+    {
+        var _userManager = Context.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
+        var user = await _userManager.FindByNameAsync(User.Identity?.Name);
+        UserRoleId = user.SecurityStamp;
+    }
+
 }
 <header id="page-topbar">
     <div class="navbar-header p-5">
