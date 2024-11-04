@@ -18,6 +18,8 @@
         MUNICIPALITY OF RAMOS
     </div>
 
+    <br />
+    <br />
     <div class="title">BUSINESS PERMIT</div>
 
     <div class="business-info">
@@ -28,22 +30,39 @@
         <h2>@Model.Owner_FirstName @Model.Owner_MiddleName @Model.Owner_LastName @Model.Owner_Suffix</h2>
         <div>Business Owner</div>
     </div>
-
-    <div class="content">
-        This must be posted conspicuously at the place where the business is/are being conducted and shall be presented and/or surrendered to the proper authorities upon the demand. This permit is revocable and is null and void if the owner violates any applicable law, ordinance and/or regulation or if he/she fails to pay all tax and fee charges as they become due.
+    <br />
+    <div class="conten">
+        <center>
+            This must be posted conspicuously at the place where the business is/are being conducted and shall be presented and/or surrendered to the proper authorities upon the demand. This permit is revocable and is null and void if the owner violates any applicable law, ordinance and/or regulation or if he/she fails to pay all tax and fee charges as they become due.
+        </center>
     </div>
-
+    <br />
     <div class="details">
-        <p>This PERMIT expires on December 31, 2024 unless sooner revoked.</p>
-        <p>DATE: 01/05/2024</p>
-        <p>O.R. NO.: 8758391</p>
-        <p>AMOUNT: PHP 6,595.00</p>
-    </div>
+        @if (Model.Permit_ExpiredDate.HasValue)
+        {
+            <p>This PERMIT expires on @Model.Permit_ExpiredDate.Value.ToString("MMMM dd, yyyy") unless sooner revoked.</p>
+        }
+        else
+        {
+            <p>This PERMIT expires on [Expiration Date] unless sooner revoked.</p>
+        }
+        @if (Model.Permit_DateRelease.HasValue)
+        {
+            <p>DATE: @Model.Permit_DateRelease.Value.ToString("MMMM dd, yyyy")</p>
+        }
+        else
+        {
+            <p>DATE: [Release Date]</p>
+        }
 
+        
+        <p>O.R. NO.: 8758391</p>
+        <p>AMOUNT: PHP @String.Format("{0:N2}", Model.Permit_Amount)</p>
+    </div>
+    <br />
     <div class="approval">
         APPROVED BY:
         <div class="signature">HON. CELSO L. CUNANAN BANAG</div>
         <div>Municipal Mayor</div>
-        <img src="data:image/jpeg;base64, [IMAGE_DATA_HERE]" alt="Mayor's Photo">
     </div>
 </div>

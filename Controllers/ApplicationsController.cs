@@ -176,7 +176,7 @@ namespace OBLS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Application_Type,Application_PaymentMode,Application_Year,Application_Method,Application_Status,Application_DateTime,Application_IsGenerateBrgyClearance,Tracking_Number,Business_IDNumber,Business_Name,Business_TradeName,Business_OrganizationType,Business_Sex,Business_RegistrationNumber,Business_TIN,Business_IsFilipino,Owner_LastName,Owner_FirstName,Owner_MiddleName,Owner_Suffix,MainOffice_Region,MainOffice_Province,MainOffice_CityMunicipality,MainOffice_Brgy,MainOffice_ZipCode,MainOffice_HouseBuildingNumber,MainOffice_BuildingName,MainOffice_LotNumber,MainOffice_BlockNumber,MainOffice_Street,MainOffice_Subdivision,Contact_MobileNumber,Contact_EmailAddress,Contact_TelephoneNumber,BusinessOperation_BusinessActivity,BusinessOperation_OtherBusinessActivity,BusinessOperation_BusinessAreaSqm,BusinessOperation_TotalFloorArea,BusinessOperation_EmployeeMale,BusinessOperation_EmployeeFemale,BusinessOperation_TotalEmployeeWithLGU,BusinessOperation_TotalVanTruck,BusinessOperation_TotalMotorcycle,BusinessOperation_IsOwned,BusinessOperation_TaxDeclarationNo,BusinessOperation_PropertyIdentificationNo,BusinessOperation_HasTaxIncentives,BusinessOperation_PleaseSpecifyTheEntity,BusinessLocation_Region,BusinessLocation_Province,BusinessLocation_CityMunicipality,BusinessLocation_Brgy,BusinessLocation_ZipCode,BusinessLocation_HouseBuildingNumber,BusinessLocation_BuildingName,BusinessLocation_LotNumber,BusinessLocation_BlockNumber,BusinessLocation_Street,BusinessLocation_Subdivision,Latitude,Longitude")] Application application)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Application_Type,Application_PaymentMode,Application_Year,Application_Method,Application_Status,Application_DateTime,Application_IsGenerateBrgyClearance,Tracking_Number,Business_IDNumber,Business_Name,Business_TradeName,Business_OrganizationType,Business_Sex,Business_RegistrationNumber,Business_TIN,Business_IsFilipino,Owner_LastName,Owner_FirstName,Owner_MiddleName,Owner_Suffix,MainOffice_Region,MainOffice_Province,MainOffice_CityMunicipality,MainOffice_Brgy,MainOffice_ZipCode,MainOffice_HouseBuildingNumber,MainOffice_BuildingName,MainOffice_LotNumber,MainOffice_BlockNumber,MainOffice_Street,MainOffice_Subdivision,Contact_MobileNumber,Contact_EmailAddress,Contact_TelephoneNumber,BusinessOperation_BusinessActivity,BusinessOperation_OtherBusinessActivity,BusinessOperation_BusinessAreaSqm,BusinessOperation_TotalFloorArea,BusinessOperation_EmployeeMale,BusinessOperation_EmployeeFemale,BusinessOperation_TotalEmployeeWithLGU,BusinessOperation_TotalVanTruck,BusinessOperation_TotalMotorcycle,BusinessOperation_IsOwned,BusinessOperation_TaxDeclarationNo,BusinessOperation_PropertyIdentificationNo,BusinessOperation_HasTaxIncentives,BusinessOperation_PleaseSpecifyTheEntity,BusinessLocation_Region,BusinessLocation_Province,BusinessLocation_CityMunicipality,BusinessLocation_Brgy,BusinessLocation_ZipCode,BusinessLocation_HouseBuildingNumber,BusinessLocation_BuildingName,BusinessLocation_LotNumber,BusinessLocation_BlockNumber,BusinessLocation_Street,BusinessLocation_Subdivision,Latitude,Longitude,Permit_ExpiredDate,Permit_DateRelease,Permit_Amount,Permit_IsPaid,Permit_Comments")] Application application)
         {
             List<ApplicationRequirements> ARModel = _context.ApplicationRequirements.Where(m => m.ApplicationId == id).OrderBy(m => m.UserRolesId).ThenBy(m => m.Name).ToList();
             ViewBag.ARModel = ARModel;
@@ -402,6 +402,19 @@ namespace OBLS.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> Payment(Guid Id, decimal Permit_Amount)
+        {
+            var model = await _context.Application.FindAsync(Id);
+            if (model != null)
+            {
+                model.Permit_Amount = Permit_Amount;
+                _context.Application.Update(model);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Edit), new { id = Id });
+
+        }
+        [HttpPost]
         public async Task<IActionResult> SubmitApplication(Guid Id, string? FullName)
         {
             var user = await _signInManager.UserManager.FindByNameAsync(User.Identity?.Name);
@@ -415,7 +428,7 @@ namespace OBLS.Controllers
                     model.Application_Status = "Completed";
                 }
 
-                
+
 
                 if (UserRoleId == UserRoles.BarangayCaptain.Id)
                 {
@@ -559,7 +572,7 @@ namespace OBLS.Controllers
                     {
                         model.Application_Status = "For Issuance";
                     }
-                   
+
                     var AS = new ApplicationSignatories
                     {
                         ApplicationId = Id,

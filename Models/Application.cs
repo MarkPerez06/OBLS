@@ -236,5 +236,11 @@ namespace OBLS.Models
         [Required]
         [DisplayName("Longitude")]
         public string? Longitude { get; set; }
+
+        public DateTime? Permit_ExpiredDate { get; set; }
+        public DateTime? Permit_DateRelease { get; set; }
+        public decimal? Permit_Amount { get; set; }
+        public bool? Permit_IsPaid { get; set; }
+        public string? Permit_Comments { get; set; }
     }
 }
