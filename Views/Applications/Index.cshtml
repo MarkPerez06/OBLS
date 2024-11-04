@@ -61,7 +61,7 @@
                                     <td>
                                         @if (item.Application_Status == "License Issued")
                                         {
-                                            @item.Tracking_Number.Substring(0, 15);
+                                            @item.Business_IDNumber
                                         }
                                     </td>
                                     <td>
@@ -90,6 +90,10 @@
                                         else
                                         {
                                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
+                                        }
+                                        @if (item.Application_Status == "License Issued")
+                                        {
+                                            <a asp-action="BusinessPermit" asp-route-id="@item.Id" class="btn btn-success btn-sm" target="_blank">License</a>
                                         }
 
                                     </td>
@@ -154,7 +158,7 @@
                                             <td>
                                                 @if (item.Application_Status == "License Issued")
                                                 {
-                                                    @item.Tracking_Number.Substring(0, 15);
+                                                    @item.Business_IDNumber
                                                 }
                                             </td>
                                             <td>
@@ -183,6 +187,11 @@
                                                 else
                                                 {
                                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
+                                                }
+
+                                                @if (item.Application_Status == "License Issued")
+                                                {
+                                                    <a asp-action="BusinessPermit" asp-route-id="@item.Id" class="btn btn-success btn-sm" target="_blank">License</a>
                                                 }
 
                                             </td>
@@ -204,7 +213,7 @@
                                             <td>
                                                 @if (item.Application_Status == "License Issued")
                                                 {
-                                                    @item.Tracking_Number.Substring(0, 15);
+                                                    @item.Business_IDNumber
                                                 }
                                             </td>
                                             <td>
@@ -234,7 +243,10 @@
                                                 {
                                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
                                                 }
-
+                                                @if (item.Application_Status == "License Issued")
+                                                {
+                                                    <a asp-action="BusinessPermit" asp-route-id="@item.Id" class="btn btn-success btn-sm" target="_blank">License</a>
+                                                }
                                             </td>
                                         </tr>
                                     }
@@ -298,7 +310,7 @@
                                     <td>
                                         @if (item.Application_Status == "License Issued")
                                         {
-                                            @item.Tracking_Number.Substring(0, 15);
+                                            @item.Business_IDNumber
                                         }
                                     </td>
                                     <td>
@@ -328,7 +340,10 @@
                                         {
                                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
                                         }
-
+                                        @if (item.Application_Status == "License Issued")
+                                        {
+                                            <a asp-action="BusinessPermit" asp-route-id="@item.Id" class="btn btn-success btn-sm" target="_blank">License</a>
+                                        }
                                     </td>
                                 </tr>
                             }
@@ -391,7 +406,7 @@
                                     <td>
                                         @if (item.Application_Status == "License Issued")
                                         {
-                                            @item.Tracking_Number.Substring(0, 15);
+                                            @item.Business_IDNumber
                                         }
                                     </td>
                                     <td>
@@ -421,7 +436,10 @@
                                         {
                                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
                                         }
-
+                                        @if (item.Application_Status == "License Issued")
+                                        {
+                                            <a asp-action="BusinessPermit" asp-route-id="@item.Id" class="btn btn-success btn-sm" target="_blank">License</a>
+                                        }
                                     </td>
                                 </tr>
                             }
@@ -483,7 +501,7 @@
                                     <td>
                                         @if (item.Application_Status == "License Issued")
                                         {
-                                            @item.Tracking_Number.Substring(0, 15);
+                                            @item.Business_IDNumber
                                         }
                                     </td>
                                     <td>
@@ -513,7 +531,10 @@
                                         {
                                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Open</a>
                                         }
-
+                                        @if (item.Application_Status == "License Issued")
+                                        {
+                                            <a asp-action="BusinessPermit" asp-route-id="@item.Id" class="btn btn-success btn-sm" target="_blank">License</a>
+                                        }
                                     </td>
                                 </tr>
                             }

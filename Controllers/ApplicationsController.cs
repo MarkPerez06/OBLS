@@ -25,6 +25,25 @@ namespace OBLS.Controllers
             _context = context;
             _signInManager = signInManager;
         }
+        public string GenerateBusinessID()
+        {
+            // Get the current date and time
+            DateTime now = DateTime.Now;
+
+            // Convert date and time to a format that creates a unique 7-digit number
+            // Example: Combine year, day, and milliseconds
+            string businessID = $"{now.ToString("yy")}{now.DayOfYear}{now.Millisecond:D3}".PadLeft(7, '0');
+
+            // If the result exceeds 7 digits, truncate it
+            if (businessID.Length > 7)
+            {
+                businessID = businessID.Substring(0, 7);
+            }
+
+            return businessID;
+        }
+
+
         static string GenerateTrackingNumber()
         {
             string prefix = "RBPA"; // Fixed prefix
@@ -62,7 +81,7 @@ namespace OBLS.Controllers
         }
 
         // GET: Applications/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> BusinessPermit(Guid? id)
         {
             if (id == null || _context.Application == null)
             {
@@ -559,6 +578,7 @@ namespace OBLS.Controllers
                     if (model.Application_Status == "For Issuance")
                     {
                         model.Application_Status = "License Issued";
+                        model.Business_IDNumber = GenerateBusinessID();
                     }
 
                     var AS = new ApplicationSignatories

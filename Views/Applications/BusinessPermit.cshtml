@@ -1,0 +1,49 @@
+﻿@model OBLS.Models.Application
+@using Microsoft.AspNetCore.Identity
+@using OBLS.Models
+@using OBLS.Static
+@{
+    ViewBag.Title = "Business Permit";
+    ViewBag.pTitle = "Business Permit";
+    ViewBag.pageTitle = Model.Application_Status;
+
+    Layout = "~/Views/Shared/_Layout_Permit.cshtml";
+}
+
+
+<div class="container">
+    <div class="header">
+        REPUBLIC OF THE PHILIPPINES <br>
+        PROVINCE OF TARLAC <br>
+        MUNICIPALITY OF RAMOS
+    </div>
+
+    <div class="title">BUSINESS PERMIT</div>
+
+    <div class="business-info">
+        <h2>@Model.Business_Name</h2>
+        <div>Business Name</div>
+        <h2>@Model.BusinessLocation_Brgy, @Model.BusinessLocation_CityMunicipality, @Model.BusinessLocation_Province</h2>
+        <div>Business Address</div>
+        <h2>@Model.Owner_FirstName @Model.Owner_MiddleName @Model.Owner_LastName @Model.Owner_Suffix</h2>
+        <div>Business Owner</div>
+    </div>
+
+    <div class="content">
+        This must be posted conspicuously at the place where the business is/are being conducted and shall be presented and/or surrendered to the proper authorities upon the demand. This permit is revocable and is null and void if the owner violates any applicable law, ordinance and/or regulation or if he/she fails to pay all tax and fee charges as they become due.
+    </div>
+
+    <div class="details">
+        <p>This PERMIT expires on December 31, 2024 unless sooner revoked.</p>
+        <p>DATE: 01/05/2024</p>
+        <p>O.R. NO.: 8758391</p>
+        <p>AMOUNT: PHP 6,595.00</p>
+    </div>
+
+    <div class="approval">
+        APPROVED BY:
+        <div class="signature">HON. CELSO L. CUNANAN BANAG</div>
+        <div>Municipal Mayor</div>
+        <img src="data:image/jpeg;base64, [IMAGE_DATA_HERE]" alt="Mayor's Photo">
+    </div>
+</div>

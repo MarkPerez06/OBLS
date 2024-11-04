@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 205mm;
+            height: 297mm;
+            padding: 20mm;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            margin: auto;
+            page-break-after: always;
+        }
+
+        .header, .footer {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .header {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .content {
+            font-size: 16px;
+        }
+
+        .business-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .business-info h2 {
+                margin: 5px 0;
+            }
+
+        .details {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .approval {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .signature {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        img {
+            max-width: 100px;
+            height: auto;
+            margin-top: 20px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+    @RenderBody()
+
+</body>
+</html>
