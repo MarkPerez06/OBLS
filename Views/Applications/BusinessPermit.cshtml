@@ -40,7 +40,7 @@
     <div class="details">
         @if (Model.Permit_ExpiredDate.HasValue)
         {
-            <p>This PERMIT expires on @Model.Permit_ExpiredDate.Value.ToString("MMMM dd, yyyy") unless sooner revoked.</p>
+            <p>This PERMIT expires on <b>@Model.Permit_ExpiredDate.Value.ToString("MMMM dd, yyyy")</b> unless sooner revoked.</p>
         }
         else
         {
@@ -48,7 +48,7 @@
         }
         @if (Model.Permit_DateRelease.HasValue)
         {
-            <p>DATE: @Model.Permit_DateRelease.Value.ToString("MMMM dd, yyyy")</p>
+            <p>DATE: <b>@Model.Permit_DateRelease.Value.ToString("MMMM dd, yyyy")</b></p>
         }
         else
         {
@@ -56,8 +56,8 @@
         }
 
         
-        <p>O.R. NO.: 8758391</p>
-        <p>AMOUNT: PHP @String.Format("{0:N2}", Model.Permit_Amount)</p>
+        <p>O.R. NO.: <b>@Model.Business_IDNumber</b></p>
+        <p>AMOUNT: <b>PHP @String.Format("{0:N2}", Model.Permit_Amount)</b></p>
     </div>
     <br />
     <div class="approval">

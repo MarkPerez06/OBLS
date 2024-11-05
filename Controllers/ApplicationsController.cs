@@ -113,12 +113,15 @@ namespace OBLS.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = _context.Users.Where(m => m.UserName == User.Identity.Name).FirstOrDefault();
 
                 application.Id = Guid.NewGuid();
                 application.Tracking_Number = GenerateTrackingNumber();
                 application.Application_DateTime = DateTime.Now;
                 application.Application_Method = "Online";
                 application.Application_Status = "Not Complete";
+                application.UserId = user.Id;
+
                 _context.Add(application);
                 await _context.SaveChangesAsync();
 
@@ -137,6 +140,7 @@ namespace OBLS.Controllers
                         IsUpload = item.IsUpload,
                         CreatedDate = DateTime.Now
                     };
+
 
                     _context.ApplicationRequirements.Add(requirement);
                     await _context.SaveChangesAsync();
@@ -215,7 +219,9 @@ namespace OBLS.Controllers
                             await _context.SaveChangesAsync();
                         }
                     }
+                    var user = _context.Users.Where(m => m.UserName == User.Identity.Name).FirstOrDefault();
 
+                    application.UserId = user.Id;
                     _context.Update(application);
                     await _context.SaveChangesAsync();
                 }
@@ -440,8 +446,59 @@ namespace OBLS.Controllers
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Edit), new { id = Id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Cancelled(Guid Id)
+        {
+            var model = await _context.Application.FindAsync(Id);
+            if (model != null)
+            {
+                model.Application_Status = "Cancelled Permit";
+                _context.Application.Update(model);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Edit), new { id = Id });
 
         }
+
+        [HttpPost]
+        public async Task<IActionResult> LicenseIssuedApplication(Guid Id, string? FullName, DateTime Permit_DateRelease, DateTime Permit_ExpiredDate)
+        {
+            var user = await _signInManager.UserManager.FindByNameAsync(User.Identity?.Name);
+            var UserRoleId = user.SecurityStamp;
+
+            var model = await _context.Application.FindAsync(Id);
+            if (model != null)
+            {
+                if (UserRoleId == UserRoles.MunicipalMayor.Id)
+                {
+                    if (model.Application_Status == "For Issuance")
+                    {
+                        model.Permit_DateRelease = Permit_DateRelease;
+                        model.Permit_ExpiredDate = Permit_ExpiredDate;
+                        model.Application_Status = "License Issued";
+                        model.Business_IDNumber = GenerateBusinessID();
+                    }
+
+                    var AS = new ApplicationSignatories
+                    {
+                        ApplicationId = Id,
+                        UserRolesId = new Guid(UserRoleId),
+                        FullName = FullName,
+                        Role = UserRoles.MunicipalMayor.Name,
+                        Department = "OFFICE OF THE MUNICIPAL MAYOR",
+                        CreatedDate = DateTime.Now
+                    };
+                    _context.ApplicationSignatories.Add(AS);
+                    await _context.SaveChangesAsync();
+                }
+                _context.Application.Update(model);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> SubmitApplication(Guid Id, string? FullName)

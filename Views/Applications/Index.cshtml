@@ -394,7 +394,7 @@
                             @{
                                 int count3 = 0;
                             }
-                            @foreach (var item in Model.Where(m => m.Application_Status == "For Issuance" || m.Application_Status == "License Issued"))
+                            @foreach (var item in Model.Where(m => m.Application_Status == "Declined" || m.Application_Status == "For Issuance" || m.Application_Status == "License Issued"))
                             {
                                 count3++;
                                 <tr>
