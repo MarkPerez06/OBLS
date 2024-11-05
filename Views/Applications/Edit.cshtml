@@ -46,6 +46,28 @@
         </script>
     }
 }
+@if ((Model.Permit_Comments != null && Model.Permit_Comments != "") || Model.Permit_Amount.Value > 0)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body text-warning">
+                    @if (Model.Permit_Comments != null && Model.Permit_Comments != "")
+                    {
+                        <b>NOTE:</b> @Model.Permit_Comments
+                        <br />
+                        <br />
+                    }
+                    @if (Model.Permit_Amount.Value > 0)
+                    {
+                        <h6 class="text-info">Please settle your payment and <b>upload the payment receipt</b> under Application Requirements.</h6>
+                        <h5><b>AMOUNT:</b> PHP @String.Format("{0:N2}", Model.Permit_Amount)</h5>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
 @if (ARModel.Count > 0)
 {
     <div class="row">
@@ -90,6 +112,11 @@
                         }
 
                         if (item.Name.ToUpper() == "BUSINESS PERMIT" && UserRoleId != UserRoles.Applicant.Id && UserRoleId != UserRoles.MunicipalMayor.Id)
+                        {
+                            IsShow = false;
+                        }
+
+                        if (Model.Permit_Amount.Value <= 0 && item.Name.ToUpper() == "PAYMENT")
                         {
                             IsShow = false;
                         }
@@ -801,67 +828,34 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body text-center mb-2 mt-2">
-                    <h4 class="card-title mb-4 text-uppercase">Payment Amount</h4>
-                    <form asp-controller="Applications" asp-action="Payment" method="post" enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="col-lg-4 form-group mb-3">
-                            </div>
-                            <div class="col-lg-4 form-group mb-3">
-                                <input type="hidden" asp-for="Id" />
-                                <input asp-for="Permit_Amount" class="form-control" type="number" />
-                            </div>
-                            <div class="col-lg-4 form-group mb-3">
-                            </div>
-                        </div>
-                        <input type="submit" value="Save Payment Amount" class="btn btn-primary" />
-                    </form>
-
-
-                     <h4 class="card-title mb-4 text-uppercase">Payment Amount</h4>
-                    <form asp-controller="Applications" asp-action="Payment" method="post" enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="col-lg-4 form-group mb-3">
-                            </div>
-                            <div class="col-lg-4 form-group mb-3">
-                                <input type="hidden" asp-for="Id" />
-                                <input asp-for="Permit_Amount" class="form-control" type="number" />
-                            </div>
-                            <div class="col-lg-4 form-group mb-3">
-                            </div>
-                        </div>
-                        <input type="submit" value="Save Payment Amount" class="btn btn-primary" />
-                    </form>
-
-
-                    <div class="row mt-3">
-                        <div class="col-lg-12 form-group mb-3">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="align-top">
-                                            <input class="mx-2" type="checkbox" id="confirm-submission" name="confirm-submission" onchange="checkConsent()">
-                                        </td>
-                                        <td>
-                                            <p>
-                                                <b>I DECLARE UNDER PENALTY OF PERJURY</b> that all information in this application are true and correct
-                                                based on my personal knowledge and authentic records submitted to the <b class="font-weight-bold">Municipality of Ramos Tarlac</b>.
-                                                Any false or misleading information supplied, or production of fake/falsified documents shall be
-                                                grounds for appropriate legal action against me and automatically revokes the permit.
-                                                I hereby agree that all personal data (as defined under the Data Privacy Law of 2012 and its Implementing
-                                                Rules and Regulations) and account transaction information or records with the <b class="font-weight-bold">Municipality of Ramos Tarlac</b> Government
-                                                may be processed, profiled or shared to requesting parties or for the purpose of any court, legal process,
-                                                examination, inquiry and audit or investigation of any authority.
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
                     <form asp-controller="Applications" asp-action="SubmitApplication" method="post" enctype="multipart/form-data">
+                        <div class="row mt-3">
+                            <div class="col-lg-12 form-group mb-3">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td class="align-top">
+                                                <input class="mx-2" type="checkbox" id="confirm-submission" name="confirm-submission" required>
+                                            </td>
+                                            <td>
+                                                <p>
+                                                    <b>I DECLARE UNDER PENALTY OF PERJURY</b> that all information in this application are true and correct
+                                                    based on my personal knowledge and authentic records submitted to the <b class="font-weight-bold">Municipality of Ramos Tarlac</b>.
+                                                    Any false or misleading information supplied, or production of fake/falsified documents shall be
+                                                    grounds for appropriate legal action against me and automatically revokes the permit.
+                                                    I hereby agree that all personal data (as defined under the Data Privacy Law of 2012 and its Implementing
+                                                    Rules and Regulations) and account transaction information or records with the <b class="font-weight-bold">Municipality of Ramos Tarlac</b> Government
+                                                    may be processed, profiled or shared to requesting parties or for the purpose of any court, legal process,
+                                                    examination, inquiry and audit or investigation of any authority.
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                         <input type="hidden" asp-for="Id" />
                         <input type="hidden" name="FullName" value="Applicant" class="form-control" placeholder="Enter your Full Name" />
                         <a asp-action="Index" class="btn btn-secondary btn-lg">Back</a>
@@ -893,9 +887,46 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body text-center mb-2 mt-2">
+
+                            @if (UserRoleId == UserRoles.MunicipalTreasurer.Id && Model.Application_Status == "For Payment")
+                            {
+                                <h4 class="card-title mb-4 text-uppercase">Payment Amount</h4>
+                                <form asp-controller="Applications" asp-action="Payment" method="post" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-lg-4 form-group mb-3">
+                                        </div>
+                                        <div class="col-lg-4 form-group mb-3">
+                                            <input type="hidden" asp-for="Id" />
+                                            <input asp-for="Permit_Amount" class="form-control mb-3" type="number" />
+                                            <input type="submit" value="Save Payment Amount" class="btn btn-primary" />
+                                        </div>
+                                        <div class="col-lg-4 form-group mb-3">
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr />
+                            }
+                            <h4 class="card-title mb-4 text-uppercase">Comments</h4>
+                            <form asp-controller="Applications" asp-action="Comments" method="post" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-lg-12 form-group mb-3">
+                                        <input type="hidden" asp-for="Id" />
+                                        <textarea asp-for="Permit_Comments" class="form-control mb-3" type="text" style="height: 300px;" placeholder="Enter comments, instructions or follow up requirements"></textarea>
+                                    </div>
+                                    <div class="col-lg-4 form-group mb-3">
+                                    </div>
+                                    <div class="col-lg-4 form-group mb-3">
+                                        <input type="submit" value="Save Comments" class="btn btn-primary" />
+                                    </div>
+                                    <div class="col-lg-4 form-group mb-3">
+                                    </div>
+                                </div>
+                            </form>
+                            <hr />
+
                             <form asp-controller="Applications" asp-action="SubmitApplication" method="post" enctype="multipart/form-data">
                                 <input type="hidden" asp-for="Id" />
-                                <div class="row">
+                                <div class="row mt-4">
                                     <div class="col-lg-4 form-group mb-3">
                                     </div>
                                     <div class="col-lg-4 form-group mb-3">

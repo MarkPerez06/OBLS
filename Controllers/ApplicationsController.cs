@@ -414,6 +414,35 @@ namespace OBLS.Controllers
             return RedirectToAction(nameof(Edit), new { id = Id });
 
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Comments(Guid Id, string Permit_Comments)
+        {
+            var model = await _context.Application.FindAsync(Id);
+            if (model != null)
+            {
+                model.Permit_Comments = Permit_Comments;
+                _context.Application.Update(model);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Edit), new { id = Id });
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Declined(Guid Id)
+        {
+            var model = await _context.Application.FindAsync(Id);
+            if (model != null)
+            {
+                model.Application_Status = "Declined";
+                _context.Application.Update(model);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Edit), new { id = Id });
+
+        }
+
         [HttpPost]
         public async Task<IActionResult> SubmitApplication(Guid Id, string? FullName)
         {
@@ -425,7 +454,7 @@ namespace OBLS.Controllers
             {
                 if (UserRoleId == UserRoles.Applicant.Id)
                 {
-                    model.Application_Status = "Completed";
+                    model.Application_Status = "Submitted";
                 }
 
 
@@ -571,6 +600,7 @@ namespace OBLS.Controllers
                     if (model.Application_Status == "For Payment")
                     {
                         model.Application_Status = "For Issuance";
+                        model.Permit_IsPaid = true;
                     }
 
                     var AS = new ApplicationSignatories

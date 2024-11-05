@@ -242,5 +242,6 @@ namespace OBLS.Models
         public decimal? Permit_Amount { get; set; }
         public bool? Permit_IsPaid { get; set; }
         public string? Permit_Comments { get; set; }
+        public string? UserId { get; set; }
     }
 }
