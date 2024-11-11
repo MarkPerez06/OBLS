@@ -29,10 +29,12 @@
     {
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                var form = document.querySelector(".disable-form");
-                var inputs = form.querySelectorAll("input, textarea, select");
-                inputs.forEach(function (input) {
-                    input.setAttribute("disabled", true);
+                var form = document.querySelectorAll(".disable-form");
+                form.forEach(function (form2) {
+                    var inputs = form2.querySelectorAll("input, textarea, select");
+                    inputs.forEach(function (input) {
+                        input.setAttribute("disabled", true);
+                    });
                 });
             });
 
@@ -116,10 +118,17 @@
                             IsShow = false;
                         }
 
-                        if ((Model.Permit_Amount <= 0 || Model.Permit_Amount == null) && item.Name.ToUpper() == "PAYMENT")
+                        if ((Model.Permit_Amount == 0 || Model.Permit_Amount == null) && item.Name.ToUpper() == "PAYMENT" && UserRoleId != UserRoles.Applicant.Id)
                         {
                             IsShow = false;
                         }
+
+                        if (item.Name.ToUpper() == "PAYMENT" && UserRoleId != UserRoles.MunicipalTreasurer.Id)
+                        {
+                            IsShow = false;
+                        }
+
+
 
                         @if (IsShow)
                         {

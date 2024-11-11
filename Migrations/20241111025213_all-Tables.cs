@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OBLS.Migrations
 {
-    public partial class AllTables : Migration
+    public partial class allTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -75,7 +75,13 @@ namespace OBLS.Migrations
                     BusinessLocation_Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BusinessLocation_Subdivision = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Latitude = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Permit_ExpiredDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Permit_DateRelease = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Permit_Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Permit_IsPaid = table.Column<bool>(type: "bit", nullable: true),
+                    Permit_Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -195,6 +201,21 @@ namespace OBLS.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PaymentMethod",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentMethod", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Requirements",
                 columns: table => new
                 {
@@ -206,6 +227,21 @@ namespace OBLS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Requirements", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TaxesFees",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TaxesFees", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -387,7 +423,13 @@ namespace OBLS.Migrations
                 name: "LineBusiness");
 
             migrationBuilder.DropTable(
+                name: "PaymentMethod");
+
+            migrationBuilder.DropTable(
                 name: "Requirements");
+
+            migrationBuilder.DropTable(
+                name: "TaxesFees");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

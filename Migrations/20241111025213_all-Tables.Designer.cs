@@ -12,8 +12,8 @@ using OBLS.Data;
 namespace OBLS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241023111333_All-Tables")]
-    partial class AllTables
+    [Migration("20241111025213_all-Tables")]
+    partial class allTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -440,7 +440,25 @@ namespace OBLS.Migrations
                     b.Property<string>("Owner_Suffix")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal?>("Permit_Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Permit_Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Permit_DateRelease")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("Permit_ExpiredDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Permit_IsPaid")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Tracking_Number")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -579,6 +597,31 @@ namespace OBLS.Migrations
                     b.ToTable("LineBusiness");
                 });
 
+            modelBuilder.Entity("OBLS.Models.PaymentMethod", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentMethod");
+                });
+
             modelBuilder.Entity("OBLS.Models.Requirements", b =>
                 {
                     b.Property<Guid>("Id")
@@ -597,6 +640,30 @@ namespace OBLS.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Requirements");
+                });
+
+            modelBuilder.Entity("OBLS.Models.TaxesFees", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaxesFees");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

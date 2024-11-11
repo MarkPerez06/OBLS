@@ -16,5 +16,7 @@ namespace OBLS.Data
         public DbSet<ApplicationSignatories> ApplicationSignatories { get; set; }
         public DbSet<LineBusiness> LineBusiness { get; set; }
         public DbSet<Requirements> Requirements { get; set; }
+        public DbSet<OBLS.Models.TaxesFees>? TaxesFees { get; set; }
+        public DbSet<OBLS.Models.PaymentMethod>? PaymentMethod { get; set; }
     }
 }

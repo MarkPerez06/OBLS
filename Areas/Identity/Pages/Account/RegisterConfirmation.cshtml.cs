@@ -58,7 +58,14 @@ namespace OBLS.Areas.Identity.Pages.Account
                 return NotFound($"Unable to load user with email '{email}'.");
             }
 
+            //Applicant
             user.SecurityStamp = "bb9825cc-d2d1-4121-ace8-7335225f2c89";
+
+            //Applicant
+            if (user.UserName == "Admin")
+            {
+                user.SecurityStamp = "80aaf565-d80e-4617-893d-fb8eeeb6b6a9";
+            }
 
             await _userManager.UpdateAsync(user);
 

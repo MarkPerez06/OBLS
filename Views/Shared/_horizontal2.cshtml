@@ -97,7 +97,14 @@
                                 Map
                             </a>
                         </li>
-
+                        @if (UserRoleId == UserRoles.MunicipalTreasurer.Id)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="@Url.Action("Index", "PaymentMethods")">
+                                    Payment Methods
+                                </a>
+                            </li>
+                        }
                         @if(UserRoleId == UserRoles.Administrator.Id){
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard" role="button">
@@ -106,8 +113,9 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-dashboard">
                                     <a href=@Url.Action("Index", "LineBusinesses") class="dropdown-item" key="t-default">Line of Business</a>
-
                                     <a href=@Url.Action("Index", "Requirements") class="dropdown-item" key="t-default">Requirements</a>
+                                    <a href=@Url.Action("Index", "TaxesFees") class="dropdown-item" key="t-default">Taxes and Fees</a>
+                                    <a href=@Url.Action("Index", "PaymentMethods") class="dropdown-item" key="t-default">Payment Methods</a>
                                 </div>
                             </li>
 

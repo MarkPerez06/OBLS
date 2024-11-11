@@ -237,8 +237,8 @@ namespace OBLS.Models
         [DisplayName("Longitude")]
         public string? Longitude { get; set; }
 
-        public DateTime? Permit_ExpiredDate { get; set; }
-        public DateTime? Permit_DateRelease { get; set; }
+        public DateTime? Permit_ExpiredDate { get; set; } = DateTime.Now;
+        public DateTime? Permit_DateRelease { get; set; } = DateTime.Now;
         public decimal? Permit_Amount { get; set; }
         public bool? Permit_IsPaid { get; set; }
         public string? Permit_Comments { get; set; }

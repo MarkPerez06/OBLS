@@ -319,6 +319,12 @@ namespace OBLS.Controllers
                 model.CreatedDate = DateTime.Now;
                 _context.ApplicationRequirements.Update(model);
                 await _context.SaveChangesAsync();
+
+
+                //var model1 = await _context.Application.FindAsync(model.ApplicationId);
+                //model1.Application_Status = "Not Complete";
+                //_context.Application.Update(model1);
+                //await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Edit), new { id = AppId });
         }
@@ -706,6 +712,13 @@ namespace OBLS.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // TermsAndConditions
+        [Route("TermsAndConditions")]
+        public IActionResult TermsAndConditions()
+        {
+            return View();
+        }
+
         // Map
         [Route("Map")]
         public IActionResult Map()
@@ -728,7 +741,7 @@ namespace OBLS.Controllers
 
         public async Task<JsonResult> GetBusinesses()
         {
-            var businesses = await _context.Application
+            var businesses = await _context.Application.Where(m => m.Application_Status == "License Issued")
                 .Select(b => new
                 {
                     b.Business_Name,

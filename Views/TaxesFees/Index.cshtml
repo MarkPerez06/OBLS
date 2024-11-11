@@ -1,11 +1,8 @@
-﻿@using OBLS.Static
-@model IEnumerable<OBLS.Models.Requirements>
+﻿@model IEnumerable<OBLS.Models.TaxesFees>
 @{
     ViewBag.Title = "Maintenance";
     ViewBag.pTitle = "Maintenance";
-    ViewBag.pageTitle = "Requirements";
-
-    ListRoles List = new ListRoles();
+    ViewBag.pageTitle = "Taxes and Fees";
 }
 
 <div class="row">
@@ -28,10 +25,10 @@
                                 @Html.DisplayNameFor(model => model.Name)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.UserRolesId)
+                                @Html.DisplayNameFor(model => model.Price)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.IsUpload)
+                                @Html.DisplayNameFor(model => model.IsActive)
                             </th>
                             <th class="text-center">Actions</th>
                         </tr>
@@ -51,13 +48,10 @@
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
                                 <td>
-                                    @foreach (var r in List.Roles.Where(m => m.Id == item.UserRolesId.ToString()))
-                                    {
-                                        <span>@r.Name</span>
-                                    }
+                                    @Html.DisplayFor(modelItem => item.Price)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.IsUpload)
+                                    @Html.DisplayFor(modelItem => item.IsActive)
                                 </td>
                                 <td class="text-center">
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Edit</a> |

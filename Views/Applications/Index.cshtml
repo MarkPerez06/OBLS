@@ -35,13 +35,14 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Application Type</th>
+                                <th>Type</th>
                                 <th>BIN</th>
                                 <th>Business Name</th>
                                 <th>Applicant</th>
                                 <th>Status</th>
                                 <th>Method</th>
                                 <th>Application Date</th>
+                                <th>Expiration Date</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -72,13 +73,33 @@
                                         @Html.DisplayFor(modelItem => item.Owner_LastName) @Html.DisplayFor(modelItem => item.Owner_FirstName) @Html.DisplayFor(modelItem => item.Owner_MiddleName)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Application_Status)
+                                        @if (item.Application_Status == "License Issued" && item.Permit_ExpiredDate != null)
+                                        {
+                                            @if (item.Permit_ExpiredDate > DateTime.Now)
+                                            {
+                                                <span>Registered</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Expired</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(modelItem => item.Application_Status)
+                                        }
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Application_Method)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Application_DateTime)
+                                        @item.Application_DateTime.Value.ToString("MMM. dd, yyyy")
+                                    </td>
+                                    <td>
+                                        @if (item.Application_Status == "License Issued" && item.Permit_ExpiredDate != null)
+                                        {
+                                            @item.Permit_ExpiredDate.Value.ToString("MMM. dd, yyyy")
+                                        }
                                     </td>
                                     <td class="text-center">
                                         @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
@@ -130,13 +151,14 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Application Type</th>
+                                <th>Type</th>
                                 <th>BIN</th>
                                 <th>Business Name</th>
                                 <th>Applicant</th>
                                 <th>Status</th>
                                 <th>Method</th>
                                 <th>Application Date</th>
+                                <th>Expiration Date</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -169,13 +191,33 @@
                                                 @Html.DisplayFor(modelItem => item.Owner_LastName) @Html.DisplayFor(modelItem => item.Owner_FirstName) @Html.DisplayFor(modelItem => item.Owner_MiddleName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Application_Status)
+                                                @if (item.Application_Status == "License Issued" && item.Permit_ExpiredDate != null)
+                                                {
+                                                    @if (item.Permit_ExpiredDate > DateTime.Now)
+                                                    {
+                                                        <span>Registered</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Expired</span>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    @Html.DisplayFor(modelItem => item.Application_Status)
+                                                }
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Application_Method)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Application_DateTime)
+                                                @item.Application_DateTime.Value.ToString("MMM. dd, yyyy")
+                                            </td>
+                                            <td>
+                                                @if (item.Application_Status == "License Issued" && item.Permit_ExpiredDate != null)
+                                                {
+                                                    @item.Permit_ExpiredDate.Value.ToString("MMM. dd, yyyy")
+                                                }
                                             </td>
                                             <td class="text-center">
                                                 @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
@@ -224,13 +266,33 @@
                                                 @Html.DisplayFor(modelItem => item.Owner_LastName) @Html.DisplayFor(modelItem => item.Owner_FirstName) @Html.DisplayFor(modelItem => item.Owner_MiddleName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Application_Status)
+                                                @if (item.Application_Status == "License Issued" && item.Permit_ExpiredDate != null)
+                                                {
+                                                    @if (item.Permit_ExpiredDate > DateTime.Now)
+                                                    {
+                                                        <span>Registered</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Expired</span>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    @Html.DisplayFor(modelItem => item.Application_Status)
+                                                }
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Application_Method)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Application_DateTime)
+                                                @item.Application_DateTime.Value.ToString("MMM. dd, yyyy")
+                                            </td>
+                                            <td>
+                                                @if (item.Application_Status == "License Issued" && item.Permit_ExpiredDate != null)
+                                                {
+                                                    @item.Permit_ExpiredDate.Value.ToString("MMM. dd, yyyy")
+                                                }
                                             </td>
                                             <td class="text-center">
                                                 @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
@@ -284,13 +346,14 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Application Type</th>
+                                <th>Type</th>
                                 <th>BIN</th>
                                 <th>Business Name</th>
                                 <th>Applicant</th>
                                 <th>Status</th>
                                 <th>Method</th>
                                 <th>Application Date</th>
+                                <th>Expiration Date</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -321,13 +384,33 @@
                                         @Html.DisplayFor(modelItem => item.Owner_LastName) @Html.DisplayFor(modelItem => item.Owner_FirstName) @Html.DisplayFor(modelItem => item.Owner_MiddleName)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Application_Status)
+                                        @if (item.Application_Status == "License Issued" && item.Permit_ExpiredDate != null)
+                                        {
+                                            @if (item.Permit_ExpiredDate > DateTime.Now)
+                                            {
+                                                <span>Registered</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Expired</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(modelItem => item.Application_Status)
+                                        }
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Application_Method)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Application_DateTime)
+                                        @item.Application_DateTime.Value.ToString("MMM. dd, yyyy")
+                                    </td>
+                                    <td>
+                                        @if (item.Application_Status == "License Issued" && item.Permit_ExpiredDate != null)
+                                        {
+                                            @item.Permit_ExpiredDate.Value.ToString("MMM. dd, yyyy")
+                                        }
                                     </td>
                                     <td class="text-center">
                                         @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
@@ -380,13 +463,14 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Application Type</th>
+                                <th>Type</th>
                                 <th>BIN</th>
                                 <th>Business Name</th>
                                 <th>Applicant</th>
                                 <th>Status</th>
                                 <th>Method</th>
                                 <th>Application Date</th>
+                                <th>Expiration Date</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -417,13 +501,33 @@
                                         @Html.DisplayFor(modelItem => item.Owner_LastName) @Html.DisplayFor(modelItem => item.Owner_FirstName) @Html.DisplayFor(modelItem => item.Owner_MiddleName)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Application_Status)
+                                        @if (item.Application_Status == "License Issued" && item.Permit_ExpiredDate != null)
+                                        {
+                                            @if (item.Permit_ExpiredDate > DateTime.Now)
+                                            {
+                                                <span>Registered</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Expired</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(modelItem => item.Application_Status)
+                                        }
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Application_Method)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Application_DateTime)
+                                        @item.Application_DateTime.Value.ToString("MMM. dd, yyyy")
+                                    </td>
+                                    <td>
+                                        @if (item.Application_Status == "License Issued" && item.Permit_ExpiredDate != null)
+                                        {
+                                            @item.Permit_ExpiredDate.Value.ToString("MMM. dd, yyyy")
+                                        }
                                     </td>
                                     <td class="text-center">
                                         @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
@@ -475,13 +579,14 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Application Type</th>
+                                <th>Type</th>
                                 <th>BIN</th>
                                 <th>Business Name</th>
                                 <th>Applicant</th>
                                 <th>Status</th>
                                 <th>Method</th>
                                 <th>Application Date</th>
+                                <th>Expiration Date</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -512,13 +617,33 @@
                                         @Html.DisplayFor(modelItem => item.Owner_LastName) @Html.DisplayFor(modelItem => item.Owner_FirstName) @Html.DisplayFor(modelItem => item.Owner_MiddleName)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Application_Status)
+                                        @if (item.Application_Status == "License Issued" && item.Permit_ExpiredDate != null)
+                                        {
+                                            @if (item.Permit_ExpiredDate > DateTime.Now)
+                                            {
+                                                <span>Registered</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Expired</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(modelItem => item.Application_Status)
+                                        }
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Application_Method)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Application_DateTime)
+                                        @item.Application_DateTime.Value.ToString("MMM. dd, yyyy")
+                                    </td>
+                                    <td>
+                                        @if (item.Application_Status == "License Issued" && item.Permit_ExpiredDate != null)
+                                        {
+                                            @item.Permit_ExpiredDate.Value.ToString("MMM. dd, yyyy")
+                                        }
                                     </td>
                                     <td class="text-center">
                                         @if (UserRoleId == UserRoles.Applicant.Id && item.Application_Status == "Not Complete")
