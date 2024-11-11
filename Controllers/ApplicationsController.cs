@@ -90,6 +90,18 @@ namespace OBLS.Controllers
 
             var application = await _context.Application
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            var AS = _context.ApplicationSignatories.Where(m => m.ApplicationId == id && m.UserRolesId.ToString() == UserRoles.MunicipalMayor.Id).FirstOrDefault();
+            if (AS != null)
+            {
+                ViewBag.MunicipalMayor = AS.FullName.ToUpper();
+            }
+            var AR = _context.ApplicationRequirements.Where(m => m.ApplicationId == id && m.UserRolesId.ToString() == UserRoles.MunicipalMayor.Id && m.Name.ToUpper() == "SIGNATURE").FirstOrDefault();
+            if (AR != null)
+            {
+                ViewBag.Signature = AR.UrlData;
+            }
+
             if (application == null)
             {
                 return NotFound();
@@ -162,6 +174,12 @@ namespace OBLS.Controllers
             ViewBag.ALBModel = ALBModel;
             List<ApplicationSignatories> ASModel = _context.ApplicationSignatories.Where(m => m.ApplicationId == id).OrderBy(m => m.CreatedDate).ToList();
             ViewBag.ASModel = ASModel;
+
+            List<PaymentMethod> PMModel = _context.PaymentMethod.Where(m => m.IsActive).OrderBy(m => m.Name).ToList();
+            ViewBag.PMModel = PMModel;
+            List<TaxesFees> TFModel = _context.TaxesFees.Where(m => m.IsActive).OrderBy(m => m.Name).ToList();
+            ViewBag.TFModel = TFModel;
+
             if (id == null || _context.Application == null)
             {
                 return NotFound();
@@ -190,6 +208,12 @@ namespace OBLS.Controllers
             ViewBag.ALBModel = ALBModel;
             List<ApplicationSignatories> ASModel = _context.ApplicationSignatories.Where(m => m.ApplicationId == id).OrderBy(m => m.CreatedDate).ToList();
             ViewBag.ASModel = ASModel;
+
+            List<PaymentMethod> PMModel = _context.PaymentMethod.Where(m => m.IsActive).OrderBy(m => m.Name).ToList();
+            ViewBag.PMModel = PMModel;
+            List<TaxesFees> TFModel = _context.TaxesFees.Where(m => m.IsActive).OrderBy(m => m.Name).ToList();
+            ViewBag.TFModel = TFModel;
+
             if (id != application.Id)
             {
                 return NotFound();

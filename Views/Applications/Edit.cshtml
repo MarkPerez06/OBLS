@@ -16,6 +16,9 @@
     var ALBModel = ViewBag.ALBModel as List<ApplicationLineBusiness>;
     var ASModel = ViewBag.ASModel as List<ApplicationSignatories>;
 
+    var PMModel = ViewBag.PMModel as List<PaymentMethod>;
+    var TFModel = ViewBag.TFModel as List<TaxesFees>;
+
     ListRoles ListRoles = new ListRoles();
     var count = 0;
 
@@ -54,6 +57,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body text-warning">
+                    
                     @if (Model.Permit_Comments != null && Model.Permit_Comments != "")
                     {
                         <b>NOTE:</b> @Model.Permit_Comments
@@ -62,7 +66,19 @@
                     }
                     @if ((Model.Permit_Amount.HasValue && Model.Permit_Amount != null) && (Model.Permit_IsPaid == false || Model.Permit_IsPaid == null))
                     {
+                        <hr />
+                        <h4 class="card-title text-uppercase">Payment Methods</h4>
+                        @foreach (var item in PMModel)
+                        {
+                            <h6><b>@item.Name</b> : @item.Number</h6>
+                        }
                         <h6 class="text-info">Please settle your payment and <b>upload the payment receipt</b> under Application Requirements.</h6>
+                        <h5><b>AMOUNT:</b> PHP @String.Format("{0:N2}", Model.Permit_Amount)</h5>
+                    }
+
+                    @if (Model.Permit_IsPaid == true)
+                    {
+                        <h6 class="text-info">Payment Status: <b class="text-success"> Paid</b></h6>
                         <h5><b>AMOUNT:</b> PHP @String.Format("{0:N2}", Model.Permit_Amount)</h5>
                     }
                 </div>
@@ -118,16 +134,15 @@
                             IsShow = false;
                         }
 
-                        if ((Model.Permit_Amount == 0 || Model.Permit_Amount == null) && item.Name.ToUpper() == "PAYMENT" && UserRoleId != UserRoles.Applicant.Id)
+                        if ((Model.Permit_Amount == 0 || Model.Permit_Amount == null) && item.Name.ToUpper() == "PAYMENT" && UserRoleId != UserRoles.Applicant.Id && UserRoleId != UserRoles.MunicipalTreasurer.Id)
                         {
                             IsShow = false;
                         }
 
-                        if (item.Name.ToUpper() == "PAYMENT" && UserRoleId != UserRoles.MunicipalTreasurer.Id)
+                        if (item.Name.ToUpper() == "SIGNATURE" && UserRoleId != UserRoles.MunicipalMayor.Id)
                         {
                             IsShow = false;
                         }
-
 
 
                         @if (IsShow)
@@ -147,9 +162,12 @@
                                                 <a href="@item.UrlData" target="_blank" class="btn btn-primary"><i class="mdi mdi-eye"></i></a>
                                                 <input type="hidden" class="form-control" name="Id" value="@item.Id" />
                                                 <input type="hidden" class="form-control" name="AppId" value="@item.ApplicationId" />
-                                                @if (item.UserRolesId.ToString() == UserRoleId && Model.Application_Status == "Not Complete")
+                                                @if ((item.UserRolesId.ToString() == UserRoleId && Model.Application_Status == "Not Complete") || (item.UserRolesId.ToString() == UserRoleId && item.Name.ToUpper() == "PAYMENT"))
                                                 {
-                                                    <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                                                    if (!Model.Permit_IsPaid == true)
+                                                    {
+                                                        <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                                                    }
                                                 }
                                             </div>
                                         </div>
@@ -897,42 +915,7 @@
                     <div class="card">
                         <div class="card-body text-center mb-2 mt-2">
 
-                            @if (UserRoleId == UserRoles.MunicipalTreasurer.Id && Model.Application_Status == "For Payment")
-                            {
-                                <h4 class="card-title mb-4 text-uppercase">Payment Amount</h4>
-                                <form asp-controller="Applications" asp-action="Payment" method="post" enctype="multipart/form-data">
-                                    <div class="row">
-                                        <div class="col-lg-4 form-group mb-3">
-                                        </div>
-                                        <div class="col-lg-4 form-group mb-3">
-                                            <input type="hidden" asp-for="Id" />
-                                            <input asp-for="Permit_Amount" class="form-control mb-3" type="number" />
-                                            <input type="submit" value="Save Payment Amount" class="btn btn-primary" />
-                                        </div>
-                                        <div class="col-lg-4 form-group mb-3">
-                                        </div>
-                                    </div>
-                                </form>
-                                <hr />
-                            }
-                            @if (UserRoleId == UserRoles.MunicipalTreasurer.Id && Model.Application_Status == "For Payment")
-                            {
-                                <h4 class="card-title mb-4 text-uppercase">Payment Amount</h4>
-                                <form asp-controller="Applications" asp-action="Payment" method="post" enctype="multipart/form-data">
-                                    <div class="row">
-                                        <div class="col-lg-4 form-group mb-3">
-                                        </div>
-                                        <div class="col-lg-4 form-group mb-3">
-                                            <input type="hidden" asp-for="Id" />
-                                            <input asp-for="Permit_Amount" class="form-control mb-3" type="number" />
-                                            <input type="submit" value="Save Payment Amount" class="btn btn-primary" />
-                                        </div>
-                                        <div class="col-lg-4 form-group mb-3">
-                                        </div>
-                                    </div>
-                                </form>
-                                <hr />
-                            }
+
                             <h4 class="card-title mb-4 text-uppercase">Comments</h4>
                             <form asp-controller="Applications" asp-action="Comments" method="post" enctype="multipart/form-data">
                                 <div class="row">
@@ -950,6 +933,31 @@
                                 </div>
                             </form>
                             <hr />
+
+                            @if (UserRoleId == UserRoles.MunicipalTreasurer.Id && Model.Application_Status == "For Payment")
+                            {
+                                <h4 class="card-title mb-2 text-uppercase">Taxes and Fees</h4>
+                                @foreach (var tf in TFModel)
+                                {
+                                    <h6> <input onclick="PaymentCalculation(this,@tf.Price)" type="checkbox" value="@tf.Price" /><b> @tf.Name</b> : PHP @String.Format("{0:N2}", tf.Price)</h6>
+                                }
+                                <br />
+                                <h4 class="card-title mb-2 text-uppercase">Payment Amount</h4>
+                                <form asp-controller="Applications" asp-action="Payment" method="post" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-lg-4 form-group mb-3">
+                                        </div>
+                                        <div class="col-lg-4 form-group mb-3">
+                                            <input type="hidden" asp-for="Id" />
+                                            <input asp-for="Permit_Amount" class="form-control mb-3" type="number" />
+                                            <input type="submit" value="Save Payment Amount" class="btn btn-primary" />
+                                        </div>
+                                        <div class="col-lg-4 form-group mb-3">
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr />
+                            }
                             @if (UserRoleId == UserRoles.MunicipalMayor.Id && Model.Application_Status == "For Issuance")
                             {
                                 <form asp-controller="Applications" asp-action="Declined" method="post" enctype="multipart/form-data">
@@ -968,11 +976,11 @@
                                         </div>
                                         <div class="col-lg-3 form-group mb-3">
                                             <label asp-for="Permit_DateRelease" class="control-label">Release Date</label>
-                                            <input type="date" asp-for="Permit_DateRelease" class="form-control" required/>
+                                            <input type="date" asp-for="Permit_DateRelease" class="form-control" required />
                                         </div>
                                         <div class="col-lg-3 form-group mb-3">
                                             <label asp-for="Permit_DateRelease" class="control-label">Expired Date</label>
-                                            <input type="date" asp-for="Permit_ExpiredDate" class="form-control" required/>
+                                            <input type="date" asp-for="Permit_ExpiredDate" class="form-control" required />
                                         </div>
                                         <div class="col-lg-3 form-group mb-3">
                                         </div>
@@ -1027,6 +1035,16 @@
 </style>
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script>
+
+    var PaymentAmount = 0;
+    function PaymentCalculation(element, Price) {
+        var IsCheck = $(element).prop("checked");
+        PaymentAmount = IsCheck ? PaymentAmount + Price : PaymentAmount - Price;
+        document.getElementById("Permit_Amount").value = PaymentAmount;
+    }
+
+
+
     const map = L.map('map').setView([15.66634194698582, 120.63785971134706], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 20,

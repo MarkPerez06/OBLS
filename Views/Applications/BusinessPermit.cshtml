@@ -9,16 +9,40 @@
 
     Layout = "~/Views/Shared/_Layout_Permit.cshtml";
 }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<style>
+    button {
+        background-color: #0b36a5;
+        color: #fff;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
 
+        button:hover {
+            background-color: #0a2e8c;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
 
-<div class="container">
+        button:active {
+            background-color: #09266d;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+</style>
+<div class="container" id="permit-content" style="border: none !important">
     <div class="header">
+        <img src="~/assets/images/site/logo.png" />
+        <br />
         REPUBLIC OF THE PHILIPPINES <br>
         PROVINCE OF TARLAC <br>
         MUNICIPALITY OF RAMOS
     </div>
 
-    <br />
     <br />
     <div class="title">BUSINESS PERMIT</div>
 
@@ -55,14 +79,39 @@
             <p>DATE: [Release Date]</p>
         }
 
-        
+
         <p>O.R. NO.: <b>@Model.Business_IDNumber</b></p>
         <p>AMOUNT: <b>PHP @String.Format("{0:N2}", Model.Permit_Amount)</b></p>
     </div>
     <br />
     <div class="approval">
         APPROVED BY:
-        <div class="signature">HON. CELSO L. CUNANAN BANAG</div>
+        <br />
+        @if (ViewBag.Signature != null)
+        {
+            <img src="@ViewBag.Signature" />
+        }
+        <div class="signature"><u>@ViewBag.MunicipalMayor</u></div>
         <div>Municipal Mayor</div>
     </div>
 </div>
+<hr />
+<center>
+    <br />
+    <button onclick="downloadPDF()">DOWNLOAD PDF</button>
+    <br />
+</center>
+<script>
+    function downloadPDF() {
+        var element = document.getElementById('permit-content');
+        var options = {
+            margin: 0,
+            filename: 'Business_Permit.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+        // Convert and download as PDF
+        html2pdf().set(options).from(element).save();
+    }
+</script>
