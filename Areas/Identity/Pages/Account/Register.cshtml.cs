@@ -116,19 +116,19 @@ namespace OBLS.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-                user.SecurityStamp = "bb9825cc-d2d1-4121-ace8-7335225f2c89";
-                //Admin
-                if (user.UserName == "Admin")
-                {
-                    user.SecurityStamp = "80aaf565-d80e-4617-893d-fb8eeeb6b6a9";
-                }
-                user.EmailConfirmed = true;
                 await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
+                    user.EmailConfirmed = true;
+                    user.SecurityStamp = "bb9825cc-d2d1-4121-ace8-7335225f2c89";
+                    if (user.UserName == "Admin")
+                    {
+                        user.SecurityStamp = "80aaf565-d80e-4617-893d-fb8eeeb6b6a9";
+                    }
+                    await _userManager.UpdateAsync(user);
 
                     _logger.LogInformation("User created a new account with password.");
                     bool IsSignedIn = _signInManager.IsSignedIn(User);
